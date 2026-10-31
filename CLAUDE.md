@@ -32,6 +32,7 @@ Tokens in `app/globals.css` (`@theme`, Tailwind v4 — géén tailwind.config):
 | `accent` | `#C4633B` | terracotta hover van menulinks, focus |
 - **Fonts** (self-hosted via `next/font/local`, OFL, in `app/fonts/`): Montserrat (koppen, `font-display`), Inter (UI/menu, `font-sans`), Poppins (lopende tekst, `font-body`; alle `<p>` standaard).
 - **Logo:** officiële lockups uit het .ai-bestand in `public/brand/logo-{horizontal,stacked,mark}.svg` + `components/logo.tsx`. De menubalk gebruikt `public/brand/logo-header.svg`, overgetrokken van het header-logo van de oude site (strakkere variant).
+- **Homepage-hero (naar budelstudios.com, okt 2026):** wit, groot ZEBRAN▯-woordmerk linksboven met een groene spotlight die op hover meeloopt (`components/wordmark.tsx`, mask `public/brand/wordmark-{zebrano,studio}.svg`, CSS `.spotlight-wordmark` in `app/globals.css`), deurtypes rechtsboven, rij deuren die op hover opengaan zoals dat type echt beweegt (`components/home/door-lineup.tsx`). Hetzelfde woordmerk sluit de footer af (wit, spotlight in forest). Intro-scherm `components/preloader.tsx`: alleen 1e homepagebezoek per sessie, volledig CSS-getimed vanaf first paint (zie commentaar in globals.css).
 
 ## Het menu (belangrijk voor de eigenaar)
 `components/site-header.tsx` is een 1-op-1 herbouw van het menu van de oude site: zwevende, omkaderde balk ([☰ Menu] [Zakelijk] — logo — [Vraag een voorstel] [bel]) die uitklapt naar een paneel met vijf kolommen (Collectie · Producten · Inspiratie · Zebrano · Overig) met links, pill-knop en foto; mobiel een accordeon. Animaties: streepjes → kruis, "Menu" rolt naar "Sluiten", items faden één voor één omhoog. Data in `lib/navigation.ts`. **Wijzig de look niet zonder overleg met Robbert.**
@@ -53,4 +54,5 @@ Home · Taatsdeuren · Schuifdeuren · Draaideuren · Wandvlakke deuren · Roomd
 - Alle oude teksten (NL/EN/DE) zaten in de bundle als i18next-object; ze zijn overgenomen en geredigeerd in `data/*.ts`. Vervallen: Shopify, materialendatabase (Firebase), admin, downloads, zoeken, valuta-/taalknop.
 
 ## Status
+- **31-10-2026 — hero vernieuwd:** hero naar budelstudios.com, intro-scherm, spotlight-logo in hero en footer. Volgende stap (wens Robbert): productpagina's met meer "jus" (Shopify-achtige secties, deur-elementen), mogelijk eerst uitgeprobeerd in Lovable en daarna hierheen overgezet.
 - **31-10-2026 — v1 opgezet:** menu (1:1), alle pagina's hierboven met NL-teksten, aanvraagformulier, juridische concepten, SEO-basis, redirects. Zie `docs/releasechecklist.md` voor wat de livegang nog tegenhoudt (beeld, feiten, juridisch, domein, Resend in Vercel).

@@ -26,16 +26,16 @@ export function HomeHero() {
     <section className="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-white text-ink">
       <div className="mx-auto flex w-full max-w-[1600px] flex-1 flex-col px-5 pt-24 sm:px-8 md:px-10 md:pt-28">
         {/* Wordmark + title */}
-        <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
+        <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
           <div className="intro-fade min-w-0" style={{ "--d": "0s" } as React.CSSProperties}>
             <h1 className="sr-only">Zebrano Studio — exclusieve binnendeuren op maat</h1>
-            <SpotlightWordmark sweep className="w-[min(88vw,1080px)] cursor-crosshair" />
+            <SpotlightWordmark sweep className="w-[min(88vw,1080px)] cursor-crosshair lg:w-[min(calc(100vw-380px),1080px)]" />
             <StudioWordmark className="mt-[clamp(0.6rem,1.4vw,1.25rem)] text-[clamp(14px,2.6vw,34px)]" />
           </div>
 
-          <div className="intro-fade md:pt-3 md:text-right" style={{ "--d": "0.25s" } as React.CSSProperties}>
+          <div className="intro-fade shrink-0 lg:pt-3 lg:text-right" style={{ "--d": "0.25s" } as React.CSSProperties}>
             <p className="font-sans text-xs font-semibold uppercase tracking-[0.18em] text-ink/50">Op maat gemaakt</p>
-            <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 md:flex-col md:gap-1.5">
+            <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 lg:flex-col lg:gap-1.5">
               {DEURTYPES.map((d) => (
                 <li key={d.href}>
                   <Link href={d.href} className="text-[0.95rem] font-medium text-ink/85 transition-colors hover:text-accent">
