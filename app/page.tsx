@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { CtaBand } from "@/components/cta-band";
 import { HomeHero } from "@/components/home/home-hero";
+import { Preloader } from "@/components/preloader";
 import { PassionTabs, type PassionItem } from "@/components/home/passion-tabs";
 import { ArrowRightIcon, HingedDoorIcon, PivotDoorIcon, SlidingDoorIcon } from "@/components/icons";
 import { PillLink } from "@/components/ui/pill-link";
@@ -77,6 +78,7 @@ const deurtypes = [
 export default function HomePage() {
   return (
     <>
+      <Preloader />
       <HomeHero />
 
       {/* Waarom Zebrano */}

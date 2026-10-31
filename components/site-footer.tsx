@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { Logo } from "@/components/logo";
 import { InstagramIcon, PinterestIcon, WhatsAppIcon } from "@/components/icons";
 import { PillLink } from "@/components/ui/pill-link";
+import { SpotlightWordmark, StudioWordmark } from "@/components/wordmark";
 import { company } from "@/data/company";
 import { MTB_URL } from "@/data/mtb-bouw";
 import { footerColumns } from "@/lib/navigation";
@@ -10,6 +10,8 @@ import { footerColumns } from "@/lib/navigation";
  * Footer — the original Zebrano footer (inset sage panel, big closing line,
  * Producten · Zebrano · Service columns, Pinterest/Instagram, logo in white)
  * plus the MTB Bouw family line and contact details, as on De Kozijnstudio.
+ * The logo closes the page full-width with the same green spotlight on hover
+ * as the hero wordmark (after budelstudios.com).
  */
 export function SiteFooter() {
   const year = new Date().getFullYear();
@@ -63,7 +65,15 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col gap-8 border-t border-ink/15 pt-8 lg:flex-row lg:items-end lg:justify-between">
+        {/* Huge wordmark with the Zebrano-green spotlight on hover (as on budelstudios.com) */}
+        <div className="mt-14 border-t border-ink/15 pt-12 lg:pt-16">
+          <Link href="/" aria-label="Zebrano Studio — naar de homepage" className="block">
+            <SpotlightWordmark tone="light" decorative className="w-full cursor-crosshair" />
+            <StudioWordmark letters="bg-white" className="mt-[clamp(0.5rem,1.3vw,1.25rem)] text-[clamp(14px,2.9vw,38px)]" />
+          </Link>
+        </div>
+
+        <div className="mt-12 flex flex-col gap-6 border-t border-ink/15 pt-8 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex items-center gap-3">
             <a
               href={company.pinterest}
@@ -93,25 +103,21 @@ export function SiteFooter() {
               <WhatsAppIcon className="size-5" />
             </a>
           </div>
-          <Link href="/" aria-label="Zebrano Studio — naar de homepage" className="text-white">
-            <Logo className="h-auto w-[260px] sm:w-[340px]" />
-          </Link>
-        </div>
-
-        <div className="mt-8 flex flex-col gap-2 text-xs leading-relaxed text-ink/70 sm:flex-row sm:flex-wrap sm:justify-between">
-          <p className="font-sans">
-            © {year} {company.naam} — een handelsnaam van {company.entiteit} · KvK {company.kvk}
-          </p>
-          <p className="font-sans">
-            Onderdeel van de{" "}
-            <Link href="/mtb-bouw" className="underline underline-offset-2 hover:text-accent">
-              MTB Bouw-familie
-            </Link>{" "}
-            ·{" "}
-            <a href={MTB_URL} className="underline underline-offset-2 hover:text-accent">
-              mtbbouw.com
-            </a>
-          </p>
+          <div className="flex flex-col gap-1 text-xs leading-relaxed text-ink/70 lg:items-end lg:text-right">
+            <p className="font-sans">
+              © {year} {company.naam} — een handelsnaam van {company.entiteit} · KvK {company.kvk}
+            </p>
+            <p className="font-sans">
+              Onderdeel van de{" "}
+              <Link href="/mtb-bouw" className="underline underline-offset-2 hover:text-accent">
+                MTB Bouw-familie
+              </Link>{" "}
+              ·{" "}
+              <a href={MTB_URL} className="underline underline-offset-2 hover:text-accent">
+                mtbbouw.com
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </footer>

@@ -129,25 +129,149 @@
   }
 }
 
-/* Homepage hero: three photos crossfading on an 18s loop. */
-@keyframes hero-fade {
-  0% { opacity: 0; }
-  6% { opacity: 1; }
-  33% { opacity: 1; }
-  39% { opacity: 0; }
-  100% { opacity: 0; }
+/* ─── Homepage hero (after budelstudios.com) ─────────────────────────────── */
+
+/* Intro timing: on the first homepage visit of a session the intro screen
+   plays first (html[data-intro="play"], set before first paint by the inline
+   script in app/layout.tsx); the hero elements then fade up after it.
+   Intro and hero are both timed in CSS from first paint, so they stay in
+   step however late the page hydrates:
+     0 – 1.5s   logo, progress line and counter
+     1.75s      the green screen slides up (1.1s)
+     2.35s      hero elements fade up (--intro-delay + their own --d)
+     2.7s       the spotlight sweeps once through the wordmark (2.4s)
+   components/preloader.tsx drops data-intro once all of that is done. */
+:root {
+  --intro-delay: 0.1s;
 }
-.hero-slide {
-  opacity: 0;
-  animation: hero-fade 18s linear infinite;
+html[data-intro="play"] {
+  --intro-delay: 2.35s;
+}
+
+@keyframes zs-fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.intro-fade {
+  animation: zs-fade-up 1.1s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--intro-delay) + var(--d, 0s)) both;
+}
+
+/* Spotlight wordmark (components/wordmark.tsx): the logo is a mask, the
+   background a radial gradient. On hover the spotlight opens at the pointer
+   (--spot-r grows) and follows it (--spot-x/--spot-y, set from JS); on
+   leaving it closes where the pointer left. */
+@property --spot-x {
+  syntax: "<length-percentage>";
+  inherits: false;
+  initial-value: -40%;
+}
+@property --spot-y {
+  syntax: "<length-percentage>";
+  inherits: false;
+  initial-value: 50%;
+}
+@property --spot-r {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+.spotlight-wordmark {
+  /* dark tone: near-black letters, a light-to-Zebrano-green spotlight */
+  --spot-1: #a3bd92;
+  --spot-2: #6a8a5c;
+  --spot-3: #2f3a2a;
+  --spot-base: #1b1f1a;
+  --spot-r: 0px;
+  aspect-ratio: 998.11 / 141.97;
+  background: radial-gradient(
+    circle var(--spot-r) at var(--spot-x) var(--spot-y),
+    var(--spot-1) 0%,
+    var(--spot-2) 24%,
+    var(--spot-3) 58%,
+    var(--spot-base) 100%
+  );
+  -webkit-mask: url(/brand/wordmark-zebrano.svg) center / 100% 100% no-repeat;
+  mask: url(/brand/wordmark-zebrano.svg) center / 100% 100% no-repeat;
+  transition: --spot-r 0.5s var(--ease-soft);
+}
+.spotlight-wordmark:hover {
+  --spot-r: clamp(120px, 20vw, 300px);
+}
+/* light tone: white letters (footer on sage), a forest-green spotlight */
+.spotlight-wordmark--light {
+  --spot-1: #2f3a2a;
+  --spot-2: #4a5d40;
+  --spot-3: #b7c4ab;
+  --spot-base: #ffffff;
+}
+.spotlight-wordmark--sweep {
+  animation: zs-spot-sweep 2.4s cubic-bezier(0.45, 0, 0.25, 1) calc(var(--intro-delay) + 0.35s) backwards;
+}
+@keyframes zs-spot-sweep {
+  from { --spot-x: -25%; --spot-y: 35%; --spot-r: clamp(120px, 20vw, 300px); }
+  to { --spot-x: 125%; --spot-y: 65%; --spot-r: clamp(120px, 20vw, 300px); }
+}
+
+/* Intro screen (components/preloader.tsx): only shown when it is meant to
+   play. Logo and line fade up, the progress line fills while the counter
+   runs 000 → 100, then the whole screen slides up like a curtain. */
+.zs-preloader {
+  display: none;
+}
+html[data-intro="play"] .zs-preloader {
+  display: flex;
+  animation: zs-curtain-up 1.1s cubic-bezier(0.83, 0, 0.17, 1) 1.75s forwards;
+}
+@keyframes zs-curtain-up {
+  to { transform: translateY(-100%); visibility: hidden; }
+}
+.zs-preloader-logo {
+  animation: zs-fade-up 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.zs-preloader-line {
+  animation: zs-fade-up 1s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+}
+.zs-preloader-bar {
+  transform-origin: left;
+  animation: zs-progress 1.5s cubic-bezier(0.33, 1, 0.68, 1) both;
+}
+@keyframes zs-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@property --zs-count {
+  syntax: "<integer>";
+  inherits: false;
+  initial-value: 0;
+}
+@counter-style zs-three-digits {
+  system: extends decimal;
+  pad: 3 "0";
+}
+.zs-preloader-count {
+  counter-reset: zs-count var(--zs-count);
+  animation: zs-count 1.5s cubic-bezier(0.33, 1, 0.68, 1) both;
+}
+.zs-preloader-count::after {
+  content: counter(zs-count, zs-three-digits);
+}
+@keyframes zs-count {
+  from { --zs-count: 0; }
+  to { --zs-count: 100; }
+}
+
+/* Door lineup: hide the scrollbar of the horizontal row on small screens. */
+.door-lineup {
+  scrollbar-width: none;
+}
+.door-lineup::-webkit-scrollbar {
+  display: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-slide {
+  .intro-fade,
+  .spotlight-wordmark--sweep {
     animation: none;
-  }
-  .hero-slide:first-child {
-    opacity: 1;
   }
 }
 

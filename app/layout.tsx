@@ -60,8 +60,17 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html
       lang="nl"
       className={`${montserrat.variable} ${inter.variable} ${poppins.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <head>
+        {/* Decide before first paint whether the homepage intro plays
+            (first visit of the session, not for reduced motion). */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(location.pathname==='/'&&!sessionStorage.getItem('zs-intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.dataset.intro='play';sessionStorage.setItem('zs-intro','1')}}catch(e){}",
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: jsonLd(organizationSchema()) }}
