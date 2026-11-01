@@ -3,11 +3,10 @@
  * edited: typos fixed, English leftovers translated, "Configureer nu"
  * replaced by the request flow (no configurator yet).
  *
- * Images are mood images from the old site whose origin still has to be
- * confirmed — see docs/beelden.md before going live.
+ * Hero images come from the Lovable design (november 2026); the images in
+ * the rows are from the old site and their origin still has to be confirmed —
+ * see docs/beelden.md before going live.
  */
-
-export type DoorIllustration = "pivot" | "sliding" | "hinged" | "flush" | "divider";
 
 export type DoorBlock = {
   /** Small label above the heading (was "title" on the old site). */
@@ -25,7 +24,7 @@ export type DoorPage = {
   h1: string;
   intro: string;
   meta: { title: string; description: string };
-  hero: { kind: "image"; src: string; alt: string } | { kind: "illustration"; icon: DoorIllustration };
+  hero: { src: string; alt: string };
   /** Two intro blocks: what is it / why choose it. */
   basics: [DoorBlock, DoorBlock];
   /** Three rows: materials, hardware & details, integration. */
@@ -51,7 +50,7 @@ export const doorPages: DoorPage[] = [
       description:
         "Maatwerk taatsdeuren van Zebrano Studio: draaiend op een verdekt taatsscharnier, in hout, fineer, glas of steen. Ook extra groot of zwaar. Vraag een voorstel.",
     },
-    hero: { kind: "image", src: "/images/taatsdeur-interieur.webp", alt: "Grote houten taatsdeur die openstaat naar een lichte woonkamer" },
+    hero: { src: "/images/hero-taatsdeur.jpg", alt: "Taatsdeur van notenhout in een lichte hal" },
     basics: [
       {
         label: "Wat is een taatsdeur?",
@@ -101,7 +100,7 @@ export const doorPages: DoorPage[] = [
       description:
         "Maatwerk schuifdeuren van Zebrano Studio: soepel en stil over een verdekte rail, in hout, fineer of glas. Als roomdivider of kastoplossing. Vraag een voorstel.",
     },
-    hero: { kind: "image", src: "/images/schuifdeur-tuin.webp", alt: "Grote schuifdeuren met hout en glas die uitkomen op een tuin" },
+    hero: { src: "/images/door-schuif.jpg", alt: "Eikenhouten schuifdeur aan een rail in een woonkamer" },
     basics: [
       {
         label: "Wat is een schuifdeur?",
@@ -151,7 +150,7 @@ export const doorPages: DoorPage[] = [
       description:
         "Luxe draaideuren op maat van Zebrano Studio: enkel of dubbel, in hout, fineer, lak of met glas, met beslag dat bij je interieur past. Vraag een voorstel.",
     },
-    hero: { kind: "illustration", icon: "hinged" },
+    hero: { src: "/images/door-draai.jpg", alt: "Dubbele houten draaideuren die openstaan naar een zitkamer" },
     basics: [
       {
         label: "Wat is een draaideur?",
@@ -201,7 +200,7 @@ export const doorPages: DoorPage[] = [
       description:
         "Wandvlakke deuren van Zebrano Studio: onzichtbare deuren met verdekt kozijn en verborgen scharnieren, exact gelijk met je wand. Op maat gemaakt. Vraag een voorstel.",
     },
-    hero: { kind: "illustration", icon: "flush" },
+    hero: { src: "/images/door-wandvlak.jpg", alt: "Wandvlakke deur, strak opgenomen in een lichte wand" },
     basics: [
       {
         label: "Wat is een wandvlakke deur?",
@@ -251,7 +250,7 @@ export const doorPages: DoorPage[] = [
       description:
         "Roomdividers op maat van Zebrano Studio: vast, schuivend of vouwend, in hout, fineer, lak of glas. Privacy en structuur zonder licht te verliezen. Vraag een voorstel.",
     },
-    hero: { kind: "illustration", icon: "divider" },
+    hero: { src: "/images/door-roomdivider.jpg", alt: "Roomdivider van glas met zwarte profielen tussen keuken en eetplek" },
     basics: [
       {
         label: "Wat is een roomdivider?",
@@ -301,7 +300,7 @@ export const doorPages: DoorPage[] = [
       description:
         "Boiserie op maat van Zebrano Studio: klassieke of strakke wandpanelen in hout, fineer of lak, afgestemd op je deuren en interieur. Vraag een voorstel.",
     },
-    hero: { kind: "image", src: "/images/boiserie-interieur.webp", alt: "Ruime woonkamer met boiserie, boekenkasten en ronde bogen" },
+    hero: { src: "/images/col-3d.jpg", alt: "Houten deur met verticale ribbels in reliëf" },
     basics: [
       {
         label: "Wat is boiserie?",
@@ -358,7 +357,7 @@ export const materialenPage = {
     description:
       "Met welke materialen werkt Zebrano Studio? Eik, noten en zebrano, houtfineer, glas, metaal, steen en keramiek, grepen en afwerkingen — voor deuren op maat.",
   },
-  hero: { src: "/images/fineer-rollen.webp", alt: "Rollen houtfineer in warme tinten" },
+  hero: { src: "/images/col-fineer.jpg", alt: "Vellen houtfineer in noten en zebrano" },
   materialen: [
     {
       title: "Hout",

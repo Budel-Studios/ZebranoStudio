@@ -1,10 +1,14 @@
 import Image from "next/image";
-import { CtaBand } from "@/components/cta-band";
-import { PillLink } from "@/components/ui/pill-link";
-import { Container, Eyebrow, PageIntro } from "@/components/ui/primitives";
+import Link from "next/link";
+import { Arrow } from "@/components/ui/arrow";
+import { button } from "@/components/ui/button";
+import { container, CtaSection, Eyebrow, PageHero } from "@/components/ui/primitives";
+import { Reveal } from "@/components/ui/reveal";
 import { verhaal } from "@/data/over";
+import { IMAGES } from "@/lib/images";
 import { primaryCta } from "@/lib/navigation";
 import { pageMetadata } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 
 export const metadata = pageMetadata({
   title: verhaal.meta.title,
@@ -15,58 +19,63 @@ export const metadata = pageMetadata({
 export default function OnsVerhaalPage() {
   return (
     <>
-      <PageIntro eyebrow="Zebrano" title={verhaal.h1} crumbs={[{ name: "Ons verhaal", path: "/ons-verhaal" }]}>
-        <p>{verhaal.intro}</p>
-      </PageIntro>
+      <PageHero
+        eyebrow="Zebrano"
+        title={verhaal.h1}
+        intro={<p>{verhaal.intro}</p>}
+        image={IMAGES.colAtelier}
+        crumbs={[{ name: "Ons verhaal", path: "/ons-verhaal" }]}
+      >
+        <p className="text-sm text-muted-foreground">Van een backpackreis in 2015 tot de eerste eigen deur in 2020.</p>
+      </PageHero>
 
-      <section className="py-20 sm:py-28">
-        <Container>
-          <ol className="relative space-y-20 sm:space-y-28 lg:before:absolute lg:before:inset-y-0 lg:before:left-1/2 lg:before:w-px lg:before:bg-line/30">
-            {verhaal.tijdlijn.map((stap, i) => (
-              <li key={stap.title} className="relative grid items-center gap-8 lg:grid-cols-2 lg:gap-24">
-                <span
-                  aria-hidden
-                  className="absolute left-1/2 top-1/2 hidden size-3 -translate-x-1/2 -translate-y-1/2 rounded-full border border-forest bg-paper lg:block"
-                />
-                <div className={i % 2 === 1 ? "lg:order-2" : ""}>
-                  <div className="relative aspect-[16/9] overflow-hidden rounded-lg">
-                    <Image src={stap.image.src} alt={stap.image.alt} fill sizes="(min-width: 1024px) 45vw, 100vw" className="object-cover" />
-                  </div>
+      <section className={cn(container, "pb-24 lg:pb-32")}>
+        <ol className="border-t">
+          {verhaal.tijdlijn.map((stap, i) => (
+            <li key={stap.title} className="grid items-center gap-8 border-b py-14 lg:grid-cols-12 lg:gap-16 lg:py-20">
+              <Reveal className="lg:col-span-2">
+                <p className="font-display text-4xl font-light tabular-nums sm:text-5xl">{String(i + 1).padStart(2, "0")}</p>
+              </Reveal>
+              <Reveal delay={80} className="lg:col-span-5">
+                {stap.jaar && (
+                  <p className="mb-4 text-[0.6875rem] tabular-nums tracking-[0.2em] text-copper">{stap.jaar}</p>
+                )}
+                <h2 className="text-3xl leading-[1.1] sm:text-4xl">{stap.title}</h2>
+                <p className="mt-5 leading-relaxed text-muted-foreground">{stap.text}</p>
+              </Reveal>
+              <Reveal delay={160} className="lg:col-span-4 lg:col-start-9">
+                <div className="relative aspect-[4/3] overflow-hidden rounded-sm bg-muted">
+                  <Image src={stap.image.src} alt={stap.image.alt} fill sizes="(min-width: 1024px) 28vw, 100vw" className="object-cover" />
                 </div>
-                <div className={i % 2 === 1 ? "lg:order-1 lg:text-right" : ""}>
-                  <p className="font-sans text-xs font-semibold uppercase tracking-[0.16em] text-bark/70">
-                    {stap.jaar ?? String(i + 1).padStart(2, "0")}
-                  </p>
-                  <h2 className="mt-2 font-display text-3xl font-light text-ink">{stap.title}</h2>
-                  <p className="mt-4 leading-relaxed text-ink/80">{stap.text}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </Container>
+              </Reveal>
+            </li>
+          ))}
+        </ol>
       </section>
 
-      <section className="bg-sand/60 py-20 sm:py-28">
-        <Container className="grid gap-10 lg:grid-cols-2">
-          <div>
+      <section className="bg-sand">
+        <div className={cn(container, "grid gap-10 py-24 lg:grid-cols-12 lg:py-32")}>
+          <Reveal className="lg:col-span-6">
             <Eyebrow>Waar we voor staan</Eyebrow>
-            <p className="font-display text-3xl font-light leading-snug text-ink sm:text-4xl">{verhaal.slot.title}</p>
-          </div>
-          <div>
-            <p className="text-lg leading-relaxed text-ink/80">{verhaal.slot.text}</p>
-            <p className="mt-6 font-display text-xl text-ink">{verhaal.slot.vraag}</p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <PillLink href={primaryCta.href}>{primaryCta.label}</PillLink>
-              <PillLink href="/bewust-vakmanschap" tone="outline">
+            <p className="mt-5 font-display text-3xl font-light leading-snug sm:text-4xl">{verhaal.slot.title}</p>
+          </Reveal>
+          <Reveal delay={100} className="lg:col-span-5 lg:col-start-8">
+            <p className="text-lg leading-relaxed text-muted-foreground">{verhaal.slot.text}</p>
+            <p className="mt-8 font-display text-2xl font-light">{verhaal.slot.vraag}</p>
+            <div className="mt-6 flex flex-wrap items-center gap-6">
+              <Link href={primaryCta.href} className={button()}>
+                {primaryCta.label} <Arrow />
+              </Link>
+              <Link href="/bewust-vakmanschap" className={button({ variant: "text" })}>
                 Bewust vakmanschap
-              </PillLink>
+              </Link>
             </div>
-          </div>
-        </Container>
+          </Reveal>
+        </div>
       </section>
 
-      <div className="h-3" />
-      <CtaBand />
+      <div className="h-3 sm:h-4" />
+      <CtaSection />
     </>
   );
 }

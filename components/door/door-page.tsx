@@ -1,130 +1,113 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CtaBand } from "@/components/cta-band";
-import { DoorIllustration } from "@/components/door/door-illustration";
-import { ArrowRightIcon } from "@/components/icons";
-import { PillLink } from "@/components/ui/pill-link";
-import { Breadcrumbs, Container, Eyebrow, JsonLd } from "@/components/ui/primitives";
+import { DoorCards } from "@/components/door/door-cards";
+import { Arrow } from "@/components/ui/arrow";
+import { button } from "@/components/ui/button";
+import { container, CtaSection, Eyebrow, JsonLd, PageHero, SectionHeading } from "@/components/ui/primitives";
+import { Reveal } from "@/components/ui/reveal";
+import { company } from "@/data/company";
 import { doorPages, type DoorBlock, type DoorPage } from "@/data/producten";
 import { serviceSchema } from "@/lib/jsonld";
 import { primaryCta } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 
-/** Template for every door-type page (taatsdeuren, schuifdeuren, …). */
+/**
+ * Template for every door-type page (taatsdeuren, schuifdeuren, …), in the
+ * Lovable design: content-page hero with the big image, the two basics side
+ * by side, three alternating image rows, the other door types as cards and
+ * the green closing block.
+ */
 export function DoorPageView({ page }: { page: DoorPage }) {
+  const others = doorPages.filter((p) => p.slug !== page.slug).map((p) => `/${p.slug}`);
   return (
     <>
-      <DoorHero page={page} />
+      <PageHero eyebrow="Deuren" title={page.h1} intro={<p>{page.intro}</p>} image={page.hero} crumbs={[{ name: page.name, path: `/${page.slug}` }]}>
+        <p className="text-sm text-muted-foreground">{page.teaser}</p>
+        <div className="mt-5 flex flex-wrap items-center gap-4">
+          <Link href={primaryCta.href} className={button()}>
+            {primaryCta.label} <Arrow />
+          </Link>
+          <a href={`tel:${company.telefoonHref}`} className={button({ variant: "text" })}>
+            of bel {company.telefoon}
+          </a>
+        </div>
+      </PageHero>
 
-      <section className="bg-paper py-20 sm:py-28">
-        <Container className="grid gap-14 lg:grid-cols-2 lg:gap-20">
-          {page.basics.map((b) => (
-            <TextBlock key={b.title} block={b} />
+      {/* What it is / why choose it */}
+      <section className={cn(container, "pb-24 lg:pb-32")}>
+        <div className="grid gap-14 border-t pt-14 lg:grid-cols-2 lg:gap-16">
+          {page.basics.map((b, i) => (
+            <Reveal key={b.title} delay={i * 100}>
+              <BlockText block={b} />
+            </Reveal>
           ))}
-        </Container>
+        </div>
       </section>
 
-      <section className="pb-20 sm:pb-28">
-        <Container className="space-y-20 sm:space-y-28">
+      {/* Materials, hardware, integration */}
+      <section className="bg-sand">
+        <div className={cn(container, "space-y-24 py-24 lg:space-y-32 lg:py-32")}>
           {page.rows.map((row, i) => (
             <div key={row.title} className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
               {row.image && (
-                <div
-                  className={cn(
-                    "relative aspect-[4/3] overflow-hidden rounded-lg lg:col-span-6",
-                    i % 2 === 1 && "lg:order-2",
-                  )}
-                >
-                  <Image
-                    src={row.image.src}
-                    alt={row.image.alt}
-                    fill
-                    sizes="(min-width: 1024px) 50vw, 100vw"
-                    className="object-cover transition-transform duration-700 hover:scale-[1.03]"
-                  />
-                </div>
+                <Reveal className={cn("lg:col-span-7", i % 2 === 1 && "lg:order-2 lg:col-start-6")}>
+                  <div className="group relative aspect-[4/3] overflow-hidden rounded-sm bg-muted">
+                    <Image
+                      src={row.image.src}
+                      alt={row.image.alt}
+                      fill
+                      sizes="(min-width: 1024px) 55vw, 100vw"
+                      className="img-zoom object-cover"
+                    />
+                  </div>
+                </Reveal>
               )}
-              <div className={cn("lg:col-span-5", i % 2 === 1 ? "lg:col-start-1 lg:order-1" : "lg:col-start-8")}>
-                <TextBlock block={row} />
-              </div>
+              <Reveal
+                delay={100}
+                className={cn("lg:col-span-4", i % 2 === 1 ? "lg:order-1 lg:col-start-1 lg:row-start-1" : "lg:col-start-9")}
+              >
+                <p className="text-[0.6875rem] tabular-nums tracking-[0.2em] text-copper">{String(i + 1).padStart(2, "0")}</p>
+                <BlockText block={row} className="mt-4" small />
+              </Reveal>
             </div>
           ))}
-        </Container>
+        </div>
       </section>
 
-      <OtherDoors current={page.slug} />
-      <CtaBand />
+      {/* The other door types */}
+      <section className={cn(container, "py-24 lg:py-32")}>
+        <SectionHeading
+          eyebrow="Andere deurtypes"
+          title="Ontdek ook."
+          action={
+            <Link href="/materialen" className={button({ variant: "text" })}>
+              Bekijk materialen
+            </Link>
+          }
+        />
+        <DoorCards hrefs={others} className="mt-12" />
+      </section>
+
+      <CtaSection />
       <JsonLd data={serviceSchema({ name: page.h1, description: page.meta.description, path: `/${page.slug}` })} />
     </>
   );
 }
 
-function DoorHero({ page }: { page: DoorPage }) {
+function BlockText({ block, className, small = false }: { block: DoorBlock; className?: string; small?: boolean }) {
   return (
-    <section className="relative isolate flex min-h-[86svh] items-end overflow-hidden bg-forest text-paper">
-      {page.hero.kind === "image" ? (
-        <>
-          <Image src={page.hero.src} alt={page.hero.alt} fill priority sizes="100vw" className="-z-20 object-cover" />
-          <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-[rgb(20_24_18/0.78)] via-[rgb(20_24_18/0.35)] to-[rgb(20_24_18/0.15)]" />
-        </>
-      ) : (
-        <DoorIllustration
-          kind={page.hero.icon}
-          className="absolute -right-10 top-1/2 -z-10 h-[78%] w-auto -translate-y-1/2 text-paper/45 sm:right-[4%]"
-        />
-      )}
-      <Container className="pb-12 pt-32 sm:pb-16">
-        <Breadcrumbs tone="light" items={[{ name: page.name, path: `/${page.slug}` }]} className="mb-6" />
-        <h1 className="font-display text-5xl font-light leading-none tracking-tight sm:text-6xl lg:text-7xl">{page.h1}</h1>
-        <p className="mt-6 max-w-2xl text-base leading-relaxed text-paper/85 sm:text-lg">{page.intro}</p>
-        <div className="mt-8">
-          <PillLink href={primaryCta.href} tone="paper" size="lg">
-            {primaryCta.label}
-          </PillLink>
-        </div>
-      </Container>
-    </section>
-  );
-}
-
-function TextBlock({ block }: { block: DoorBlock }) {
-  return (
-    <div>
+    <div className={className}>
       <Eyebrow>{block.label}</Eyebrow>
-      <h2 className="font-display text-3xl font-light leading-tight text-ink sm:text-4xl">{block.title}</h2>
-      <p className="mt-5 text-base leading-relaxed text-ink/80 sm:text-[17px]">{block.text}</p>
+      <h2 className={cn("mt-5 leading-[1.08]", small ? "text-3xl sm:text-4xl" : "max-w-[16ch] text-4xl sm:text-5xl")}>
+        {block.title}
+      </h2>
+      <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">{block.text}</p>
       {block.cta && (
-        <Link
-          href={block.cta.href}
-          className="group mt-6 inline-flex items-center gap-2 text-[15px] font-medium text-forest transition-colors hover:text-accent"
-        >
+        <Link href={block.cta.href} className={cn(button({ variant: "text" }), "mt-7")}>
           {block.cta.label}
-          <ArrowRightIcon className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+          <Arrow diagonal={false} />
         </Link>
       )}
     </div>
-  );
-}
-
-function OtherDoors({ current }: { current: string }) {
-  const others = doorPages.filter((p) => p.slug !== current);
-  return (
-    <section className="bg-sand/60 py-20 sm:py-24">
-      <Container>
-        <Eyebrow>Andere deurtypes</Eyebrow>
-        <h2 className="font-display text-3xl font-light text-ink sm:text-4xl">Ontdek ook</h2>
-        <div className="mt-10 grid gap-px overflow-hidden rounded-lg border border-line/40 bg-line/40 sm:grid-cols-2 lg:grid-cols-5">
-          {others.map((p) => (
-            <Link key={p.slug} href={`/${p.slug}`} className="group flex flex-col justify-between gap-6 bg-paper p-6 transition-colors hover:bg-white">
-              <div>
-                <p className="font-display text-xl text-ink">{p.name}</p>
-                <p className="mt-2 text-sm leading-relaxed text-ink/70">{p.teaser}</p>
-              </div>
-              <ArrowRightIcon className="size-5 text-forest transition-transform duration-300 group-hover:translate-x-1 group-hover:text-accent" />
-            </Link>
-          ))}
-        </div>
-      </Container>
-    </section>
   );
 }

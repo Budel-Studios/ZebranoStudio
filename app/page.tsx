@@ -1,16 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CtaBand } from "@/components/cta-band";
-import { HomeHero } from "@/components/home/home-hero";
-import { Preloader } from "@/components/preloader";
-import { PassionTabs, type PassionItem } from "@/components/home/passion-tabs";
-import { ArrowRightIcon, HingedDoorIcon, PivotDoorIcon, SlidingDoorIcon } from "@/components/icons";
-import { PillLink } from "@/components/ui/pill-link";
-import { Container, Eyebrow } from "@/components/ui/primitives";
+import { AboutAccordion, type AboutItem } from "@/components/home/about-accordion";
+import { Arrow } from "@/components/ui/arrow";
+import { button } from "@/components/ui/button";
+import { container, Eyebrow } from "@/components/ui/primitives";
+import { Reveal } from "@/components/ui/reveal";
 import { collecties } from "@/data/collecties";
+import { company } from "@/data/company";
 import { merkfamilie } from "@/data/mtb-bouw";
-import { primaryCta } from "@/lib/navigation";
+import { IMAGES } from "@/lib/images";
+import { DOOR_TYPES, primaryCta } from "@/lib/navigation";
 import { pageMetadata } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 
 export const metadata = pageMetadata({
   absoluteTitle: "Exclusieve binnendeuren op maat | Zebrano Studio",
@@ -19,245 +20,401 @@ export const metadata = pageMetadata({
   path: "/",
 });
 
-const waarom = [
-  { title: "Maatwerk ontwerp", text: "Vormen, afwerkingen en materialen, volledig afgestemd op jouw idee en jouw ruimte." },
-  { title: "Bereikbare luxe", text: "Hoogwaardig vakmanschap en bijzondere materialen — bereikbaar gemaakt voor elk project." },
-  { title: "Eenvoudig kiezen", text: "Een helder proces met zorgvuldig gekozen opties, zodat kiezen moeiteloos blijft." },
-  { title: "Precisie in vakmanschap", text: "Deuren die een leven lang meegaan, met oog voor elk detail." },
-  { title: "Eindeloze inspiratie", text: "Talloze ontwerpmogelijkheden om jouw ruimte onvergetelijk te maken." },
+/**
+ * Homepage — the Lovable design section by section: hero, door types, why
+ * Zebrano, "passie voor hout", way of working, collections, our story and the
+ * MTB Bouw family.
+ */
+export default function HomePage() {
+  return (
+    <>
+      <Hero />
+      <DoorTypes />
+      <WhyZebrano />
+      <About />
+      <Process />
+      <Collections />
+      <Story />
+      <Family />
+    </>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+
+function Hero() {
+  return (
+    <section className={cn(container, "pt-24 sm:pt-28")}>
+      <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
+        <div className="flex flex-col justify-between lg:col-span-5 lg:min-h-[calc(100svh-9rem)] lg:py-6">
+          <div className="animate-rise">
+            <Eyebrow>Binnendeuren op maat · Enschede</Eyebrow>
+            <h1 className="mt-8 text-[clamp(3rem,6.4vw,6.75rem)] leading-[0.95] tracking-[-0.03em]">
+              Luxe deuren,
+              <br />
+              <span className="text-muted-foreground">op maat</span> gemaakt.
+            </h1>
+          </div>
+
+          <div className="mt-10 animate-rise [animation-delay:200ms]">
+            <p className="max-w-sm text-lg leading-relaxed text-muted-foreground">
+              Exclusiviteit, nu binnen handbereik. Ontworpen voor jouw ruimte, gemaakt van de mooiste materialen.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <Link href={primaryCta.href} className={button({ size: "lg" })}>
+                {primaryCta.label} <Arrow />
+              </Link>
+              <Link href="/collecties" className={button({ variant: "outline", size: "lg" })}>
+                Bekijk de collecties
+              </Link>
+            </div>
+
+            <dl className="mt-12 grid grid-cols-3 border-t text-sm">
+              {[
+                ["Ontwerp", "Op jouw maat"],
+                ["Materiaal", "Hout, fineer, glas"],
+                ["Montage", "Door vakmensen"],
+              ].map(([k, v]) => (
+                <div key={k} className="border-r py-4 pr-4 last:border-r-0 [&:not(:first-child)]:pl-4">
+                  <dt className="text-[0.6875rem] uppercase tracking-[0.2em] text-muted-foreground">{k}</dt>
+                  <dd className="mt-1.5">{v}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
+
+        <div className="relative lg:col-span-7">
+          <div className="relative h-[70svh] min-h-[480px] overflow-hidden rounded-sm bg-muted lg:h-[calc(100svh-9rem)]">
+            <Image
+              src={IMAGES.heroTaats.src}
+              alt={IMAGES.heroTaats.alt}
+              fill
+              priority
+              sizes="(min-width: 1024px) 58vw, 100vw"
+              className="animate-unveil object-cover"
+            />
+            <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between gap-4">
+              <Link
+                href="/taatsdeuren"
+                className="group flex items-center gap-3 rounded-sm bg-background/90 px-4 py-3 text-sm backdrop-blur"
+              >
+                <span className="size-1.5 rounded-full bg-copper" />
+                Taatsdeur in notenhout
+                <Arrow diagonal={false} className="text-muted-foreground" />
+              </Link>
+              <span className="hidden rounded-sm bg-background/90 px-3 py-2 text-[0.6875rem] uppercase tracking-[0.2em] backdrop-blur sm:block">
+                Een merk van MTB Bouw
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+
+function DoorTypes() {
+  return (
+    <section className={cn(container, "py-24 lg:py-32")}>
+      <Reveal className="flex flex-wrap items-end justify-between gap-6">
+        <div>
+          <Eyebrow>Deurtypes</Eyebrow>
+          <h2 className="mt-5 text-4xl sm:text-5xl">Elke opening verdient een eigen deur.</h2>
+        </div>
+        <Link href="/materialen" className={button({ variant: "text" })}>
+          Bekijk materialen
+        </Link>
+      </Reveal>
+
+      <div className="no-scrollbar -mx-4 mt-12 flex snap-x gap-4 overflow-x-auto px-4 sm:-mx-8 sm:px-8 lg:mx-0 lg:grid lg:grid-cols-5 lg:overflow-visible lg:px-0">
+        {DOOR_TYPES.map((d, i) => (
+          <Reveal key={d.slug} delay={i * 70} className="w-[68vw] shrink-0 snap-start sm:w-[42vw] lg:w-auto">
+            <Link href={`/${d.slug}`} className="group block">
+              <div className="relative aspect-[3/4.4] overflow-hidden rounded-sm bg-muted">
+                <Image
+                  src={d.image.src}
+                  alt={d.label}
+                  fill
+                  sizes="(min-width: 1024px) 20vw, (min-width: 640px) 42vw, 68vw"
+                  className="img-zoom object-cover"
+                />
+              </div>
+              <div className="mt-4 flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-[0.6875rem] tabular-nums text-muted-foreground">{String(i + 1).padStart(2, "0")}</p>
+                  <p className="mt-1 font-display text-xl">
+                    <span className="link-line">{d.label}</span>
+                  </p>
+                  <p className="mt-1 text-sm text-muted-foreground">{d.note}</p>
+                </div>
+                <Arrow diagonal={false} className="mt-6 text-muted-foreground" />
+              </div>
+            </Link>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+
+const REASONS = [
+  ["Maatwerk ontwerp", "Vormen, afwerkingen en materialen, volledig afgestemd op jouw idee en jouw ruimte."],
+  ["Bereikbare luxe", "Hoogwaardig vakmanschap en bijzondere materialen, bereikbaar gemaakt voor elk project."],
+  ["Eenvoudig kiezen", "Een helder proces met zorgvuldig gekozen opties, zodat kiezen moeiteloos blijft."],
+  ["Precisie in vakmanschap", "Deuren die een leven lang meegaan, met oog voor elk detail."],
+  ["Eindeloze inspiratie", "Talloze ontwerpmogelijkheden om jouw ruimte onvergetelijk te maken."],
 ];
 
-const passie: PassionItem[] = [
+function WhyZebrano() {
+  return (
+    <section className={cn(container, "pb-24 lg:pb-32")}>
+      <div className="grid gap-10 border-t pt-14 lg:grid-cols-12">
+        <Reveal className="lg:col-span-5">
+          <Eyebrow>Waarom Zebrano</Eyebrow>
+          <h2 className="mt-5 max-w-[14ch] text-4xl leading-[1.08] sm:text-5xl">Luxe hoeft niet onbereikbaar te zijn.</h2>
+        </Reveal>
+        <Reveal delay={100} className="lg:col-span-6 lg:col-start-7">
+          <p className="text-lg leading-relaxed text-muted-foreground">
+            Onze deuren worden gemaakt met dezelfde precisie en materialen als de mooiste interieurs ter wereld, maar zijn
+            ontworpen voor ieder huis. Van de eerste schets tot de laatste installatie brengen we high-end design in je dagelijks
+            leven, zonder concessies.
+          </p>
+        </Reveal>
+      </div>
+
+      <div className="mt-16 grid sm:grid-cols-2 lg:grid-cols-5">
+        {REASONS.map(([title, text], i) => (
+          <Reveal
+            key={title}
+            delay={i * 60}
+            className="border-t py-8 sm:pr-8 lg:border-l lg:border-t-0 lg:px-6 lg:py-2 lg:first:border-l-0 lg:first:pl-0"
+          >
+            <p className="text-[0.6875rem] tabular-nums tracking-[0.2em] text-copper">{String(i + 1).padStart(2, "0")}</p>
+            <h3 className="mt-4 text-xl">{title}</h3>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{text}</p>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+
+const ABOUT: AboutItem[] = [
   {
     label: "Maatwerk",
     title: "Exclusieve houten deuren",
     text: "Zebrano ontwerpt taats-, schuif- en draaideuren op maat, gemaakt van hoogwaardige materialen en afgewerkt met exclusieve details.",
-    image: { src: "/images/taatsdeur-visgraat.webp", alt: "Houten taatsdeur met visgraatpatroon" },
+    image: IMAGES.heroTaats,
   },
   {
     label: "Unieke details",
     title: "Materialen met een verhaal",
-    text: "Van bijzondere houtsoorten tot handgeselecteerde steen en ambachtelijk glas — elk materiaal is gekozen om zijn karakter, herkomst en natuurlijke schoonheid.",
-    image: { src: "/images/fineer-rollen.webp", alt: "Rollen houtfineer in warme tinten" },
+    text: "Van bijzondere houtsoorten tot handgeselecteerde steen en ambachtelijk glas: elk materiaal is gekozen om zijn karakter, herkomst en natuurlijke schoonheid.",
+    image: IMAGES.colFineer,
   },
   {
     label: "Grenzeloos ontwerp",
     title: "Ontwerp zonder grenzen",
     text: "We gaan verder dan standaardmaten en -afwerkingen, en maken deuren die naadloos aansluiten bij jouw architectuur en persoonlijke stijl.",
-    image: { src: "/images/boiserie-1.webp", alt: "Klassieke boiserie met sierlijsten rond een hoge deur" },
+    image: IMAGES.col3d,
   },
   {
     label: "Bewust vakmanschap",
     title: "Vakmanschap & duurzaamheid",
     text: "We bouwen ze zo goed, dat je ze misschien vaker laat zien dan je nieuwe keuken.",
-    image: { src: "/images/afwerking-olie.webp", alt: "Hout wordt met de hand geolied" },
+    image: IMAGES.colAtelier,
   },
 ];
 
-const deurtypes = [
-  {
-    name: "Taatsdeuren",
-    href: "/taatsdeuren",
-    icon: PivotDoorIcon,
-    text: "Een taatsdeur draait niet op scharnieren aan de zijkant, maar op een scharnierpunt in vloer en plafond. Zo ontstaat een vloeiende, bijna zwevende beweging.",
-  },
-  {
-    name: "Schuifdeuren",
-    href: "/schuifdeuren",
-    icon: SlidingDoorIcon,
-    text: "Glijden moeiteloos langs een rail — ideaal voor ruimtebesparende indelingen, als roomdivider, kastoplossing of vloeiende overgang.",
-  },
-  {
-    name: "Draaideuren",
-    href: "/draaideuren",
-    icon: HingedDoorIcon,
-    text: "De klassieke deur op zijscharnieren: enkel of dubbel, in elke stijl en afwerking.",
-  },
-];
-
-export default function HomePage() {
+function About() {
   return (
-    <>
-      <Preloader />
-      <HomeHero />
+    <section className="bg-sand">
+      <div className={cn(container, "py-24 lg:py-32")}>
+        <Reveal>
+          <Eyebrow>Over Zebrano</Eyebrow>
+          <h2 className="mt-5 text-4xl leading-[1.05] sm:text-6xl">
+            Passie voor hout.
+            <br />
+            <span className="text-muted-foreground">Precisie in design.</span>
+          </h2>
+        </Reveal>
+        <AboutAccordion items={ABOUT} />
+      </div>
+    </section>
+  );
+}
 
-      {/* Waarom Zebrano */}
-      <section className="py-20 sm:py-28">
-        <Container>
-          <div className="grid gap-8 lg:grid-cols-2 lg:gap-16">
-            <h2 className="font-display text-4xl font-light leading-tight text-ink sm:text-5xl">Waarom kiezen voor Zebrano Studio?</h2>
-            <p className="text-lg leading-relaxed text-ink/80">
-              Wij geloven dat luxe niet onbereikbaar hoeft te zijn. Onze deuren worden gemaakt met dezelfde precisie en materialen als de
-              mooiste interieurs ter wereld, maar zijn ontworpen voor ieder huis. Van de eerste schets tot de laatste installatie brengen we
-              high-end design in je dagelijks leven — zonder concessies.
-            </p>
-          </div>
-          <ul className="mt-14 grid gap-px overflow-hidden rounded-lg border border-line/30 bg-line/30 sm:grid-cols-2 lg:grid-cols-5">
-            {waarom.map((w, i) => (
-              <li key={w.title} className="bg-paper p-6">
-                <p className="font-sans text-xs font-semibold tracking-[0.16em] text-bark/70">{String(i + 1).padStart(2, "0")}</p>
-                <h3 className="mt-3 font-display text-lg text-ink">{w.title}</h3>
-                <p className="mt-2 text-[15px] leading-relaxed text-ink/75">{w.text}</p>
-              </li>
-            ))}
-          </ul>
-        </Container>
-      </section>
+/* ------------------------------------------------------------------ */
 
-      {/* Passie voor hout */}
-      <section className="bg-sand/60 py-20 sm:py-28">
-        <Container>
-          <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <Eyebrow>Over Zebrano</Eyebrow>
-              <h2 className="font-display text-4xl font-light leading-tight text-ink sm:text-5xl">
-                Passie voor hout.
-                <br />
-                Precisie in design.
-              </h2>
-            </div>
-            <PillLink href="/collecties" tone="outline">
-              Bekijk de collecties
-            </PillLink>
-          </div>
-          <PassionTabs items={passie} />
-        </Container>
-      </section>
+const STEPS = [
+  ["Kennismaking", "We bespreken je ruimte, je stijl en je wensen. Bij jou thuis of op afspraak in Enschede."],
+  ["Ontwerp & advies", "Je ontvangt een helder voorstel met tekening, materialen en afwerking."],
+  ["Productie op maat", "Elke deur wordt met precisie gemaakt, exact passend in jouw opening."],
+  ["Plaatsing", "Onze vakmensen monteren en stellen af tot alles perfect draait of schuift."],
+];
 
-      {/* Deurtypes — groen, zoals op de oude site */}
-      <section className="px-3 pt-3">
-        <div className="rounded-lg bg-forest py-20 text-paper sm:py-28">
-          <Container>
-            <div className="grid gap-8 lg:grid-cols-2 lg:items-end">
-              <h2 className="font-display text-4xl font-light sm:text-5xl">Deurtypes</h2>
-              <p className="text-lg leading-relaxed text-paper/80">
-                Ontdek ons aanbod exclusieve houten deuren, elk met eigen voordelen in stijl, functie en ruimtegebruik. Van indrukwekkende
-                entrees tot naadloze overgangen: er is een oplossing voor jouw huis.
+function Process() {
+  return (
+    <section className="px-3 sm:px-4">
+      <div className="mx-auto max-w-[1600px] rounded-sm bg-forest text-forest-foreground">
+        <div className="mx-auto max-w-[1600px] px-6 py-24 sm:px-10 lg:px-14 lg:py-32">
+          <div className="grid gap-10 lg:grid-cols-12">
+            <Reveal className="lg:col-span-6">
+              <p className="eyebrow text-forest-muted">Werkwijze</p>
+              <h2 className="mt-5 max-w-[14ch] text-4xl leading-[1.08] sm:text-5xl">Van eerste schets tot laatste scharnier.</h2>
+            </Reveal>
+            <Reveal delay={100} className="flex flex-col justify-end lg:col-span-5 lg:col-start-8">
+              <p className="text-lg leading-relaxed text-forest-muted">
+                Eén aanspreekpunt, een helder proces en zorgvuldig gekozen opties. Zo blijft kiezen moeiteloos.
               </p>
-            </div>
-            <div className="mt-14 grid gap-5 md:grid-cols-3">
-              {deurtypes.map((d) => (
-                <Link
-                  key={d.href}
-                  href={d.href}
-                  className="group flex flex-col justify-between gap-8 rounded-2xl border border-paper/35 p-7 transition-colors duration-300 hover:bg-paper/5"
-                >
-                  <div>
-                    <d.icon className="h-20 w-auto text-paper/85" />
-                    <h3 className="mt-8 font-display text-2xl text-paper">{d.name}</h3>
-                    <p className="mt-3 text-[15px] leading-relaxed text-paper/75">{d.text}</p>
-                  </div>
-                  <span className="inline-flex w-fit items-center gap-2 rounded-full bg-paper px-4 py-1.5 text-sm text-forest">
-                    Bekijk {d.name.toLowerCase()}
-                    <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-0.5" />
-                  </span>
-                </Link>
-              ))}
-            </div>
-            <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-paper/20 pt-8 text-[15px]">
-              <span className="text-paper/70">Ook:</span>
-              <Link href="/wandvlakke-deuren" className="underline-offset-4 hover:underline">
-                Wandvlakke deuren
-              </Link>
-              <Link href="/roomdividers" className="underline-offset-4 hover:underline">
-                Roomdividers
-              </Link>
-              <Link href="/boiserie" className="underline-offset-4 hover:underline">
-                Boiserie
-              </Link>
-              <Link href="/materialen" className="underline-offset-4 hover:underline">
-                Materialen
-              </Link>
-              <span className="ml-auto">
-                <PillLink href={primaryCta.href} tone="paper">
-                  {primaryCta.label}
-                </PillLink>
-              </span>
-            </div>
-          </Container>
-        </div>
-      </section>
-
-      {/* Collecties */}
-      <section className="py-20 sm:py-28">
-        <Container>
-          <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <Eyebrow>Collecties</Eyebrow>
-              <h2 className="font-display text-4xl font-light text-ink sm:text-5xl">Vier startpunten</h2>
-            </div>
-            <PillLink href="/collecties" tone="outline">
-              Alle collecties
-            </PillLink>
+            </Reveal>
           </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {collecties.map((c) => (
-              <Link key={c.slug} href={`/collecties/${c.slug}`} className="group">
-                <div className="relative aspect-[3/4] overflow-hidden rounded-lg">
-                  <Image
-                    src={c.hero.src}
-                    alt={c.hero.alt}
-                    fill
-                    sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                    className="object-cover transition-transform duration-700 group-hover:scale-[1.05]"
-                  />
+
+          <ol className="mt-16 grid gap-px overflow-hidden rounded-sm bg-forest-line sm:grid-cols-2 lg:grid-cols-4">
+            {STEPS.map(([title, text], i) => (
+              <Reveal as="li" key={title} delay={i * 80} className="bg-forest p-7 lg:p-8">
+                <div className="flex items-center gap-3">
+                  <span className="font-display text-4xl font-light">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="h-px flex-1 bg-forest-line" />
                 </div>
-                <h3 className="mt-4 font-display text-xl text-ink">{c.name}</h3>
-                <p className="mt-1 text-sm leading-relaxed text-ink/70">{c.tagline}</p>
-              </Link>
+                <h3 className="mt-10 text-2xl">{title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-forest-muted">{text}</p>
+              </Reveal>
             ))}
-          </div>
-        </Container>
-      </section>
+          </ol>
 
-      {/* Inspiratie & inzichten → ons verhaal */}
-      <section className="bg-sand/60 py-20 sm:py-28">
-        <Container className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
-            <Image src="/images/hout-planken.webp" alt="Gestapelde houten planken met zichtbare nerf" fill sizes="(min-width: 1024px) 45vw, 100vw" className="object-cover" />
+          <div className="mt-12 flex flex-wrap items-center gap-4">
+            <Link href="/contact" className={button({ variant: "light", size: "lg" })}>
+              Plan een kennismaking <Arrow />
+            </Link>
+            <a href={`tel:${company.telefoonHref}`} className={button({ variant: "outlineLight", size: "lg" })}>
+              Bel {company.telefoon}
+            </a>
           </div>
-          <div>
-            <Eyebrow>Inspiratie & inzichten</Eyebrow>
-            <h2 className="font-display text-4xl font-light leading-tight text-ink sm:text-5xl">Gemaakt van het mooiste hout</h2>
-            <p className="mt-6 text-lg leading-relaxed text-ink/80">
-              Hout is voor ons meer dan een materiaal — het is onze passie. Elke nerf vertelt een verhaal. Elke afwerking wordt met liefde
-              gedaan. Ontdek hoe twee broers via een reis door Zuidoost-Azië bij hun eerste eigen deur uitkwamen.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <PillLink href="/ons-verhaal">Lees ons verhaal</PillLink>
-              <PillLink href="/bewust-vakmanschap" tone="outline">
-                Bewust vakmanschap
-              </PillLink>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+
+function Collections() {
+  return (
+    <section className={cn(container, "py-24 lg:py-32")}>
+      <Reveal className="flex flex-wrap items-end justify-between gap-6">
+        <div>
+          <Eyebrow>Collecties</Eyebrow>
+          <h2 className="mt-5 text-4xl sm:text-5xl">Vier startpunten.</h2>
+        </div>
+        <Link href="/collecties" className={button({ variant: "outline", size: "sm" })}>
+          Alle collecties <Arrow />
+        </Link>
+      </Reveal>
+
+      <div className="mt-12 grid gap-x-5 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+        {collecties.map((c, i) => (
+          <Reveal key={c.slug} delay={i * 70}>
+            <Link href={`/collecties/${c.slug}`} className="group block">
+              <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-muted">
+                <Image
+                  src={c.hero.src}
+                  alt={c.hero.alt}
+                  fill
+                  sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                  className="img-zoom object-cover"
+                />
+              </div>
+              <div className="mt-5 flex items-center justify-between border-b pb-4">
+                <h3 className="text-2xl">
+                  <span className="link-line">{c.name}</span>
+                </h3>
+                <Arrow className="text-muted-foreground" />
+              </div>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{c.tagline}</p>
+            </Link>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+
+function Story() {
+  return (
+    <section className={cn(container, "pb-24 lg:pb-32")}>
+      <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+        <Reveal className="lg:col-span-6">
+          <div className="grid grid-cols-5 gap-4">
+            <div className="relative col-span-3 aspect-[3/4] overflow-hidden rounded-sm bg-muted">
+              <Image src={IMAGES.colAtelier.src} alt={IMAGES.colAtelier.alt} fill sizes="(min-width: 1024px) 30vw, 60vw" className="object-cover" />
+            </div>
+            <div className="relative col-span-2 mt-16 aspect-[2/3] overflow-hidden rounded-sm bg-muted">
+              <Image src={IMAGES.doorTaats.src} alt={IMAGES.doorTaats.alt} fill sizes="(min-width: 1024px) 20vw, 40vw" className="object-cover" />
             </div>
           </div>
-        </Container>
-      </section>
-
-      {/* MTB Bouw-familie */}
-      <section className="py-16 sm:py-20">
-        <Container>
-          <div className="flex flex-col gap-8 rounded-lg border border-line/30 p-8 sm:p-10 lg:flex-row lg:items-center lg:justify-between">
-            <div className="max-w-xl">
-              <Eyebrow>Een merk van MTB Bouw</Eyebrow>
-              <p className="font-display text-2xl font-light leading-snug text-ink sm:text-3xl">
-                Achter Zebrano Studio staat MTB Bouw uit Enschede — ook voor het werk rond je deuren.
-              </p>
-            </div>
-            <ul className="flex flex-wrap gap-2">
-              {merkfamilie.map((m) => (
-                <li key={m.naam} className={m.href === "/" ? "rounded-full bg-forest px-4 py-2 text-sm text-paper" : "rounded-full border border-line/40 px-4 py-2 text-sm"}>
-                  {m.naam}
-                </li>
-              ))}
-            </ul>
-            <PillLink href="/mtb-bouw" tone="outline">
-              Over de familie
-            </PillLink>
+        </Reveal>
+        <Reveal delay={100} className="lg:col-span-5 lg:col-start-8">
+          <Eyebrow>Ons verhaal</Eyebrow>
+          <h2 className="mt-5 text-4xl leading-[1.08] sm:text-5xl">Gemaakt van het mooiste hout.</h2>
+          <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+            Hout is voor ons meer dan een materiaal, het is onze passie. Elke nerf vertelt een verhaal. Elke afwerking wordt met
+            liefde gedaan. Ontdek hoe twee broers via een reis door Zuidoost-Azië bij hun eerste eigen deur uitkwamen.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-6">
+            <Link href="/ons-verhaal" className={button()}>
+              Lees ons verhaal <Arrow />
+            </Link>
+            <Link href="/bewust-vakmanschap" className={button({ variant: "text" })}>
+              Bewust vakmanschap
+            </Link>
           </div>
-        </Container>
-      </section>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
 
-      <CtaBand />
-    </>
+/* ------------------------------------------------------------------ */
+
+function Family() {
+  return (
+    <section className={cn(container, "pb-16 lg:pb-24")}>
+      <Reveal className="grid items-center gap-8 border-y py-10 lg:grid-cols-12">
+        <div className="lg:col-span-6">
+          <Eyebrow>Een merk van MTB Bouw</Eyebrow>
+          <p className="mt-4 max-w-xl font-display text-2xl font-light leading-snug sm:text-3xl">
+            Achter Zebrano Studio staat MTB Bouw uit Enschede, ook voor het werk rond je deuren.
+          </p>
+        </div>
+        <ul className="flex flex-wrap gap-2 lg:col-span-4">
+          {merkfamilie.map((m) => (
+            <li
+              key={m.naam}
+              className={cn(
+                "rounded-sm border px-3 py-1.5 text-[0.8125rem]",
+                m.href === "/" && "border-primary bg-primary text-primary-foreground",
+              )}
+            >
+              {m.naam}
+            </li>
+          ))}
+        </ul>
+        <div className="lg:col-span-2 lg:text-right">
+          <Link href="/mtb-bouw" className={button({ variant: "text" })}>
+            Over de familie
+          </Link>
+        </div>
+      </Reveal>
+    </section>
   );
 }

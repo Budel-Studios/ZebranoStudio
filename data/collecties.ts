@@ -1,7 +1,9 @@
 /**
  * Collections — the original site only had short English texts for these
  * four lines (hard-coded on the collection pages). Translated and lightly
- * edited; no new product claims added. Images: see docs/beelden.md.
+ * edited; no new product claims added. Taglines in the wording of the Lovable
+ * design (november 2026). Hero images from the Lovable design, gallery
+ * images from the old site — see docs/beelden.md.
  */
 
 export type Collectie = {
@@ -20,7 +22,7 @@ export const collecties: Collectie[] = [
   {
     slug: "glas",
     name: "Glascollectie",
-    tagline: "Designdeuren van glas — transparantie, elegantie en moderne functionaliteit in één.",
+    tagline: "Designdeuren van glas: transparantie, elegantie en moderne functionaliteit in één.",
     text: "Ontdek onze glazen deuren, waaronder taats- en schuifmodellen. Gemaakt met veiligheidsglas en verfijnde afwerkingen, voor een tijdloos, open gevoel.",
     deurtypes: [
       { label: "Taatsdeuren", href: "/taatsdeuren" },
@@ -32,11 +34,11 @@ export const collecties: Collectie[] = [
       description:
         "De Glascollectie van Zebrano Studio: glazen taatsdeuren, schuifdeuren en roomdividers op maat, met helder, getint of ribbelglas en verfijnde profielen.",
     },
-    hero: { src: "/images/glas-ribbel.webp", alt: "Glazen wand met ribbelglas in een licht interieur" },
+    hero: { src: "/images/col-glas.jpg", alt: "Glazen taatsdeur met structuurglas in een lichte hal" },
     gallery: [
+      { src: "/images/glas-ribbel.webp", alt: "Glazen wand met ribbelglas in een licht interieur" },
       { src: "/images/glas-staal.webp", alt: "Glazen scheidingswand met zwarte stalen profielen" },
       { src: "/images/glas-in-lood.webp", alt: "Wand met gekleurd glas-in-lood" },
-      { src: "/images/glas-openslaand.webp", alt: "Openslaande deuren met glas en houten kozijn" },
     ],
   },
   {
@@ -54,17 +56,17 @@ export const collecties: Collectie[] = [
       description:
         "De Fineercollectie van Zebrano Studio: deuren van echt houtfineer in noten, eiken en zebrano — warm, strak en op maat gemaakt voor jouw interieur.",
     },
-    hero: { src: "/images/fineer-rollen.webp", alt: "Rollen houtfineer in warme tinten" },
+    hero: { src: "/images/col-fineer.jpg", alt: "Vellen houtfineer in noten en zebrano" },
     gallery: [
+      { src: "/images/fineer-rollen.webp", alt: "Rollen houtfineer in warme tinten" },
       { src: "/images/hout-planken.webp", alt: "Gestapelde houten planken met zichtbare nerf" },
       { src: "/images/afwerking-olie.webp", alt: "Hout wordt met de hand geolied" },
-      { src: "/images/taatsdeur-visgraat.webp", alt: "Houten taatsdeur met visgraatpatroon" },
     ],
   },
   {
     slug: "3d",
     name: "3D-collectie",
-    tagline: "Deuren met diepte — sculpturale oppervlakken die een statement maken.",
+    tagline: "Deuren met diepte: sculpturale oppervlakken die een statement maken.",
     text: "Onze 3D-paneeldeuren combineren gedurfde patronen met verfijnde materialen. Ideaal voor accentwanden en ruimtes die om artistieke diepte vragen.",
     deurtypes: [
       { label: "Draaideuren", href: "/draaideuren" },
@@ -76,8 +78,9 @@ export const collecties: Collectie[] = [
       description:
         "De 3D-collectie van Zebrano Studio: paneeldeuren met reliëf en sculpturale patronen, voor accentwanden en ruimtes die om diepte vragen. Op maat gemaakt.",
     },
-    hero: { src: "/images/3d-ornament.webp", alt: "Gevel met klassieke ornamenten en reliëf" },
+    hero: { src: "/images/col-3d.jpg", alt: "Houten deur met verticale ribbels in reliëf" },
     gallery: [
+      { src: "/images/3d-ornament.webp", alt: "Gevel met klassieke ornamenten en reliëf" },
       { src: "/images/taatsdeur-relief.webp", alt: "Dubbele houten deur met reliëf" },
       { src: "/images/boiserie-1.webp", alt: "Klassieke boiserie met sierlijsten" },
     ],
@@ -85,7 +88,7 @@ export const collecties: Collectie[] = [
   {
     slug: "atelier",
     name: "Ateliercollectie",
-    tagline: "Volledig maatwerk, ontworpen in onze studio — zonder grenzen.",
+    tagline: "Volledig maatwerk, ontworpen in onze studio, zonder grenzen.",
     text: "Ontwerp samen met Zebrano Studio een deur van glas, hout, steen of metaal, helemaal afgestemd op jouw architectuur, smaak en verbeelding.",
     deurtypes: [
       { label: "Taatsdeuren", href: "/taatsdeuren" },
@@ -97,8 +100,9 @@ export const collecties: Collectie[] = [
       description:
         "De Ateliercollectie van Zebrano Studio: volledig maatwerk deuren van glas, hout, steen of metaal, samen met jou ontworpen voor jouw architectuur.",
     },
-    hero: { src: "/images/atelier-2.webp", alt: "Houten deurpanelen met handgemaakt reliëf" },
+    hero: { src: "/images/col-atelier.jpg", alt: "Vakman schuurt een deur van notenhout" },
     gallery: [
+      { src: "/images/atelier-2.webp", alt: "Houten deurpanelen met handgemaakt reliëf" },
       { src: "/images/atelier-1.webp", alt: "Deurpanelen met verschillende patronen" },
       { src: "/images/taatsdeur-relief.webp", alt: "Dubbele houten deur met reliëf" },
     ],

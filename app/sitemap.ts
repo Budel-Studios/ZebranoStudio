@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { collecties } from "@/data/collecties";
+import { GLASS_DOORS } from "@/data/glasdeuren";
 import { doorPages } from "@/data/producten";
 import { SITE_URL } from "@/lib/site";
 
@@ -9,7 +10,7 @@ import { SITE_URL } from "@/lib/site";
  * you change a page's content, not on every deploy. Flow pages (/bedankt) and
  * switched-off modules are left out on purpose.
  */
-const CONTENT_UPDATED = "2026-10-31";
+const CONTENT_UPDATED = "2026-11-01";
 
 const paths = [
   "/",
@@ -17,6 +18,7 @@ const paths = [
   "/materialen",
   "/collecties",
   ...collecties.map((c) => `/collecties/${c.slug}`),
+  ...GLASS_DOORS.map((d) => `/collecties/glas/${d.slug}`),
   "/architecten",
   "/ons-verhaal",
   "/de-makers",

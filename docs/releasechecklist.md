@@ -1,9 +1,10 @@
-# Releasechecklist Zebrano Studio (stand 31-10-2026)
+# Releasechecklist Zebrano Studio (stand 01-11-2026)
 
 Alleen wat de livegang nog tegenhoudt of beperkt.
 
 ## Blokkeert de livegang
-- [ ] **Beeld vervangen of herkomst bevestigen** — alle foto's komen van de oude site en hebben een onbekende herkomst. Zie `docs/beelden.md`. Minimaal: hero's van home, taatsdeuren, schuifdeuren, boiserie en de vijf menufoto's.
+- [ ] **Beeld** — zie `docs/beelden.md`. De grote beelden (homepage, deurtypes, collecties, menu, glasontwerpen) zijn AI-sfeerbeelden uit het Lovable-ontwerp: bruikbaar, maar het zijn geen echte projecten. De kleinere foto's (rijen, galerijen, tijdlijn) komen van de oude site en hebben een onbekende herkomst: bevestigen of vervangen. Liefst alles stap voor stap vervangen door eigen foto's.
+- [ ] **Glascollectie bevestigen** — de vijf ontwerpen Jesse, Bo, Merle, Lucas en Guus met hun glassoort, indeling en profielkleuren komen uit het Lovable-ontwerp (`data/glasdeuren.ts`). Klopt dit met het echte aanbod? Bij de specificatie "Montage" staat nu "Op aanvraag" (Lovable had "Door onze eigen makers"; dat is nog niet bevestigd).
 - [ ] **Domein kiezen** (zebranostudio.com of .nl) → Vercel-project koppelen, `NEXT_PUBLIC_SITE_URL` zetten, andere domeinen laten doorsturen. Check eerst wat er nu op zebranostudio.com draait (de oude build had de map `/robbertjesss` met briefings en een Fiverr-screenshot publiek staan).
 - [ ] **Mail in Vercel:** `RESEND_API_KEY` (dezelfde sleutel als de MTB Bouw-site) en `MAIL_FROM` (bijv. `website@mtbbouw.com`, of een geverifieerd `@zebranostudio.com`-adres). Daarna een testaanvraag mét bijlage op productie.
 - [ ] **Leadmailbox:** blijft `info@mtbbouw.com` (zoals De Kozijnstudio) of eigen adres via `OFFERTE_TO_EMAIL`.
@@ -36,3 +37,11 @@ Bevestigen = status op `verified` + `bron` + `gecontroleerd`. Tot die tijd onzic
 - Alle routes 200, onbekende routes 404, oude URL's één 308 naar de juiste pagina.
 - Formulier: validatie client + server; zonder mailconfiguratie een nette foutmelding (geen schijnsucces).
 - **Niet getest:** verzending via Resend (geen sleutel in de testomgeving), Vercel-deploy, PageSpeed op productie, Safari/iOS.
+
+## Getest op 01-11-2026 (Lovable-ontwerp overgenomen)
+- Build, lint en typecheck schoon; 37 statische pagina's.
+- Homepage, glascollectie en glasontwerp naast de Lovable-build gelegd (zelfde fonts): opbouw, maten en animaties gelijk.
+- Alle routes 200 (onbekend 404) op desktop (1440) en mobiel (390), zonder horizontale scroll en zonder fouten in de console.
+- Megamenu (Deuren, Collecties, Zebrano) met voorbeeldfoto, mobiel menu (accordeon, sluit na tikken op een link), accordeon "Over Zebrano", deur in het logo die verder opendraait bij hover.
+- Lovable-teksten die iets beloven wat nog niet bevestigd is, zijn neutraler gemaakt: "in de studio" → "op afspraak in Enschede" (showroom staat nog op `needs_confirmation`), "Kom langs in onze studio … zie het glas en de profielen in het echt" → "Maak een afspraak in Enschede …", montage "door onze eigen makers" → "op aanvraag".
+

@@ -1,12 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CtaBand } from "@/components/cta-band";
-import { ArrowRightIcon } from "@/components/icons";
-import { PillLink } from "@/components/ui/pill-link";
-import { Container, Eyebrow, PageIntro } from "@/components/ui/primitives";
+import { Arrow } from "@/components/ui/arrow";
+import { button } from "@/components/ui/button";
+import { container, PageHeader, SectionHeading } from "@/components/ui/primitives";
+import { Reveal } from "@/components/ui/reveal";
 import { collecties, startOpties } from "@/data/collecties";
+import { company } from "@/data/company";
 import { primaryCta } from "@/lib/navigation";
 import { pageMetadata } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 
 export const metadata = pageMetadata({
   title: "Collecties: glas, fineer, 3D en atelier",
@@ -15,88 +17,114 @@ export const metadata = pageMetadata({
   path: "/collecties",
 });
 
+/** Collections overview: the four collections, two ways to start and the four choices. */
 export default function CollectiesPage() {
   return (
     <>
-      <PageIntro eyebrow="Collecties" title={startOpties.title} crumbs={[{ name: "Collecties", path: "/collecties" }]}>
-        <p>{startOpties.intro}</p>
-      </PageIntro>
+      <PageHeader
+        eyebrow="Collecties"
+        title={startOpties.title}
+        intro={<p>{startOpties.intro}</p>}
+        crumbs={[{ name: "Collecties", path: "/collecties" }]}
+      />
 
-      <section className="py-16 sm:py-20">
-        <Container className="grid gap-6 md:grid-cols-2">
+      <section className={cn(container, "py-16 lg:py-20")}>
+        <div className="grid gap-5 md:grid-cols-2">
           {startOpties.opties.map((o, i) => (
-            <div key={o.title} className="flex flex-col justify-between gap-8 rounded-lg border border-line/40 bg-white/60 p-8 sm:p-10">
-              <div>
-                <Eyebrow>{o.label}</Eyebrow>
-                <h2 className="font-display text-3xl font-light text-ink">{o.title}</h2>
-                <p className="mt-4 leading-relaxed text-ink/80">{o.text}</p>
+            <Reveal key={o.title} delay={i * 100} className="flex">
+              <div className="flex w-full flex-col justify-between rounded-sm border p-8 lg:p-10">
+                <div>
+                  <p className="text-[0.6875rem] tabular-nums tracking-[0.2em] text-copper">{o.label.toUpperCase()}</p>
+                  <h2 className="mt-5 text-3xl sm:text-4xl">{o.title}</h2>
+                  <p className="mt-4 max-w-lg leading-relaxed text-muted-foreground">{o.text}</p>
+                </div>
+                <div className="mt-10">
+                  {i === 0 ? (
+                    <Link href="#collecties" className={button({ variant: "outline" })}>
+                      Bekijk de collecties <Arrow diagonal={false} className="rotate-90" />
+                    </Link>
+                  ) : (
+                    <Link href={primaryCta.href} className={button()}>
+                      {primaryCta.label} <Arrow />
+                    </Link>
+                  )}
+                </div>
               </div>
-              {i === 0 ? (
-                <PillLink href="#collecties" tone="outline">
-                  Bekijk de collecties
-                </PillLink>
-              ) : (
-                <PillLink href={primaryCta.href}>{primaryCta.label}</PillLink>
-              )}
-            </div>
+            </Reveal>
           ))}
-        </Container>
+        </div>
       </section>
 
-      <section id="collecties" className="scroll-mt-24 pb-20 sm:pb-28">
-        <Container>
-          <Eyebrow>Vier collecties</Eyebrow>
-          <h2 className="font-display text-3xl font-light text-ink sm:text-4xl">Kies je startpunt</h2>
-          <div className="mt-10 grid gap-8 sm:grid-cols-2">
-            {collecties.map((c) => (
-              <Link key={c.slug} href={`/collecties/${c.slug}`} className="group block">
-                <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
+      <section id="collecties" className={cn(container, "scroll-mt-24 pb-24 lg:pb-32")}>
+        <SectionHeading eyebrow="Vier collecties" title="Kies je startpunt." className="border-t pt-14" />
+        <div className="mt-12 grid gap-x-5 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+          {collecties.map((c, i) => (
+            <Reveal key={c.slug} delay={i * 70}>
+              <Link href={`/collecties/${c.slug}`} className="group block">
+                <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-muted">
                   <Image
                     src={c.hero.src}
                     alt={c.hero.alt}
                     fill
-                    sizes="(min-width: 640px) 50vw, 100vw"
-                    className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                    priority={i < 4}
+                    sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                    className="img-zoom object-cover"
                   />
                 </div>
-                <div className="mt-5 flex items-start justify-between gap-6">
-                  <div>
-                    <h3 className="font-display text-2xl font-light text-ink">{c.name}</h3>
-                    <p className="mt-2 max-w-md text-[15px] leading-relaxed text-ink/75">{c.tagline}</p>
-                  </div>
-                  <ArrowRightIcon className="mt-2 size-5 shrink-0 text-forest transition-transform duration-300 group-hover:translate-x-1 group-hover:text-accent" />
+                <div className="mt-5 flex items-center justify-between border-b pb-4">
+                  <h3 className="text-2xl">
+                    <span className="link-line">{c.name}</span>
+                  </h3>
+                  <Arrow className="text-muted-foreground" />
                 </div>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{c.tagline}</p>
               </Link>
-            ))}
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      <section className="px-3 pb-3 sm:px-4 sm:pb-4">
+        <div className="mx-auto max-w-[1600px] rounded-sm bg-forest text-forest-foreground">
+          <div className="px-6 py-24 sm:px-10 lg:px-14 lg:py-32">
+            <div className="grid gap-10 lg:grid-cols-12">
+              <Reveal className="lg:col-span-6">
+                <p className="eyebrow text-forest-muted">Zo ontstaat jouw deur</p>
+                <h2 className="mt-5 max-w-[16ch] text-4xl leading-[1.08] sm:text-5xl">Vier keuzes, één deur die helemaal van jou is.</h2>
+              </Reveal>
+            </div>
+
+            <ol className="mt-16 grid gap-px overflow-hidden rounded-sm bg-forest-line sm:grid-cols-2 lg:grid-cols-4">
+              {startOpties.stappen.map((s, i) => (
+                <Reveal as="li" key={s.title} delay={i * 80} className="flex flex-col justify-between bg-forest p-7 lg:p-8">
+                  <div>
+                    <div className="flex items-center gap-3">
+                      <span className="font-display text-4xl font-light">{String(i + 1).padStart(2, "0")}</span>
+                      <span className="h-px flex-1 bg-forest-line" />
+                    </div>
+                    <h3 className="mt-10 text-2xl">{s.title}</h3>
+                    <p className="mt-1 text-sm text-forest-muted">{s.sub}</p>
+                    <p className="mt-4 text-sm leading-relaxed text-forest-muted">{s.text}</p>
+                  </div>
+                  <Link href={s.href} className="group mt-8 inline-flex items-center gap-2 text-sm">
+                    <span className="link-line">{s.cta}</span>
+                    <Arrow diagonal={false} />
+                  </Link>
+                </Reveal>
+              ))}
+            </ol>
+
+            <div className="mt-12 flex flex-wrap items-center gap-4">
+              <Link href={primaryCta.href} className={button({ variant: "light", size: "lg" })}>
+                {primaryCta.label} <Arrow />
+              </Link>
+              <a href={`tel:${company.telefoonHref}`} className={button({ variant: "outlineLight", size: "lg" })}>
+                Bel {company.telefoon}
+              </a>
+            </div>
           </div>
-        </Container>
+        </div>
       </section>
-
-      <section className="bg-forest py-20 text-paper sm:py-28">
-        <Container>
-          <Eyebrow tone="light">Zo ontstaat jouw deur</Eyebrow>
-          <h2 className="max-w-2xl font-display text-3xl font-light sm:text-4xl">Vier keuzes, één deur die helemaal van jou is</h2>
-          <ol className="mt-12 grid gap-px overflow-hidden rounded-lg bg-paper/15 md:grid-cols-2 lg:grid-cols-4">
-            {startOpties.stappen.map((s, i) => (
-              <li key={s.title} className="flex flex-col justify-between gap-6 bg-forest p-7">
-                <div>
-                  <p className="font-sans text-xs font-semibold tracking-[0.16em] text-paper/60">{String(i + 1).padStart(2, "0")}</p>
-                  <h3 className="mt-3 font-display text-xl text-paper">{s.title}</h3>
-                  <p className="mt-1 text-sm text-paper/70">{s.sub}</p>
-                  <p className="mt-4 text-[15px] leading-relaxed text-paper/85">{s.text}</p>
-                </div>
-                <Link href={s.href} className="group inline-flex items-center gap-2 text-sm font-medium text-paper hover:text-sand">
-                  {s.cta}
-                  <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </li>
-            ))}
-          </ol>
-        </Container>
-      </section>
-
-      <div className="h-3" />
-      <CtaBand />
     </>
   );
 }

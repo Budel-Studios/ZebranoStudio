@@ -1,10 +1,13 @@
-import Image from "next/image";
-import { CtaBand } from "@/components/cta-band";
-import { CheckIcon } from "@/components/icons";
-import { PillLink } from "@/components/ui/pill-link";
-import { Breadcrumbs, Container, Eyebrow } from "@/components/ui/primitives";
+import Link from "next/link";
+import { Arrow } from "@/components/ui/arrow";
+import { button } from "@/components/ui/button";
+import { container, CtaSection, Eyebrow, PageHero, SplitIntro } from "@/components/ui/primitives";
+import { Reveal } from "@/components/ui/reveal";
+import { company } from "@/data/company";
 import { isVerified } from "@/data/feiten";
+import { IMAGES } from "@/lib/images";
 import { pageMetadata } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 
 export const metadata = pageMetadata({
   title: "Voor architecten en interieurontwerpers",
@@ -35,98 +38,92 @@ const voordelen = [
     title: "Volledige ondersteuning",
     text: "We zijn meer dan een leverancier: we zijn je supportteam achter de schermen, met designadvies en coördinatie van de uitvoering. Alsof je een eigen team in huis hebt, zonder de vaste lasten.",
   },
+  {
+    title: "Bouwkundig werk in één hand",
+    text: "Zebrano Studio is een merk van MTB Bouw. Sparingen, wanden en afwerking rond de deuren kunnen in dezelfde planning mee — één aanspreekpunt voor het hele traject.",
+  },
 ] as const;
 
 export default function ArchitectenPage() {
   const zichtbaar = voordelen.filter((v) => !("feit" in v) || isVerified(v.feit));
   return (
     <>
-      <section className="relative isolate flex min-h-[80svh] items-end overflow-hidden bg-forest text-paper">
-        <Image src="/images/hero-paviljoen.webp" alt="Paviljoen met zwembad onder een houten kapconstructie" fill priority sizes="100vw" className="-z-20 object-cover" />
-        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-[rgb(20_24_18/0.82)] via-[rgb(20_24_18/0.4)] to-[rgb(20_24_18/0.2)]" />
-        <Container className="pb-12 pt-32 sm:pb-16">
-          <Breadcrumbs tone="light" items={[{ name: "Architecten", path: "/architecten" }]} className="mb-6" />
-          <p className="mb-4 font-sans text-xs font-semibold uppercase tracking-[0.16em] text-paper/80">Partnerprogramma · Zakelijk</p>
-          <h1 className="max-w-4xl font-display text-5xl font-light leading-[1.02] tracking-tight sm:text-6xl">
-            Word onderdeel van het verhaal van Zebrano Studio
-          </h1>
-          <div className="mt-8">
-            <PillLink href="/contact?type=zakelijk" tone="paper" size="lg">
-              Meld je aan als partner
-            </PillLink>
-          </div>
-        </Container>
+      <PageHero
+        eyebrow="Zakelijk · Partnerprogramma"
+        title="Voor architecten en ontwerpers"
+        intro={<p>Word onderdeel van het verhaal van Zebrano Studio: ontwerp zonder beperkingen, met een maker die jouw visie net zo serieus neemt als jij.</p>}
+        image={IMAGES.doorWandvlak}
+        crumbs={[{ name: "Architecten", path: "/architecten" }]}
+      >
+        <div className="flex flex-wrap items-center gap-4">
+          <Link href="/contact?type=zakelijk" className={button()}>
+            Meld je aan als partner <Arrow />
+          </Link>
+          <a href={`tel:${company.telefoonHref}`} className={button({ variant: "text" })}>
+            of bel {company.telefoon}
+          </a>
+        </div>
+      </PageHero>
+
+      <section className={cn(container, "pb-24 lg:pb-32")}>
+        <SplitIntro eyebrow="Partner-first support" title="Een leverancier die jouw succes ondersteunt.">
+          <p>
+            Niet een leverancier die met je klanten concurreert. We hebben Zebrano opgericht omdat vakmensen een leverancier
+            verdienen die hun succes ondersteunt. Jij houdt de relatie met je klant, verdient de marge die je verdient en richt je
+            op waar je goed in bent.
+          </p>
+        </SplitIntro>
       </section>
 
-      <section className="py-20 sm:py-28">
-        <Container className="grid gap-12 lg:grid-cols-2 lg:gap-20">
-          <div>
-            <Eyebrow>Partner-first support</Eyebrow>
-            <h2 className="font-display text-3xl font-light leading-tight text-ink sm:text-4xl">
-              Een leverancier die jouw succes ondersteunt — niet met je klanten concurreert.
-            </h2>
-            <p className="mt-6 leading-relaxed text-ink/80">
-              We hebben Zebrano opgericht omdat vakmensen een leverancier verdienen die hun succes ondersteunt. Jij houdt de relatie met je klant, verdient de marge die je verdient en richt je op waar je goed in bent.
-            </p>
-          </div>
-          <div className="space-y-5 text-[17px] leading-relaxed text-ink/80">
-            <h3 className="font-display text-2xl font-light text-ink">Ben jij een ontwerper die écht anders durft te denken?</h3>
+      <section className="bg-sand">
+        <div className={cn(container, "grid gap-10 py-24 lg:grid-cols-12 lg:py-32")}>
+          <Reveal className="lg:col-span-5">
+            <Eyebrow>Voor ontwerpers</Eyebrow>
+            <h2 className="mt-5 max-w-[16ch] text-4xl leading-[1.08] sm:text-5xl">Ben jij een ontwerper die écht anders durft te denken?</h2>
+          </Reveal>
+          <Reveal delay={100} className="space-y-5 text-lg leading-relaxed text-muted-foreground lg:col-span-6 lg:col-start-7">
             <p>
-              Heb je soms het gevoel dat je creativiteit wordt beperkt door wat mogelijk is — in materialen, afwerkingen of productie? Je bent niet de enige.
+              Heb je soms het gevoel dat je creativiteit wordt beperkt door wat mogelijk is — in materialen, afwerkingen of
+              productie? Je bent niet de enige.
             </p>
             <p>
-              Bij Zebrano geloven we dat goed design nooit beperkt mag worden door de uitvoering. Daarom krijg je bij ons de ruimte om te ontdekken, te experimenteren en je meest gedurfde ideeën tot leven te brengen — met onze steun in elke stap.
+              Bij Zebrano geloven we dat goed design nooit beperkt mag worden door de uitvoering. Daarom krijg je bij ons de ruimte
+              om te ontdekken, te experimenteren en je meest gedurfde ideeën tot leven te brengen — met onze steun in elke stap.
             </p>
             <p>
-              Zoek je een partner die jouw visie net zo waardeert als jijzelf en zich inzet om het onmogelijke mogelijk te maken? Dan ben je hier aan het juiste adres.
+              Zoek je een partner die jouw visie net zo waardeert als jijzelf en zich inzet om het onmogelijke mogelijk te maken?
+              Dan ben je hier aan het juiste adres.
             </p>
-          </div>
-        </Container>
+          </Reveal>
+        </div>
       </section>
 
-      <section className="bg-forest py-20 text-paper sm:py-28">
-        <Container>
-          <Eyebrow tone="light">Wat je krijgt</Eyebrow>
-          <h2 className="font-display text-3xl font-light sm:text-4xl">Als Zebrano-partner</h2>
-          <ul className="mt-12 grid gap-px overflow-hidden rounded-lg bg-paper/15 sm:grid-cols-2 lg:grid-cols-3">
-            {zichtbaar.map((v) => (
-              <li key={v.title} className="bg-forest p-7 sm:p-8">
-                <CheckIcon className="size-6 text-sand" />
-                <h3 className="mt-5 font-display text-xl text-paper">{v.title}</h3>
-                <p className="mt-3 text-[15px] leading-relaxed text-paper/80">{v.text}</p>
-              </li>
-            ))}
-            <li className={(zichtbaar.length + 1) % 3 === 2 ? "bg-forest p-7 sm:p-8 lg:col-span-2" : "bg-forest p-7 sm:p-8"}>
-              <CheckIcon className="size-6 text-sand" />
-              <h3 className="mt-5 font-display text-xl text-paper">Bouwkundig werk in één hand</h3>
-              <p className="mt-3 text-[15px] leading-relaxed text-paper/80">
-                Zebrano Studio is een merk van MTB Bouw. Sparingen, wanden en afwerking rond de deuren kunnen in dezelfde planning mee — één aanspreekpunt voor het hele traject.
-              </p>
-            </li>
-          </ul>
-        </Container>
+      <section className={cn(container, "py-24 lg:py-32")}>
+        <Reveal>
+          <Eyebrow>Wat je krijgt</Eyebrow>
+          <h2 className="mt-5 text-4xl sm:text-5xl">Als Zebrano-partner.</h2>
+        </Reveal>
+        <div className="mt-16 grid sm:grid-cols-2 lg:grid-cols-3">
+          {zichtbaar.map((v, i) => (
+            <Reveal
+              key={v.title}
+              delay={(i % 3) * 60}
+              className="border-t py-8 sm:pr-8 lg:px-6 lg:[&:nth-child(3n+1)]:pl-0 lg:[&:not(:nth-child(3n+1))]:border-l"
+            >
+              <p className="text-[0.6875rem] tabular-nums tracking-[0.2em] text-copper">{String(i + 1).padStart(2, "0")}</p>
+              <h3 className="mt-4 text-2xl">{v.title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{v.text}</p>
+            </Reveal>
+          ))}
+        </div>
       </section>
 
-      <section className="py-20 sm:py-28">
-        <Container className="grid gap-10 lg:grid-cols-2 lg:items-end">
-          <div>
-            <Eyebrow>Partnerprogramma</Eyebrow>
-            <h2 className="font-display text-3xl font-light leading-tight text-ink sm:text-4xl">
-              Laten we samen grenzen verleggen. Word partner en ontwerp zonder beperkingen.
-            </h2>
-          </div>
-          <div>
-            <p className="text-lg leading-relaxed text-ink/80">
-              We horen graag over je ideeën, projecten of vragen. Geen druk — gewoon een goed gesprek om te ontdekken hoe we samen iets bijzonders kunnen maken.
-            </p>
-            <div className="mt-6">
-              <PillLink href="/contact?type=zakelijk">Start het gesprek</PillLink>
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      <CtaBand title="Een project op de tekentafel?" text="Stuur ons je tekeningen of ideeën. We denken mee over uitvoering, materialen en beslag en komen met een voorstel." />
+      <CtaSection
+        eyebrow="Partnerprogramma"
+        title="Laten we samen grenzen verleggen."
+        text="We horen graag over je ideeën, projecten of vragen. Geen druk, gewoon een goed gesprek om te ontdekken hoe we samen iets bijzonders kunnen maken. Stuur gerust je tekeningen mee."
+        cta={{ label: "Start het gesprek", href: "/contact?type=zakelijk" }}
+      />
     </>
   );
 }

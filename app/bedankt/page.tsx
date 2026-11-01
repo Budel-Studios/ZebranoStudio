@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
-import { PillLink } from "@/components/ui/pill-link";
-import { Container } from "@/components/ui/primitives";
+import Link from "next/link";
+import { Arrow } from "@/components/ui/arrow";
+import { button } from "@/components/ui/button";
+import { DotTitle, Eyebrow } from "@/components/ui/primitives";
 import { company } from "@/data/company";
 
 export const metadata: Metadata = {
@@ -10,21 +12,29 @@ export const metadata: Metadata = {
 
 export default function BedanktPage() {
   return (
-    <section className="bg-sand/60 pb-24 pt-36">
-      <Container className="max-w-3xl">
-        <p className="font-sans text-xs font-semibold uppercase tracking-[0.16em] text-bark/70">Aanvraag ontvangen</p>
-        <h1 className="mt-3 font-display text-4xl font-light leading-tight text-ink sm:text-5xl">Bedankt, je aanvraag is binnen.</h1>
-        <p className="mt-6 text-lg leading-relaxed text-ink/80">
-          We bekijken je wensen en nemen contact met je op om de volgende stap te bespreken. Je ontvangt ook een bevestiging per e-mail.
-          Vragen in de tussentijd? Bel {company.telefoon}.
+    <section className="flex min-h-[80vh] items-center justify-center px-4 pb-24 pt-36">
+      <div className="max-w-xl animate-rise text-center">
+        <Eyebrow className="justify-center">Aanvraag ontvangen</Eyebrow>
+        <h1 className="mt-6 text-5xl leading-[1.02] sm:text-6xl">
+          <DotTitle>Bedankt, je aanvraag is binnen.</DotTitle>
+        </h1>
+        <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+          We bekijken je wensen en nemen contact met je op om de volgende stap te bespreken. Je ontvangt ook een bevestiging per
+          e-mail. Vragen in de tussentijd? Bel{" "}
+          <a href={`tel:${company.telefoonHref}`} className="link-line text-foreground">
+            {company.telefoon}
+          </a>
+          .
         </p>
-        <div className="mt-10 flex flex-wrap gap-3">
-          <PillLink href="/">Terug naar home</PillLink>
-          <PillLink href="/collecties" tone="outline">
+        <div className="mt-10 flex flex-wrap justify-center gap-3">
+          <Link href="/" className={button()}>
+            Terug naar home <Arrow />
+          </Link>
+          <Link href="/collecties" className={button({ variant: "outline" })}>
             Bekijk de collecties
-          </PillLink>
+          </Link>
         </div>
-      </Container>
+      </div>
     </section>
   );
 }

@@ -6,13 +6,13 @@ import { company } from "@/data/company";
  */
 export function ConceptNotice({ children }: { children?: React.ReactNode }) {
   return (
-    <div role="note" className="rounded-lg border border-accent/40 bg-accent/5 px-5 py-4 text-sm leading-relaxed text-ink/85">
-      <p className="font-sans">
-        <strong className="font-semibold text-ink">Concept.</strong>{" "}
+    <div role="note" className="rounded-sm border border-copper/40 bg-copper/5 px-5 py-4 text-sm leading-relaxed">
+      <p>
+        <span className="mr-2 text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-copper">Concept</span>
         {children ?? (
           <>
             Deze tekst wordt nog getoetst en kan wijzigen. Heb je een vraag over een lopende afspraak? Mail{" "}
-            <a href={`mailto:${company.email}`} className="underline underline-offset-2">
+            <a href={`mailto:${company.email}`} className="link-line">
               {company.email}
             </a>
             .

@@ -1,10 +1,12 @@
-import { CtaBand } from "@/components/cta-band";
-import { ArrowUpRightIcon } from "@/components/icons";
-import { PillLink } from "@/components/ui/pill-link";
-import { Container, Eyebrow, PageIntro } from "@/components/ui/primitives";
+import { ArrowUpRight } from "lucide-react";
+import { button } from "@/components/ui/button";
+import { container, CtaSection, Eyebrow, PageHero } from "@/components/ui/primitives";
+import { Reveal } from "@/components/ui/reveal";
 import { company } from "@/data/company";
 import { merkfamilie, mtbAllServices, mtbVoordelen, MTB_URL } from "@/data/mtb-bouw";
+import { IMAGES } from "@/lib/images";
 import { pageMetadata } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 
 export const metadata = pageMetadata({
   title: "Een merk van MTB Bouw",
@@ -16,86 +18,94 @@ export const metadata = pageMetadata({
 export default function MtbBouwPage() {
   return (
     <>
-      <PageIntro eyebrow="Over Zebrano Studio" title="Een merk van MTB Bouw" crumbs={[{ name: "MTB Bouw-familie", path: "/mtb-bouw" }]}>
-        <p>
-          Zebrano Studio is een handelsnaam van {company.entiteit} uit {company.plaats}. Daardoor staat achter elke Zebrano-deur een
-          bouwbedrijf dat ook het werk eromheen kan oppakken — van sparing tot afwerking.
-        </p>
-      </PageIntro>
+      <PageHero
+        eyebrow="Over Zebrano Studio"
+        title="Een merk van MTB Bouw"
+        intro={
+          <p>
+            Zebrano Studio is een handelsnaam van {company.entiteit} uit {company.plaats}. Daardoor staat achter elke Zebrano-deur
+            een bouwbedrijf dat ook het werk eromheen kan oppakken, van sparing tot afwerking.
+          </p>
+        }
+        image={IMAGES.colAtelier}
+        crumbs={[{ name: "MTB Bouw-familie", path: "/mtb-bouw" }]}
+      >
+        <a href={MTB_URL} className={button({ variant: "outline" })}>
+          Naar mtbbouw.com <ArrowUpRight strokeWidth={1.25} className="size-4" aria-hidden />
+        </a>
+      </PageHero>
 
-      <section className="py-20 sm:py-24">
-        <Container>
+      <section className={cn(container, "pb-24 lg:pb-32")}>
+        <Reveal className="border-t pt-14">
           <Eyebrow>De familie</Eyebrow>
-          <h2 className="font-display text-3xl font-light text-ink sm:text-4xl">Vier merken, één aanspreekpunt</h2>
-          <ul className="mt-10 grid gap-px overflow-hidden rounded-lg border border-line/30 bg-line/30 sm:grid-cols-2 lg:grid-cols-4">
-            {merkfamilie.map((m) => {
-              const extern = m.href.startsWith("http");
-              const self = m.href === "/";
-              return (
-                <li key={m.naam} className={self ? "bg-forest p-7 text-paper" : "bg-paper p-7"}>
-                  <p className="font-display text-xl">{m.naam}</p>
-                  <p className={self ? "mt-2 text-sm leading-relaxed text-paper/80" : "mt-2 text-sm leading-relaxed text-ink/75"}>{m.rol}</p>
-                  {extern && (
-                    <a
-                      href={m.href}
-                      className="group mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-forest transition-colors hover:text-accent"
-                    >
-                      {m.href.replace(/^https?:\/\/(www\.)?/, "")}
-                      <ArrowUpRightIcon className="size-3.5" />
-                    </a>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        </Container>
+          <h2 className="mt-5 text-4xl sm:text-5xl">Vier merken, één aanspreekpunt.</h2>
+        </Reveal>
+        <ul className="mt-12 grid gap-px overflow-hidden rounded-sm border bg-border sm:grid-cols-2 lg:grid-cols-4">
+          {merkfamilie.map((m, i) => {
+            const extern = m.href.startsWith("http");
+            const self = m.href === "/";
+            return (
+              <Reveal
+                as="li"
+                key={m.naam}
+                delay={i * 70}
+                className={cn("flex flex-col justify-between gap-10 p-7 lg:p-8", self ? "bg-forest text-forest-foreground" : "bg-background")}
+              >
+                <div>
+                  <p className={cn("text-[0.6875rem] tabular-nums tracking-[0.2em]", self ? "text-forest-muted" : "text-copper")}>
+                    {String(i + 1).padStart(2, "0")}
+                  </p>
+                  <h3 className="mt-6 text-2xl">{m.naam}</h3>
+                  <p className={cn("mt-3 text-sm leading-relaxed", self ? "text-forest-muted" : "text-muted-foreground")}>{m.rol}</p>
+                </div>
+                {extern && (
+                  <a href={m.href} className="group inline-flex items-center gap-1.5 self-start text-sm">
+                    <span className="link-line">{m.href.replace(/^https?:\/\/(www\.)?/, "")}</span>
+                    <ArrowUpRight strokeWidth={1.25} aria-hidden className="size-3.5 text-copper" />
+                  </a>
+                )}
+                {self && <p className="text-sm text-forest-muted">Je bent hier</p>}
+              </Reveal>
+            );
+          })}
+        </ul>
       </section>
 
-      <section className="bg-sand/60 py-20 sm:py-24">
-        <Container className="grid gap-12 lg:grid-cols-2">
-          <div>
+      <section className="bg-sand">
+        <div className={cn(container, "grid gap-14 py-24 lg:grid-cols-12 lg:py-32")}>
+          <Reveal className="lg:col-span-5">
             <Eyebrow>Wat het voor jou betekent</Eyebrow>
-            <ul className="mt-2 space-y-4">
+            <ul className="mt-8 border-t border-foreground/15">
               {mtbVoordelen.map((v) => (
-                <li key={v} className="flex gap-3 text-lg leading-relaxed text-ink/85">
-                  <span aria-hidden className="mt-3 h-px w-5 shrink-0 bg-accent" />
+                <li key={v} className="flex gap-4 border-b border-foreground/15 py-5 text-lg leading-relaxed">
+                  <span aria-hidden className="mt-3.5 h-px w-5 shrink-0 bg-copper" />
                   {v}
                 </li>
               ))}
             </ul>
-          </div>
-          <div>
+          </Reveal>
+          <Reveal delay={100} className="lg:col-span-6 lg:col-start-7">
             <Eyebrow>Diensten van MTB Bouw</Eyebrow>
-            <ul className="mt-2 flex flex-wrap gap-2">
+            <ul className="mt-8 flex flex-wrap gap-2">
               {mtbAllServices.map((s) => (
-                <li key={s} className="rounded-full border border-line/40 bg-paper px-4 py-2 text-sm">
+                <li key={s} className="rounded-sm border border-foreground/15 bg-background px-3 py-1.5 text-[0.8125rem]">
                   {s}
                 </li>
               ))}
             </ul>
-            <div className="mt-8">
-              <a
-                href={MTB_URL}
-                className="group inline-flex items-center gap-2 rounded-full border border-forest px-5 py-2 text-sm text-forest transition-colors hover:bg-forest hover:text-paper"
-              >
-                Naar mtbbouw.com
-                <ArrowUpRightIcon className="size-3.5" />
-              </a>
-            </div>
-          </div>
-        </Container>
+            <a href={MTB_URL} className={cn(button({ variant: "text" }), "mt-10")}>
+              Alles over MTB Bouw op mtbbouw.com
+            </a>
+          </Reveal>
+        </div>
       </section>
 
-      <section className="py-16 sm:py-20">
-        <Container className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-          <p className="max-w-2xl font-display text-2xl font-light leading-snug text-ink sm:text-3xl">
-            Verbouw je en wil je deuren die het verschil maken? Dan stemmen we het met MTB Bouw af in één planning.
-          </p>
-          <PillLink href="/contact">Vraag een voorstel</PillLink>
-        </Container>
-      </section>
-
-      <CtaBand />
+      <div className="h-3 sm:h-4" />
+      <CtaSection
+        eyebrow="Samen plannen"
+        title="Verbouw je en wil je deuren die het verschil maken?"
+        text="Dan stemmen we het met MTB Bouw af in één planning: je deuren en het bouwkundige werk eromheen, met één aanspreekpunt."
+      />
     </>
   );
 }

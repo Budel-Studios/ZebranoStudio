@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState, useTransition } from "react";
 import { submitAanvraag } from "@/app/contact/actions";
-import { ArrowUpRightIcon } from "@/components/icons";
+import { Arrow } from "@/components/ui/arrow";
+import { button } from "@/components/ui/button";
 import {
   aanvraagSchema,
   BIJLAGE_LIMIETEN,
@@ -18,8 +19,9 @@ import { cn } from "@/lib/utils";
 type Errors = Partial<Record<string, string>>;
 
 const field =
-  "w-full rounded-md border border-line/50 bg-white px-4 py-3 text-[15px] text-ink outline-none transition-colors placeholder:text-ink/40 focus:border-forest focus:ring-2 focus:ring-forest/15";
-const label = "mb-1.5 block text-sm font-medium text-ink";
+  "w-full rounded-sm border border-input bg-background px-4 py-3 text-[0.9375rem] text-foreground outline-none transition-colors duration-300 placeholder:text-muted-foreground/70 hover:border-foreground/40 focus:border-foreground";
+const label = "mb-2.5 block text-[0.6875rem] font-medium uppercase tracking-[0.2em] text-muted-foreground";
+const optional = "font-normal normal-case tracking-normal text-muted-foreground/70";
 
 /**
  * Request form — particulier or zakelijk, reason, interest, contact details,
@@ -106,7 +108,7 @@ export function AanvraagForm({ initialType = "particulier" }: { initialType?: "p
 
   const err = (k: string) =>
     errors[k] ? (
-      <p id={`e-${k}`} className="mt-1.5 text-sm text-accent">
+      <p id={`e-${k}`} className="mt-1.5 text-sm text-destructive">
         {errors[k]}
       </p>
     ) : null;
@@ -120,8 +122,8 @@ export function AanvraagForm({ initialType = "particulier" }: { initialType?: "p
             <label
               key={o.value}
               className={cn(
-                "flex cursor-pointer items-center gap-3 rounded-md border px-4 py-3 text-[15px] transition-colors",
-                type === o.value ? "border-forest bg-forest text-paper" : "border-line/50 bg-white hover:border-forest",
+                "flex cursor-pointer items-center gap-3 rounded-sm border px-4 py-3 text-[0.9375rem] transition-colors duration-300 has-[:focus-visible]:ring-1 has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2",
+                type === o.value ? "border-primary bg-primary text-primary-foreground" : "border-input bg-background hover:border-foreground",
               )}
             >
               <input
@@ -136,7 +138,10 @@ export function AanvraagForm({ initialType = "particulier" }: { initialType?: "p
                 }}
                 className="sr-only"
               />
-              <span aria-hidden className={cn("size-3 rounded-full border", type === o.value ? "border-paper bg-paper" : "border-line")} />
+              <span
+                aria-hidden
+                className={cn("size-3 rounded-full border", type === o.value ? "border-primary-foreground bg-primary-foreground" : "border-foreground/30")}
+              />
               {o.label}
             </label>
           ))}
@@ -158,7 +163,9 @@ export function AanvraagForm({ initialType = "particulier" }: { initialType?: "p
       </div>
 
       <fieldset>
-        <legend className={label}>Waar gaat het om? <span className="font-normal text-ink/60">(optioneel)</span></legend>
+        <legend className={label}>
+          Waar gaat het om? <span className={optional}>(optioneel)</span>
+        </legend>
         <div className="flex flex-wrap gap-2">
           {PRODUCT_OPTIONS.map((o) => {
             const on = producten.includes(o.value);
@@ -169,8 +176,8 @@ export function AanvraagForm({ initialType = "particulier" }: { initialType?: "p
                 aria-pressed={on}
                 onClick={() => toggleProduct(o.value)}
                 className={cn(
-                  "rounded-full border px-4 py-2 text-sm transition-colors",
-                  on ? "border-forest bg-forest text-paper" : "border-line/50 bg-white hover:border-forest",
+                  "rounded-sm border px-3 py-1.5 text-[0.8125rem] transition-colors duration-300",
+                  on ? "border-primary bg-primary text-primary-foreground" : "border-input bg-background hover:border-foreground",
                 )}
               >
                 {o.label}
@@ -191,14 +198,14 @@ export function AanvraagForm({ initialType = "particulier" }: { initialType?: "p
         {type === "zakelijk" ? (
           <div>
             <label htmlFor="f-bedrijf" className={label}>
-              Bedrijf <span className="font-normal text-ink/60">(optioneel)</span>
+              Bedrijf <span className={optional}>(optioneel)</span>
             </label>
             <input id="f-bedrijf" name="bedrijf" autoComplete="organization" className={field} />
           </div>
         ) : (
           <div>
             <label htmlFor="f-plaats" className={label}>
-              Woonplaats <span className="font-normal text-ink/60">(optioneel)</span>
+              Woonplaats <span className={optional}>(optioneel)</span>
             </label>
             <input id="f-plaats" name="plaats" autoComplete="address-level2" className={field} />
           </div>
@@ -212,7 +219,7 @@ export function AanvraagForm({ initialType = "particulier" }: { initialType?: "p
         </div>
         <div>
           <label htmlFor="f-telefoon" className={label}>
-            Telefoon <span className="font-normal text-ink/60">(optioneel)</span>
+            Telefoon <span className={optional}>(optioneel)</span>
           </label>
           <input id="f-telefoon" name="telefoon" type="tel" autoComplete="tel" className={field} aria-invalid={!!errors.telefoon} />
           {err("telefoon")}
@@ -237,7 +244,7 @@ export function AanvraagForm({ initialType = "particulier" }: { initialType?: "p
 
       <div>
         <label htmlFor="f-bijlagen" className={label}>
-          Foto&apos;s of tekeningen <span className="font-normal text-ink/60">(optioneel, max. 4 bestanden, samen 5 MB)</span>
+          Foto&apos;s of tekeningen <span className={optional}>(optioneel, max. 4 bestanden, samen 5 MB)</span>
         </label>
         <input
           id="f-bijlagen"
@@ -245,9 +252,9 @@ export function AanvraagForm({ initialType = "particulier" }: { initialType?: "p
           multiple
           accept="image/jpeg,image/png,image/webp,application/pdf"
           onChange={(e) => onFiles(e.target.files)}
-          className="block w-full text-sm text-ink/80 file:mr-4 file:rounded-full file:border file:border-line/50 file:bg-white file:px-4 file:py-2 file:text-sm file:text-ink hover:file:border-forest"
+          className="block w-full text-sm text-muted-foreground file:mr-4 file:h-9 file:cursor-pointer file:rounded-sm file:border file:border-input file:bg-background file:px-4 file:text-[0.8125rem] file:text-foreground hover:file:border-foreground"
         />
-        {files.length > 0 && <p className="mt-2 text-sm text-ink/70">{files.length} bestand(en) gekozen</p>}
+        {files.length > 0 && <p className="mt-2 text-sm text-muted-foreground">{files.length} bestand(en) gekozen</p>}
         {err("bijlagen")}
       </div>
 
@@ -260,11 +267,11 @@ export function AanvraagForm({ initialType = "particulier" }: { initialType?: "p
       </div>
 
       <div>
-        <label className="flex items-start gap-3 text-sm leading-relaxed text-ink/80">
-          <input id="f-privacyAkkoord" name="privacyAkkoord" type="checkbox" className="mt-1 size-4 accent-[#2f3a2a]" />
+        <label className="flex items-start gap-3 text-sm leading-relaxed text-muted-foreground">
+          <input id="f-privacyAkkoord" name="privacyAkkoord" type="checkbox" className="mt-0.5 size-4 accent-primary" />
           <span>
             Ik ga akkoord met de{" "}
-            <Link href="/privacy" className="underline underline-offset-2 hover:text-accent">
+            <Link href="/privacy" className="link-line text-foreground">
               privacyverklaring
             </Link>
             . We gebruiken je gegevens alleen om op je aanvraag te reageren.
@@ -274,21 +281,14 @@ export function AanvraagForm({ initialType = "particulier" }: { initialType?: "p
       </div>
 
       {serverError && (
-        <p role="alert" className="rounded-md border border-accent/40 bg-accent/5 px-4 py-3 text-sm text-ink">
+        <p role="alert" className="rounded-sm border border-destructive/40 bg-destructive/5 px-4 py-3 text-sm">
           {serverError}
         </p>
       )}
 
-      <button
-        type="submit"
-        disabled={pending}
-        className="group inline-flex items-center gap-2 rounded-full bg-forest px-7 py-3 text-base text-paper transition-colors hover:bg-forest-hover disabled:opacity-60"
-      >
+      <button type="submit" disabled={pending} className={button({ size: "lg" })}>
         {pending ? "Versturen…" : "Verstuur aanvraag"}
-        <span className="pill-arrow" aria-hidden>
-          <ArrowUpRightIcon />
-          <ArrowUpRightIcon />
-        </span>
+        <Arrow />
       </button>
     </form>
   );

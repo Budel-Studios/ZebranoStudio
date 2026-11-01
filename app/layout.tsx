@@ -8,27 +8,17 @@ import { SITE_NAME, SITE_URL } from "@/lib/site";
 import { DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 // Self-hosted (OFL) so builds never depend on Google Fonts.
-const montserrat = localFont({
-  src: "./fonts/Montserrat-latin-wght.woff2",
-  variable: "--font-montserrat",
+const jost = localFont({
+  src: "./fonts/Jost-latin-wght.woff2",
+  variable: "--font-jost",
   weight: "100 900",
   display: "swap",
 });
 
-const inter = localFont({
-  src: "./fonts/Inter-latin-wght.woff2",
-  variable: "--font-inter",
-  weight: "100 900",
-  display: "swap",
-});
-
-const poppins = localFont({
-  src: [
-    { path: "./fonts/Poppins-latin-300.woff2", weight: "300", style: "normal" },
-    { path: "./fonts/Poppins-latin-400.woff2", weight: "400", style: "normal" },
-    { path: "./fonts/Poppins-latin-500.woff2", weight: "500", style: "normal" },
-  ],
-  variable: "--font-poppins",
+const instrumentSans = localFont({
+  src: "./fonts/InstrumentSans-latin-wght.woff2",
+  variable: "--font-instrument",
+  weight: "400 700",
   display: "swap",
 });
 
@@ -52,29 +42,21 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#2f3a2a",
+  themeColor: "#f2f0ea",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="nl"
-      className={`${montserrat.variable} ${inter.variable} ${poppins.variable} h-full antialiased`}
-      suppressHydrationWarning
-    >
+    <html lang="nl" className={`${jost.variable} ${instrumentSans.variable} h-full`}>
       <head>
-        {/* Decide before first paint whether the homepage intro plays
-            (first visit of the session, not for reduced motion). */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html:
-              "try{if(location.pathname==='/'&&!sessionStorage.getItem('zs-intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.dataset.intro='play';sessionStorage.setItem('zs-intro','1')}}catch(e){}",
-          }}
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: jsonLd(organizationSchema()) }}
         />
+        {/* Scroll reveals need JS; without it, show everything straight away. */}
+        <noscript>
+          <style>{".reveal{opacity:1!important;transform:none!important}"}</style>
+        </noscript>
       </head>
       <body className="flex min-h-full flex-col">
         <SiteHeader />

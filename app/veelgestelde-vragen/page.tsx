@@ -1,10 +1,11 @@
-import { CtaBand } from "@/components/cta-band";
 import { ConceptNotice } from "@/components/ui/concept-notice";
 import { FaqList } from "@/components/ui/faq-list";
-import { Container, PageIntro } from "@/components/ui/primitives";
+import { container, CtaSection, PageHeader } from "@/components/ui/primitives";
+import { Reveal } from "@/components/ui/reveal";
 import { isVerified } from "@/data/feiten";
 import { faqCategories } from "@/data/service";
 import { pageMetadata } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 
 export const metadata = pageMetadata({
   title: "Veelgestelde vragen",
@@ -19,29 +20,35 @@ export default function FaqPage() {
     .filter((c) => c.items.length > 0);
   return (
     <>
-      <PageIntro eyebrow="Service" title="Veelgestelde vragen" crumbs={[{ name: "Veelgestelde vragen", path: "/veelgestelde-vragen" }]}>
-        <p>Staat je vraag er niet tussen? Neem gerust contact op — we denken graag met je mee.</p>
-      </PageIntro>
-      <section className="py-14 sm:py-20">
-        <Container>
-          {!isVerified("servicevoorwaarden") && (
-            <div className="mb-12 max-w-3xl">
-              <ConceptNotice />
-            </div>
-          )}
-          <div className="space-y-16">
-            {categories.map((c) => (
-              <section key={c.title} className="grid gap-6 lg:grid-cols-12">
-                <h2 className="font-display text-2xl font-light text-ink sm:text-3xl lg:col-span-4">{c.title}</h2>
-                <div className="lg:col-span-8">
-                  <FaqList items={c.items} />
-                </div>
-              </section>
-            ))}
+      <PageHeader
+        eyebrow="Service"
+        title="Veelgestelde vragen"
+        crumbs={[{ name: "Veelgestelde vragen", path: "/veelgestelde-vragen" }]}
+        intro={<p>Staat je vraag er niet tussen? Neem gerust contact op, we denken graag met je mee.</p>}
+      />
+
+      <div className={cn(container, "pb-24 pt-10 lg:pb-32")}>
+        {!isVerified("servicevoorwaarden") && (
+          <div className="mb-16 max-w-3xl">
+            <ConceptNotice />
           </div>
-        </Container>
-      </section>
-      <CtaBand />
+        )}
+        <div className="space-y-20 lg:space-y-24">
+          {categories.map((c, i) => (
+            <section key={c.title} className="grid gap-8 lg:grid-cols-12">
+              <Reveal className="lg:col-span-4">
+                <p className="text-[0.6875rem] tabular-nums tracking-[0.2em] text-copper">{String(i + 1).padStart(2, "0")}</p>
+                <h2 className="mt-4 text-3xl leading-[1.1] sm:text-4xl">{c.title}</h2>
+              </Reveal>
+              <div className="lg:col-span-7 lg:col-start-6">
+                <FaqList items={c.items} />
+              </div>
+            </section>
+          ))}
+        </div>
+      </div>
+
+      <CtaSection />
     </>
   );
 }
