@@ -4,7 +4,7 @@ import { GiantWordmark } from "@/components/logo";
 import { Arrow } from "@/components/ui/arrow";
 import { button } from "@/components/ui/button";
 import { company } from "@/data/company";
-import { footerColumns } from "@/lib/navigation";
+import { visibleFooterColumns } from "@/lib/navigation";
 
 function ColTitle({ children }: { children: ReactNode }) {
   return (
@@ -30,7 +30,7 @@ export function SiteFooter() {
           </div>
 
           <div className="grid grid-cols-2 gap-10 sm:grid-cols-4 lg:col-span-8">
-            {footerColumns.map((col) => (
+            {visibleFooterColumns().map((col) => (
               <nav key={col.title} aria-label={col.title}>
                 <ColTitle>{col.title}</ColTitle>
                 <ul className="space-y-2.5 text-[0.9375rem]">

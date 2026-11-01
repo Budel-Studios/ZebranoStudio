@@ -3,6 +3,8 @@ import { AanvraagForm } from "@/components/aanvraag-form";
 import { WhatsAppIcon } from "@/components/icons";
 import { Breadcrumbs, container, Eyebrow } from "@/components/ui/primitives";
 import { company } from "@/data/company";
+import { getGlassDoor } from "@/data/glasdeuren";
+import { getMaterial } from "@/data/materialenbibliotheek";
 import { pageMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
@@ -15,9 +17,21 @@ export const metadata = pageMetadata({
 
 const row = "group flex items-center justify-between gap-6 border-b py-5";
 
-export default async function ContactPage({ searchParams }: { searchParams: Promise<{ type?: string }> }) {
-  const { type } = await searchParams;
+export default async function ContactPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ type?: string; materiaal?: string; ontwerp?: string }>;
+}) {
+  const { type, materiaal, ontwerp } = await searchParams;
   const initialType = type === "zakelijk" ? "zakelijk" : "particulier";
+  // Coming from the materials library or a glass design: start the message for them.
+  const material = materiaal ? getMaterial(materiaal) : null;
+  const design = ontwerp ? getGlassDoor(ontwerp) : null;
+  const initialMessage = material
+    ? `Ik ben geïnteresseerd in ${material.name} (${material.code}) uit de materialenbibliotheek.\n\n`
+    : design
+      ? `Ik ben geïnteresseerd in het glasontwerp ${design.name} (${design.type.toLowerCase()}).\n\n`
+      : undefined;
   return (
     <section className={cn(container, "pb-24 pt-32 lg:pb-32 lg:pt-40")}>
       <Breadcrumbs items={[{ name: "Contact", path: "/contact" }]} />
@@ -77,7 +91,7 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
           <div className="animate-rise rounded-sm border bg-card p-6 [animation-delay:100ms] sm:p-10 lg:p-12">
             <Eyebrow>Vraag een voorstel</Eyebrow>
             <h2 className="mb-10 mt-5 text-3xl sm:text-4xl">Vertel ons over je ruimte.</h2>
-            <AanvraagForm initialType={initialType} />
+            <AanvraagForm initialType={initialType} initialMessage={initialMessage} />
           </div>
         </div>
       </div>

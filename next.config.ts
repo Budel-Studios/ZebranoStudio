@@ -33,7 +33,7 @@ const redirects: Array<{ source: string; destination: string }> = [
   { source: "/aboutus/services", destination: "/service" },
   { source: "/privacy-Policy", destination: "/privacy" },
   { source: "/terms", destination: "/algemene-voorwaarden" },
-  { source: "/library", destination: "/materialen" },
+  { source: "/library", destination: "/materialenbibliotheek" },
   { source: "/search", destination: "/" },
   { source: "/projects", destination: "/" },
   { source: "/projects/:id", destination: "/" },

@@ -49,11 +49,11 @@ export default function ArchitectenPage() {
   return (
     <>
       <PageHero
-        eyebrow="Zakelijk · Partnerprogramma"
+        eyebrow="Samenwerken · Partnerprogramma"
         title="Voor architecten en ontwerpers"
         intro={<p>Word onderdeel van het verhaal van Zebrano Studio: ontwerp zonder beperkingen, met een maker die jouw visie net zo serieus neemt als jij.</p>}
         image={IMAGES.doorWandvlak}
-        crumbs={[{ name: "Architecten", path: "/architecten" }]}
+        crumbs={[{ name: "Samenwerken", path: "/architecten" }]}
       >
         <div className="flex flex-wrap items-center gap-4">
           <Link href="/contact?type=zakelijk" className={button()}>

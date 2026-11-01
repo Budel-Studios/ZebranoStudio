@@ -5,7 +5,9 @@ import { button } from "@/components/ui/button";
 import { container, CtaSection, PageHeader, SectionHeading, SplitIntro } from "@/components/ui/primitives";
 import { Reveal } from "@/components/ui/reveal";
 import { materialenPage as m } from "@/data/producten";
+import type { CategorySlug } from "@/data/materialenbibliotheek";
 import { primaryCta } from "@/lib/navigation";
+import { isModuleOn } from "@/lib/site";
 import { pageMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
@@ -15,11 +17,23 @@ export const metadata = pageMetadata({
   path: "/materialen",
 });
 
+/** Which part of the materials library each family opens. */
+const LIBRARY_CATEGORY: Record<string, CategorySlug> = {
+  Hout: "massief-hout",
+  Fineer: "houtfineer",
+  Glas: "glas",
+  Metaal: "metaal-profielen",
+  "Steen & keramiek": "steen-keramiek",
+  "Grepen & beslag": "metaal-profielen",
+  "Afwerkingen & oliën": "lak-afwerking",
+};
+
 /**
- * Materials overview. The materials library itself (a page per material)
- * comes later — MODULES.materialenbibliotheek in lib/site.ts.
+ * Materials overview: the seven families. Each links into the
+ * Materialenbibliotheek (/materialenbibliotheek) when that module is on.
  */
 export default function MaterialenPage() {
+  const library = isModuleOn("materialenbibliotheek");
   return (
     <>
       <PageHeader eyebrow="Materialen" title={m.h1} intro={<p>{m.intro}</p>} crumbs={[{ name: "Materialen", path: "/materialen" }]} />
@@ -31,7 +45,17 @@ export default function MaterialenPage() {
       </div>
 
       <section className={cn(container, "py-24 lg:py-32")}>
-        <SectionHeading eyebrow="Waar we mee werken" title="Zeven bouwstenen voor elke deur." />
+        <SectionHeading
+          eyebrow="Waar we mee werken"
+          title="Zeven bouwstenen voor elke deur."
+          action={
+            library ? (
+              <Link href="/materialenbibliotheek" className={button({ variant: "outline", size: "sm" })}>
+                Open de materialenbibliotheek <Arrow />
+              </Link>
+            ) : undefined
+          }
+        />
         <ul className="mt-12 grid gap-x-5 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
           {m.materialen.map((mat, i) => (
             <Reveal as="li" key={mat.title} delay={(i % 3) * 70}>
@@ -53,6 +77,14 @@ export default function MaterialenPage() {
                 <h3 className="text-3xl">{mat.title}</h3>
               </div>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{mat.text}</p>
+              {library && LIBRARY_CATEGORY[mat.title] && (
+                <Link
+                  href={`/materialenbibliotheek?categorie=${LIBRARY_CATEGORY[mat.title]}`}
+                  className={cn(button({ variant: "text" }), "mt-4 text-[0.8125rem]")}
+                >
+                  Bekijk in de bibliotheek <Arrow diagonal={false} />
+                </Link>
+              )}
             </Reveal>
           ))}
         </ul>

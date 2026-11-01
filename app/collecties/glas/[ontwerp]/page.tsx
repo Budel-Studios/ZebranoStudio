@@ -109,7 +109,7 @@ export default async function GlassDoorPage({ params }: { params: Promise<{ ontw
             </div>
 
             <div className="mt-10 flex animate-rise flex-wrap items-center gap-4 [animation-delay:240ms]">
-              <Link href="/contact" className={button({ size: "lg" })}>
+              <Link href={`/contact?ontwerp=${door.slug}`} className={button({ size: "lg" })}>
                 Vraag een voorstel voor {door.name} <Arrow />
               </Link>
               <a href={`tel:${company.telefoonHref}`} className={button({ variant: "text" })}>

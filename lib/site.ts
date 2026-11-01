@@ -24,8 +24,8 @@ export const MODULES = {
   journal: false,
   /** "Catalogi & downloads" — needs real PDF catalogues. */
   downloads: false,
-  /** "Materialenbibliotheek" — the old database is gone; /materialen covers it for now. */
-  materialenbibliotheek: false,
+  /** "Materialenbibliotheek" (/materialenbibliotheek) — rebuilt from the old site with a starter set (data/materialenbibliotheek.ts). */
+  materialenbibliotheek: true,
 } as const;
 
 export type ModuleKey = keyof typeof MODULES;

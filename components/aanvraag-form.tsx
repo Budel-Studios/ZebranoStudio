@@ -28,7 +28,14 @@ const optional = "font-normal normal-case tracking-normal text-muted-foreground/
  * message and optional photos/drawings. Validates on the client and again on
  * the server; success only after the mail was accepted → /bedankt.
  */
-export function AanvraagForm({ initialType = "particulier" }: { initialType?: "particulier" | "zakelijk" }) {
+export function AanvraagForm({
+  initialType = "particulier",
+  initialMessage,
+}: {
+  initialType?: "particulier" | "zakelijk";
+  /** Pre-filled message, e.g. when coming from a material or glass design page. */
+  initialMessage?: string;
+}) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [type, setType] = useState<string>(initialType);
@@ -234,6 +241,7 @@ export function AanvraagForm({ initialType = "particulier" }: { initialType?: "p
           id="f-bericht"
           name="bericht"
           rows={6}
+          defaultValue={initialMessage}
           placeholder="Vertel ons over je ruimte, je ideeën en eventueel de maten of planning."
           className={field}
           aria-invalid={!!errors.bericht}

@@ -4,7 +4,7 @@ import { isModuleOn, type ModuleKey } from "@/lib/site";
 /**
  * Navigation — one source for the menu (mega panel + mobile accordion) and
  * the footer, as in the Lovable design: three groups (Deuren, Collecties,
- * Zebrano) plus "Zakelijk". Items tied to a module (lib/site.ts) only appear
+ * Zebrano) plus "Samenwerken". Items tied to a module (lib/site.ts) only appear
  * when that module is on.
  */
 
@@ -48,7 +48,10 @@ export const NAV: NavGroup[] = [
       { label: "Roomdividers", href: "/roomdividers", image: IMAGES.doorRoomdivider, note: "Verdeelt, houdt het licht" },
       { label: "Boiserie", href: "/boiserie", image: IMAGES.col3d, note: "Wandpanelen op maat" },
     ],
-    cta: { label: "Bekijk materialen", href: "/materialen" },
+    // The old menu's "Materialenbibliotheek" pill, with "Bekijk materialen" as fallback when the module is off.
+    cta: isModuleOn("materialenbibliotheek")
+      ? { label: "Materialenbibliotheek", href: "/materialenbibliotheek" }
+      : { label: "Bekijk materialen", href: "/materialen" },
   },
   {
     id: "collecties",
@@ -103,14 +106,14 @@ export function visibleNav(): NavGroup[] {
   return NAV.map((g) => ({ ...g, items: g.items.filter((i) => isModuleOn(i.module)) }));
 }
 
-/** Link next to the groups (was "Trade" on the original site). */
-export const zakelijkLink = { label: "Zakelijk", href: "/architecten" };
+/** Link next to the groups: the partner programme ("Trade" on the original site, "Zakelijk" in Lovable). */
+export const samenwerkenLink = { label: "Samenwerken", href: "/architecten" };
 
 /** Primary call to action in the menu bar and on every page. */
 export const primaryCta = { label: "Vraag een voorstel", href: "/contact" };
 
-/** Footer columns (Lovable design). */
-export const footerColumns: Array<{ title: string; links: Array<{ label: string; href: string }> }> = [
+/** Footer columns (Lovable design). Links tied to a module only show when it is on (visibleFooterColumns). */
+export const footerColumns: Array<{ title: string; links: Array<{ label: string; href: string; module?: ModuleKey }> }> = [
   {
     title: "Deuren",
     links: [
@@ -121,13 +124,14 @@ export const footerColumns: Array<{ title: string; links: Array<{ label: string;
       { label: "Roomdividers", href: "/roomdividers" },
       { label: "Boiserie", href: "/boiserie" },
       { label: "Materialen", href: "/materialen" },
+      { label: "Materialenbibliotheek", href: "/materialenbibliotheek", module: "materialenbibliotheek" },
     ],
   },
   {
     title: "Zebrano",
     links: [
       { label: "Collecties", href: "/collecties" },
-      { label: "Zakelijk", href: "/architecten" },
+      { label: "Samenwerken", href: "/architecten" },
       { label: "Ons verhaal", href: "/ons-verhaal" },
       { label: "Ontmoet de makers", href: "/de-makers" },
       { label: "Bewust vakmanschap", href: "/bewust-vakmanschap" },
@@ -146,3 +150,7 @@ export const footerColumns: Array<{ title: string; links: Array<{ label: string;
     ],
   },
 ];
+
+export function visibleFooterColumns() {
+  return footerColumns.map((c) => ({ ...c, links: c.links.filter((l) => isModuleOn(l.module)) }));
+}

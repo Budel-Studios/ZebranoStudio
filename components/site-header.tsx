@@ -9,14 +9,14 @@ import { Wordmark } from "@/components/logo";
 import { Arrow } from "@/components/ui/arrow";
 import { button } from "@/components/ui/button";
 import { company } from "@/data/company";
-import { primaryCta, visibleNav, zakelijkLink, type NavGroup } from "@/lib/navigation";
+import { primaryCta, samenwerkenLink, visibleNav, type NavGroup } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 
 const NAV = visibleNav();
 
 /**
  * Menu bar from the Lovable design: a floating, hairline-framed bar — the
- * groups (Deuren · Collecties · Zebrano) and "Zakelijk" left, the wordmark in
+ * groups (Deuren · Collecties · Zebrano) and "Samenwerken" left, the wordmark in
  * the middle, phone and "Vraag een voorstel" right. Hovering a group opens a
  * mega panel (intro + CTA · numbered links · preview image); on small screens
  * the menu becomes a full-screen accordion.
@@ -117,9 +117,9 @@ export function SiteHeader() {
                 </li>
               ))}
               <li className="flex" onMouseEnter={() => setOpenId(null)}>
-                <Link href={zakelijkLink.href} className="flex items-center px-4 text-sm">
-                  <span className="link-line" data-active={pathname === zakelijkLink.href}>
-                    {zakelijkLink.label}
+                <Link href={samenwerkenLink.href} className="flex items-center px-4 text-sm">
+                  <span className="link-line" data-active={pathname === samenwerkenLink.href}>
+                    {samenwerkenLink.label}
                   </span>
                 </Link>
               </li>
@@ -261,14 +261,20 @@ function MobileMenu({ onNavigate }: { onNavigate: () => void }) {
                       </Link>
                     </li>
                   ))}
+                  <li>
+                    <Link href={group.cta.href} onClick={onNavigate} className="group mt-2 inline-flex items-center gap-2 py-2 text-base">
+                      <span className="link-line">{group.cta.label}</span>
+                      <Arrow className="text-copper" />
+                    </Link>
+                  </li>
                 </ul>
               )}
             </li>
           );
         })}
         <li className="border-b">
-          <Link href={zakelijkLink.href} onClick={onNavigate} className="block py-5 font-display text-3xl font-light">
-            {zakelijkLink.label}
+          <Link href={samenwerkenLink.href} onClick={onNavigate} className="block py-5 font-display text-3xl font-light">
+            {samenwerkenLink.label}
           </Link>
         </li>
       </ul>

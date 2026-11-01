@@ -102,7 +102,7 @@ export default function DeMakersPage() {
           <Reveal className="flex">
             <div className="flex w-full flex-col justify-between rounded-sm border p-8 lg:p-10">
               <div>
-                <Eyebrow>Zakelijk</Eyebrow>
+                <Eyebrow>Samenwerken</Eyebrow>
                 <h2 className="mt-5 text-3xl sm:text-4xl">Ben jij ontwerper?</h2>
                 <p className="mt-4 max-w-md leading-relaxed text-muted-foreground">
                   Ons team staat klaar om samen met jou alle mogelijkheden te ontdekken.

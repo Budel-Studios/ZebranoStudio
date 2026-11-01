@@ -20,6 +20,10 @@ Gegenereerd met AI in Robberts eigen Lovable-project (het ontwerp dat in novembe
 | `col-atelier.jpg` | collecties (atelier), /ons-verhaal, /de-makers, /mtb-bouw, homepage, menu |
 | `glas-jesse.jpg`, `glas-bo.jpg`, `glas-merle.jpg`, `glas-lucas.jpg`, `glas-guus.jpg` | /collecties/glas en de vijf ontwerppagina's — `data/glasdeuren.ts` |
 
+### Stalen in de materialenbibliotheek — `public/images/materialen/*.jpg`
+
+Uitsneden uit dezelfde Lovable-sfeerbeelden (noten uit `door-taats`, eiken uit `door-schuif`, de drie fineers uit `col-fineer`, ribbels uit `col-3d`, klassiek paneel uit `door-draai`, lak uit `door-wandvlak`, de vijf glassoorten uit de glasontwerpen en `col-glas`). Ze laten de sfeer van het materiaal zien, het zijn geen foto's van echte stalen. Marmer, travertin en de vier profielkleuren zijn kleurvlakken (CSS) tot er foto's van echte stalen zijn. Vervangen door eigen staalfoto's zodra die er zijn: één vierkante of 4:3-foto per materiaal is genoeg (`swatch` in `data/materialenbibliotheek.ts`).
+
 ## 2. Foto's van de oude site (2025) — `.webp`
 
 Omgezet naar WebP. **Herkomst onbekend:** stock, gegenereerd of van internet — de oude site bevatte aantoonbaar beelden van andere bedrijven. Niets hiervan mag live zonder dat je zeker weet dat je het mag gebruiken. Ze staan nu alleen nog op tweede plek (rijen op deurtypepagina's, galerijen van collecties, materialen, tijdlijn Ons verhaal).

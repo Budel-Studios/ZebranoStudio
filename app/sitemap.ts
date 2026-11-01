@@ -1,8 +1,9 @@
 import type { MetadataRoute } from "next";
 import { collecties } from "@/data/collecties";
 import { GLASS_DOORS } from "@/data/glasdeuren";
+import { MATERIALS } from "@/data/materialenbibliotheek";
 import { doorPages } from "@/data/producten";
-import { SITE_URL } from "@/lib/site";
+import { isModuleOn, SITE_URL } from "@/lib/site";
 
 /**
  * Sitemap: only published, canonical, indexable URLs that return 200.
@@ -16,6 +17,9 @@ const paths = [
   "/",
   ...doorPages.map((p) => `/${p.slug}`),
   "/materialen",
+  ...(isModuleOn("materialenbibliotheek")
+    ? ["/materialenbibliotheek", ...MATERIALS.map((m) => `/materialenbibliotheek/${m.slug}`)]
+    : []),
   "/collecties",
   ...collecties.map((c) => `/collecties/${c.slug}`),
   ...GLASS_DOORS.map((d) => `/collecties/glas/${d.slug}`),
