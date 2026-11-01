@@ -1,4 +1,4 @@
-import { IMAGES, type Img } from "@/lib/images";
+import { IMAGES, PHOTOS, type Img } from "@/lib/images";
 import { isModuleOn, type ModuleKey } from "@/lib/site";
 
 /**
@@ -90,9 +90,9 @@ export const NAV: NavGroup[] = [
     label: "Zebrano",
     intro: "Twee broers, één passie: hout dat een leven lang meegaat.",
     items: [
-      { label: "Ons verhaal", href: "/ons-verhaal", image: IMAGES.colAtelier },
-      { label: "Ontmoet de makers", href: "/de-makers", image: IMAGES.colAtelier },
-      { label: "Bewust vakmanschap", href: "/bewust-vakmanschap", image: IMAGES.doorTaats },
+      { label: "Ons verhaal", href: "/ons-verhaal", image: PHOTOS.verhaalHero },
+      { label: "Ontmoet de makers", href: "/de-makers", image: PHOTOS.makersHero },
+      { label: "Bewust vakmanschap", href: "/bewust-vakmanschap", image: PHOTOS.vakmanschapBos },
       { label: "MTB Bouw-familie", href: "/mtb-bouw", image: IMAGES.colAtelier },
       { label: "Service", href: "/service", image: IMAGES.doorTaats },
       { label: "Veelgestelde vragen", href: "/veelgestelde-vragen", image: IMAGES.doorSchuif },

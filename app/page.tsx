@@ -8,7 +8,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { collecties } from "@/data/collecties";
 import { company } from "@/data/company";
 import { merkfamilie } from "@/data/mtb-bouw";
-import { IMAGES } from "@/lib/images";
+import { IMAGES, PHOTOS } from "@/lib/images";
 import { DOOR_TYPES, primaryCta } from "@/lib/navigation";
 import { pageMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
@@ -356,10 +356,10 @@ function Story() {
         <Reveal className="lg:col-span-6">
           <div className="grid grid-cols-5 gap-4">
             <div className="relative col-span-3 aspect-[3/4] overflow-hidden rounded-sm bg-muted">
-              <Image src={IMAGES.colAtelier.src} alt={IMAGES.colAtelier.alt} fill sizes="(min-width: 1024px) 30vw, 60vw" className="object-cover" />
+              <Image src={PHOTOS.verhaalHero.src} alt={PHOTOS.verhaalHero.alt} fill sizes="(min-width: 1024px) 30vw, 60vw" className="object-cover" />
             </div>
             <div className="relative col-span-2 mt-16 aspect-[2/3] overflow-hidden rounded-sm bg-muted">
-              <Image src={IMAGES.doorTaats.src} alt={IMAGES.doorTaats.alt} fill sizes="(min-width: 1024px) 20vw, 40vw" className="object-cover" />
+              <Image src={PHOTOS.homeHout.src} alt={PHOTOS.homeHout.alt} fill sizes="(min-width: 1024px) 20vw, 40vw" className="object-cover" />
             </div>
           </div>
         </Reveal>

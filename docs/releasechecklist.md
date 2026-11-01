@@ -1,9 +1,10 @@
-# Releasechecklist Zebrano Studio (stand 01-11-2026)
+# Releasechecklist Zebrano Studio (stand 01-11-2026, middag)
 
 Alleen wat de livegang nog tegenhoudt of beperkt.
 
 ## Blokkeert de livegang
-- [ ] **Beeld** — zie `docs/beelden.md`. De grote beelden (homepage, deurtypes, collecties, menu, glasontwerpen) zijn AI-sfeerbeelden uit het Lovable-ontwerp: bruikbaar, maar het zijn geen echte projecten. De kleinere foto's (rijen, galerijen, tijdlijn) komen van de oude site en hebben een onbekende herkomst: bevestigen of vervangen. Liefst alles stap voor stap vervangen door eigen foto's.
+- [ ] **Beeld** — zie `docs/beelden.md`. Ons verhaal, Ontmoet de makers, Bewust vakmanschap, Materialen en het blok "Ons verhaal" op de homepage hebben nu Robberts eigen foto's (01-11-2026). De grote beelden elders (homepagehero, deurtypes, collecties, glasontwerpen) zijn nog AI-sfeerbeelden uit het Lovable-ontwerp: bruikbaar, maar geen echte projecten. De kleinere foto's (rijen, galerijen) komen van de oude site en hebben een onbekende herkomst: bevestigen of vervangen.
+- [ ] **Uit Robberts aanlevering nog bevestigen** (`docs/beelden.md`, sectie 0): de gevel met "ZEBRANO STUDIO" op /de-makers is een AI-mockup — alleen laten staan als het pand er zo uitziet, anders vervangen; de bosvideo op /bewust-vakmanschap is stockmateriaal uit 2019 — licentie bevestigen; herkomst van de houtopslag (Ons verhaal stap 3) en de gestapelde planken (Bewust vakmanschap principe 3).
 - [ ] **Materialenbibliotheek aanvullen** (`data/materialenbibliotheek.ts`) — de oude bibliotheek stond in Firebase (`material_library/Materials/Items`, projecten `accountmanegerai` / `project1-1905c`) en zat niet in de zip. Nu staat er een startset van 19 materialen die de site al noemt. Tint, intensiteit, interieurstijl, toepassingen, randafwerking en combinaties zijn redactionele suggesties: nalopen. Kan de oude collectie nog uit Firebase worden geëxporteerd (JSON + afbeeldingen uit Storage), dan zet ik die er 1-op-1 in. De oude velden "Omgeving" (binnen droog / vochtbestendig / overdekt buiten) en "Duurzaamheid" staan er bewust nog niet in: dat zijn beloftes over geschiktheid die per materiaal bevestigd moeten worden. Eigen staalfoto's maken de bibliotheek pas echt af (`docs/beelden.md`).
 - [ ] **Glascollectie bevestigen** — de vijf ontwerpen Jesse, Bo, Merle, Lucas en Guus met hun glassoort, indeling en profielkleuren komen uit het Lovable-ontwerp (`data/glasdeuren.ts`). Klopt dit met het echte aanbod? Bij de specificatie "Montage" staat nu "Op aanvraag" (Lovable had "Door onze eigen makers"; dat is nog niet bevestigd).
 - [ ] **Domein kiezen** (zebranostudio.com of .nl) → Vercel-project koppelen, `NEXT_PUBLIC_SITE_URL` zetten, andere domeinen laten doorsturen. Check eerst wat er nu op zebranostudio.com draait (de oude build had de map `/robbertjesss` met briefings en een Fiverr-screenshot publiek staan).
@@ -21,7 +22,7 @@ Bevestigen = status op `verified` + `bron` + `gecontroleerd`. Tot die tijd onzic
 - [ ] `garantie` (2 jaar product, 6 maanden montage)
 - [ ] `fsc` (FSC-gecertificeerd hout)
 - [ ] `productieNederland`, `lokaalProduceren`, `onderEenDak`
-- [ ] `team` — namen, rollen en bio's (Robbert, Mathijs, Rick, Dave, Peter) + foto's → dan verschijnt "Ons team" op /de-makers
+- [x] `team` — op 01-11-2026 op `verified` gezet: Robbert leverde portretten van Mathijs, Robbert en Rick aan. Ze staan met naam en rol (zoals op de oude site) op /de-makers; **rollen nog even nalopen**. Dave en Peter (oude site) en de lange bio's staan er niet op.
 - [ ] `groothandelsprijzen`, `showroom` (partnerprogramma)
 
 ## Inhoud die nog ontbreekt (site werkt zonder)
@@ -46,3 +47,9 @@ Bevestigen = status op `verified` + `bron` + `gecontroleerd`. Tot die tijd onzic
 - Megamenu (Deuren, Collecties, Zebrano) met voorbeeldfoto, mobiel menu (accordeon, sluit na tikken op een link), accordeon "Over Zebrano", deur in het logo die verder opendraait bij hover.
 - Lovable-teksten die iets beloven wat nog niet bevestigd is, zijn neutraler gemaakt: "in de studio" → "op afspraak in Enschede" (showroom staat nog op `needs_confirmation`), "Kom langs in onze studio … zie het glas en de profielen in het echt" → "Maak een afspraak in Enschede …", montage "door onze eigen makers" → "op aanvraag".
 
+
+## Getest op 01-11-2026 (foto's van Robbert)
+- Build, lint en typecheck schoon.
+- /ons-verhaal, /de-makers, /bewust-vakmanschap, /materialen, bibliotheek Eiken en de homepage op desktop (1440) en mobiel (390): geen horizontale scroll, geen consolefouten.
+- Bosvideo speelt (zonder geluid, in een lus zonder sprong) en pauzeert buiten beeld; met "beweging beperken" of databesparing blijft de stilstaande foto staan.
+- Paginatitels in de hero schalen op grote schermen mee met hun kolom: ook lange woorden ("geperfectioneerd", "scheidingswanden") passen nu van 1024 tot 1920 px; vanaf 1440 px is de maat gelijk aan Lovable.

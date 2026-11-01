@@ -5,7 +5,7 @@ import { button } from "@/components/ui/button";
 import { container, CtaSection, Eyebrow, PageHero } from "@/components/ui/primitives";
 import { Reveal } from "@/components/ui/reveal";
 import { verhaal } from "@/data/over";
-import { IMAGES } from "@/lib/images";
+import { PHOTOS } from "@/lib/images";
 import { primaryCta } from "@/lib/navigation";
 import { pageMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
@@ -23,7 +23,7 @@ export default function OnsVerhaalPage() {
         eyebrow="Zebrano"
         title={verhaal.h1}
         intro={<p>{verhaal.intro}</p>}
-        image={IMAGES.colAtelier}
+        image={PHOTOS.verhaalHero}
         crumbs={[{ name: "Ons verhaal", path: "/ons-verhaal" }]}
       >
         <p className="text-sm text-muted-foreground">Van een backpackreis in 2015 tot de eerste eigen deur in 2020.</p>
@@ -44,9 +44,28 @@ export default function OnsVerhaalPage() {
                 <p className="mt-5 leading-relaxed text-muted-foreground">{stap.text}</p>
               </Reveal>
               <Reveal delay={160} className="lg:col-span-4 lg:col-start-9">
-                <div className="relative aspect-[4/3] overflow-hidden rounded-sm bg-muted">
-                  <Image src={stap.image.src} alt={stap.image.alt} fill sizes="(min-width: 1024px) 28vw, 100vw" className="object-cover" />
-                </div>
+                {stap.image ? (
+                  <div className="relative aspect-[4/5] max-w-md overflow-hidden rounded-sm bg-muted lg:max-w-none">
+                    <Image
+                      src={stap.image.src}
+                      alt={stap.image.alt}
+                      fill
+                      sizes="(min-width: 1024px) 28vw, (min-width: 640px) 448px, 100vw"
+                      className="object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div
+                    aria-hidden
+                    className="flex aspect-[4/5] max-w-md flex-col justify-between rounded-sm bg-sand p-6 sm:p-8 lg:max-w-none"
+                  >
+                    <span className="h-px w-8 bg-copper" />
+                    <div>
+                      <p className="font-display text-7xl font-light leading-none tabular-nums sm:text-8xl">{stap.jaar}</p>
+                      {stap.tegel && <p className="mt-4 text-sm text-muted-foreground">{stap.tegel}</p>}
+                    </div>
+                  </div>
+                )}
               </Reveal>
             </li>
           ))}

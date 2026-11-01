@@ -20,3 +20,20 @@ export const IMAGES = {
   col3d: { src: "/images/col-3d.jpg", alt: "Houten deur met verticale ribbels in reliëf" },
   colAtelier: { src: "/images/col-atelier.jpg", alt: "Vakman schuurt een deur van notenhout" },
 } satisfies Record<string, Img>;
+
+/**
+ * Photos Robbert supplied for the site (OneDrive "Header images", 01-11-2026),
+ * cropped per use. Most are own photos (team, workshop, samples); a few are
+ * AI images or stock — docs/beelden.md lists the origin of each.
+ */
+export const PHOTOS = {
+  verhaalHero: { src: "/images/verhaal-hero.jpg", alt: "Maker in een Zebrano Studio-hoodie draagt een houten balk op zijn schouder" },
+  makersHero: { src: "/images/makers-hero.jpg", alt: "Maker van Zebrano Studio van achteren, met het logo op zijn hoodie" },
+  vakmanschapBos: { src: "/images/vakmanschap-bos.jpg", alt: "Luchtbeeld van een bos met mist boven de heuvels" },
+  homeHout: { src: "/images/home-hout.jpg", alt: "Stalen van eikenhout in verschillende afwerkingen, van dichtbij" },
+  makersOntwerper: { src: "/images/makers-ontwerper.jpg", alt: "Maker trekt werkhandschoenen aan" },
+  makersAdvies: { src: "/images/makers-advies.jpg", alt: "Maker draagt een houten balk naar binnen" },
+} satisfies Record<string, Img>;
+
+/** Ambient video for the Bewust vakmanschap hero (stock, see docs/beelden.md). Poster = PHOTOS.vakmanschapBos. */
+export const VAKMANSCHAP_VIDEO = "/video/bewust-vakmanschap.mp4";

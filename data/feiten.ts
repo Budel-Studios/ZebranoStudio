@@ -37,8 +37,11 @@ const feitenData = {
     claim: "Van eerste schets tot perfecte pasvorm: wij ontwerpen, prototypen en bouwen onder één dak.",
   },
   team: {
-    status: "needs_confirmation",
-    claim: "Teamleden, rollen en bio's (Robbert, Mathijs, Rick, Dave, Peter) zoals op de oude site.",
+    status: "verified",
+    claim:
+      "Het team op /de-makers: Mathijs (eigenaar & houtbewerker), Robbert (strategie & financiën) en Rick (houtspecialist), met portretfoto. Dave en Peter van de oude site en de lange bio's staan er niet op.",
+    bron: "Robbert leverde de portretten van Mathijs, Robbert en Rick aan voor de website (OneDrive Header images/Klaar/Our team); rollen zoals op de oude site — rollen nog even nalopen",
+    gecontroleerd: "2026-11-01",
   },
   levertijden: {
     status: "needs_confirmation",

@@ -357,12 +357,12 @@ export const materialenPage = {
     description:
       "Met welke materialen werkt Zebrano Studio? Eik, noten en zebrano, houtfineer, glas, metaal, steen en keramiek, grepen en afwerkingen — voor deuren op maat.",
   },
-  hero: { src: "/images/col-fineer.jpg", alt: "Vellen houtfineer in noten en zebrano" },
+  hero: { src: "/images/materialen-hero.jpg", alt: "Stalen van eikenhout in verschillende afwerkingen, naast elkaar" },
   materialen: [
     {
       title: "Hout",
       text: "Natuurlijke hardhoutsoorten zoals eik, noten en zebrano vormen de basis van onze collecties. Elke houtsoort wordt zorgvuldig gekozen op sterkte, nerf en afwerking.",
-      image: { src: "/images/hout-planken.webp", alt: "Gestapelde houten planken met zichtbare nerf" },
+      image: { src: "/images/materiaal-hout.jpg", alt: "Stalen van eikenhout met afgeschuinde randen en een diepe nerf" },
     },
     {
       title: "Fineer",
@@ -391,7 +391,7 @@ export const materialenPage = {
     {
       title: "Afwerkingen & oliën",
       text: "Van matte oliën tot diepe beitsen: elke afwerking is gekozen om het natuurlijke karakter van het materiaal te beschermen en te versterken.",
-      image: { src: "/images/afwerking-olie.webp", alt: "Hout wordt met de hand geolied" },
+      image: { src: "/images/materiaal-afwerkingen.jpg", alt: "Tien stalen eikenhout in verschillende afwerkingen, van wit geolied tot gerookt" },
     },
   ] as Array<{ title: string; text: string; image?: { src: string; alt: string } }>,
   levensduur: {

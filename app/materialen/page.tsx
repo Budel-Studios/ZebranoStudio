@@ -40,7 +40,15 @@ export default function MaterialenPage() {
 
       <div className={cn(container, "pt-14")}>
         <div className="relative aspect-[4/5] animate-unveil overflow-hidden rounded-sm bg-muted sm:aspect-[16/10] lg:aspect-[21/9]">
-          <Image src={m.hero.src} alt={m.hero.alt} fill priority sizes="100vw" className="object-cover" />
+          {/* Wide photo in a box that is narrower on small screens: ask for a larger file there. */}
+          <Image
+            src={m.hero.src}
+            alt={m.hero.alt}
+            fill
+            priority
+            sizes="(min-width: 1024px) 100vw, (min-width: 640px) 135vw, 270vw"
+            className="object-cover"
+          />
         </div>
       </div>
 

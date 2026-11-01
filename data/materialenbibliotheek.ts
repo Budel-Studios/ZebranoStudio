@@ -131,8 +131,8 @@ export const MATERIALS: Material[] = [
     category: "massief-hout",
     description:
       "Licht en warm van toon, met een rustige, rechte nerf. Eiken is een van de hardhoutsoorten die de basis vormen van onze collecties, van warme schuifdeur tot strakke draaideur.",
-    swatch: { src: "/images/materialen/eiken.jpg", alt: "Eikenhout met een rechte, lichte nerf" },
-    image: { src: "/images/door-schuif.jpg", alt: "Eikenhouten schuifdeur aan een rail in een woonkamer" },
+    swatch: { src: "/images/materialen/eiken.jpg", alt: "Staal van naturel eikenhout met een rechte, lichte nerf" },
+    image: { src: "/images/materiaal-eiken-stalen.jpg", alt: "Stalen van eikenhout in verschillende afwerkingen, van licht naturel tot gerookt" },
     characteristic: "Nerf",
     tone: ["Licht"],
     intensity: "Subtiel",

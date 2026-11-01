@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import type { ReactNode } from "react";
+import { AmbientVideo } from "@/components/ui/ambient-video";
 import { Arrow } from "@/components/ui/arrow";
 import { button } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
@@ -90,26 +91,33 @@ export function PageHero({
   title,
   intro,
   image,
+  video,
   crumbs,
   children,
   imageClassName,
+  titleClassName,
 }: {
   eyebrow: string;
   title: ReactNode;
   intro?: ReactNode;
+  /** The hero image; with `video` it is the poster that shows until (or instead of) the video. */
   image: Img;
+  /** Optional muted ambient video over the image (see AmbientVideo). */
+  video?: string;
   crumbs?: Crumb[];
   children?: ReactNode;
   imageClassName?: string;
+  titleClassName?: string;
 }) {
   return (
     <section className={cn(container, "pb-24 pt-32 lg:pt-40")}>
       {crumbs && <Breadcrumbs items={crumbs} className="mb-8" />}
       <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
-        <div className="flex flex-col justify-between lg:col-span-5">
+        {/* Size container: on large screens the title scales with its column, so long Dutch words never overflow. */}
+        <div className="@container flex flex-col justify-between lg:col-span-5">
           <div className="animate-rise">
             <Eyebrow>{eyebrow}</Eyebrow>
-            <h1 className="mt-6 text-5xl leading-[1.02] sm:text-6xl lg:text-7xl">{title}</h1>
+            <h1 className={cn("mt-6 text-5xl leading-[1.02] sm:text-6xl lg:text-[min(4.5rem,13.5cqi)]", titleClassName)}>{title}</h1>
             {intro && <div className="mt-8 max-w-md text-lg leading-relaxed text-muted-foreground">{intro}</div>}
           </div>
           {children && <div className="mt-12 animate-rise border-t pt-6 [animation-delay:150ms]">{children}</div>}
@@ -122,6 +130,7 @@ export function PageHero({
             )}
           >
             <Image src={image.src} alt={image.alt} fill priority sizes="(min-width: 1024px) 55vw, 100vw" className="object-cover" />
+            {video && <AmbientVideo src={video} />}
           </div>
         </div>
       </div>

@@ -6,7 +6,7 @@ import { container, CtaSection, Eyebrow, PageHero } from "@/components/ui/primit
 import { Reveal } from "@/components/ui/reveal";
 import { feit } from "@/data/feiten";
 import { vakmanschap } from "@/data/over";
-import { IMAGES } from "@/lib/images";
+import { PHOTOS, VAKMANSCHAP_VIDEO } from "@/lib/images";
 import { pageMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
@@ -23,7 +23,8 @@ export default function BewustVakmanschapPage() {
         eyebrow="Zebrano"
         title={vakmanschap.h1}
         intro={<p>{vakmanschap.intro}</p>}
-        image={IMAGES.doorTaats}
+        image={PHOTOS.vakmanschapBos}
+        video={VAKMANSCHAP_VIDEO}
         crumbs={[{ name: "Bewust vakmanschap", path: "/bewust-vakmanschap" }]}
       >
         <p className="text-sm text-muted-foreground">We bouwen ze zo goed, dat je ze misschien vaker laat zien dan je nieuwe keuken.</p>
@@ -35,9 +36,6 @@ export default function BewustVakmanschapPage() {
             <div className="lg:sticky lg:top-28">
               <Eyebrow>Vijf principes</Eyebrow>
               <h2 className="mt-5 max-w-[14ch] text-4xl leading-[1.08] sm:text-5xl">Met zorg, respect en een duidelijk doel.</h2>
-              <div className="relative mt-10 hidden aspect-[4/5] overflow-hidden rounded-sm bg-muted lg:block">
-                <Image src="/images/afwerking-olie.webp" alt="Hout wordt met de hand geolied" fill sizes="35vw" className="object-cover" />
-              </div>
             </div>
           </div>
           <ol className="lg:col-span-6 lg:col-start-7">
@@ -51,6 +49,17 @@ export default function BewustVakmanschapPage() {
                     {p.text}
                     {extra && <> {extra}</>}
                   </p>
+                  {p.image && (
+                    <div className="relative mt-8 aspect-[4/3] overflow-hidden rounded-sm bg-muted">
+                      <Image
+                        src={p.image.src}
+                        alt={p.image.alt}
+                        fill
+                        sizes="(min-width: 1024px) 45vw, 100vw"
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
                 </Reveal>
               );
             })}
