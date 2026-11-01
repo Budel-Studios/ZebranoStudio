@@ -4,7 +4,11 @@
  * Names, descriptions, glass types and profile colours come from that design;
  * confirm before launch that this is the actual range (docs/releasechecklist.md).
  * Images: AI-generated in Lovable, see docs/beelden.md.
+ * Every design is available in all four uitvoeringen (data/uitvoeringen.ts);
+ * `type`/`uitvoering` is how the photo shows it and the picker's default.
  */
+import type { UitvoeringSlug } from "@/data/uitvoeringen";
+
 
 export type Finish = "zwart" | "brons" | "antraciet" | "champagne";
 
@@ -21,9 +25,10 @@ export type GlassDoor = {
   tagline: string;
   description: string;
   image: { src: string; alt: string };
+  /** How the photo shows it, e.g. "Dubbele draaideur". */
   type: string;
-  /** Door-type page the design belongs to. */
-  typeHref: string;
+  /** The uitvoering in the photo — pre-selected on the design page. */
+  uitvoering: UitvoeringSlug;
   glass: string;
   layout: string;
   finish: Finish;
@@ -39,7 +44,7 @@ export const GLASS_DOORS: GlassDoor[] = [
       "Jesse is ons meest pure ontwerp: een slanke taatsdeur met één doorlopend glasvlak en een haarfijn profiel. De deur lijkt bijna te verdwijnen en laat het licht vrij spel tussen twee ruimtes.",
     image: { src: "/images/glas-jesse.jpg", alt: "Glazen taatsdeur Jesse met één vlak helder glas en een zwart profiel" },
     type: "Taatsdeur",
-    typeHref: "/taatsdeuren",
+    uitvoering: "taatsdeur",
     glass: "Helder glas",
     layout: "Eén vlak",
     finish: "zwart",
@@ -53,7 +58,7 @@ export const GLASS_DOORS: GlassDoor[] = [
       "Bo schuift moeiteloos langs een rail boven de opening. Het verticale ribbelglas geeft privacy zonder de ruimte donker te maken, en het warme bronzen profiel maakt het af.",
     image: { src: "/images/glas-bo.jpg", alt: "Glazen schuifdeur Bo met verticaal ribbelglas en een bronzen profiel" },
     type: "Schuifdeur",
-    typeHref: "/schuifdeuren",
+    uitvoering: "schuifdeur",
     glass: "Ribbelglas",
     layout: "Eén vlak",
     finish: "brons",
@@ -67,7 +72,7 @@ export const GLASS_DOORS: GlassDoor[] = [
       "Merle combineert een ronde bovenkant met zes heldere glasvakken. Tijdloos en een tikje romantisch, mooi in een gang of als entree naar de woonkamer.",
     image: { src: "/images/glas-merle.jpg", alt: "Glazen draaideur Merle met een boog en zes vakken in een zwart profiel" },
     type: "Draaideur",
-    typeHref: "/draaideuren",
+    uitvoering: "draaideur",
     glass: "Helder glas",
     layout: "Boog · 6 vakken",
     finish: "zwart",
@@ -81,7 +86,7 @@ export const GLASS_DOORS: GlassDoor[] = [
       "Lucas is een grote taatsdeur met een raster van twaalf vakken en licht getint grijs glas. Industrieel van karakter, maar dankzij de slanke profielen toch verfijnd.",
     image: { src: "/images/glas-lucas.jpg", alt: "Glazen taatsdeur Lucas met een raster van twaalf vakken in getint glas" },
     type: "Taatsdeur",
-    typeHref: "/taatsdeuren",
+    uitvoering: "taatsdeur",
     glass: "Grijs getint glas",
     layout: "Raster · 12 vakken",
     finish: "antraciet",
@@ -95,7 +100,7 @@ export const GLASS_DOORS: GlassDoor[] = [
       "Guus opent in twee delen en geeft zo een royale doorgang. Het gesatineerde glas zorgt voor rust en privacy, ideaal voor een werkkamer of bibliotheek.",
     image: { src: "/images/glas-guus.jpg", alt: "Dubbele glazen draaideur Guus met satijnglas en een champagnekleurig profiel" },
     type: "Dubbele draaideur",
-    typeHref: "/draaideuren",
+    uitvoering: "draaideur",
     glass: "Satijnglas",
     layout: "Horizontaal · 4 vakken",
     finish: "champagne",

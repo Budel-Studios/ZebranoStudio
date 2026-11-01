@@ -11,8 +11,6 @@ export type Collectie = {
   name: string;
   tagline: string;
   text: string;
-  /** Door types this collection is typically made as. */
-  deurtypes: Array<{ label: string; href: string }>;
   meta: { title: string; description: string };
   hero: { src: string; alt: string };
   gallery: Array<{ src: string; alt: string }>;
@@ -23,16 +21,11 @@ export const collecties: Collectie[] = [
     slug: "glas",
     name: "Glascollectie",
     tagline: "Designdeuren van glas: transparantie, elegantie en moderne functionaliteit in één.",
-    text: "Ontdek onze glazen deuren, waaronder taats- en schuifmodellen. Gemaakt met veiligheidsglas en verfijnde afwerkingen, voor een tijdloos, open gevoel.",
-    deurtypes: [
-      { label: "Taatsdeuren", href: "/taatsdeuren" },
-      { label: "Schuifdeuren", href: "/schuifdeuren" },
-      { label: "Roomdividers", href: "/roomdividers" },
-    ],
+    text: "Ontdek onze glazen deuren: vijf ontwerpen, elk als taatsdeur, schuifdeur, draaideur of roomdivider. Gemaakt met veiligheidsglas en verfijnde afwerkingen, voor een tijdloos, open gevoel.",
     meta: {
       title: "Glascollectie: glazen deuren en wanden",
       description:
-        "De Glascollectie van Zebrano Studio: glazen taatsdeuren, schuifdeuren en roomdividers op maat, met helder, getint of ribbelglas en verfijnde profielen.",
+        "De Glascollectie van Zebrano Studio: glazen taatsdeuren, schuifdeuren, draaideuren en roomdividers op maat, met helder, getint of ribbelglas en verfijnde profielen.",
     },
     hero: { src: "/images/col-glas.jpg", alt: "Glazen taatsdeur met structuurglas in een lichte hal" },
     gallery: [
@@ -46,11 +39,6 @@ export const collecties: Collectie[] = [
     name: "Fineercollectie",
     tagline: "Deuren van houtfineer met rijke texturen, natuurlijke nerven en architectonische precisie.",
     text: "Fineerdeuren in noten, eiken, zebrano en meer. Warm, minimalistisch en gemaakt voor designinterieurs.",
-    deurtypes: [
-      { label: "Draaideuren", href: "/draaideuren" },
-      { label: "Wandvlakke deuren", href: "/wandvlakke-deuren" },
-      { label: "Taatsdeuren", href: "/taatsdeuren" },
-    ],
     meta: {
       title: "Fineercollectie: deuren van houtfineer",
       description:
@@ -68,11 +56,6 @@ export const collecties: Collectie[] = [
     name: "3D-collectie",
     tagline: "Deuren met diepte: sculpturale oppervlakken die een statement maken.",
     text: "Onze 3D-paneeldeuren combineren gedurfde patronen met verfijnde materialen. Ideaal voor accentwanden en ruimtes die om artistieke diepte vragen.",
-    deurtypes: [
-      { label: "Draaideuren", href: "/draaideuren" },
-      { label: "Taatsdeuren", href: "/taatsdeuren" },
-      { label: "Boiserie", href: "/boiserie" },
-    ],
     meta: {
       title: "3D-collectie: deuren met reliëf",
       description:
@@ -90,11 +73,6 @@ export const collecties: Collectie[] = [
     name: "Ateliercollectie",
     tagline: "Volledig maatwerk, ontworpen in onze studio, zonder grenzen.",
     text: "Ontwerp samen met Zebrano Studio een deur van glas, hout, steen of metaal, helemaal afgestemd op jouw architectuur, smaak en verbeelding.",
-    deurtypes: [
-      { label: "Taatsdeuren", href: "/taatsdeuren" },
-      { label: "Draaideuren", href: "/draaideuren" },
-      { label: "Wandvlakke deuren", href: "/wandvlakke-deuren" },
-    ],
     meta: {
       title: "Ateliercollectie: volledig maatwerk",
       description:
@@ -126,16 +104,16 @@ export const startOpties = {
     {
       label: "Optie 2",
       title: "Stel je eigen deur samen",
-      text: "Weet je al precies wat je wilt? Vertel ons welk deurtype, welke materialen, welk beslag en welke details je voor ogen hebt — wij maken het volledig op maat.",
+      text: "Weet je al precies wat je wilt? Vertel ons welke uitvoering, welke materialen, welk beslag en welke details je voor ogen hebt — wij maken het volledig op maat.",
     },
   ],
   stappen: [
     {
-      title: "Kies jouw deurtype.",
+      title: "Kies jouw uitvoering.",
       sub: "Maak een statement.",
-      text: "Kies uit taats-, schuif- of draaideuren, wandvlakke deuren of een roomdivider — elk met eigen voordelen in stijl, functie en ruimtegebruik.",
-      href: "/taatsdeuren",
-      cta: "Bekijk deurtypes",
+      text: "Elk ontwerp kan als taatsdeur, schuifdeur, draaideur (ook wandvlak) of roomdivider — elk met eigen voordelen in stijl, functie en ruimtegebruik.",
+      href: "/#uitvoeringen",
+      cta: "Bekijk de uitvoeringen",
     },
     {
       title: "Kies jouw materiaal.",

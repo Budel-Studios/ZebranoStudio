@@ -43,6 +43,13 @@ const feitenData = {
     bron: "Robbert leverde de portretten van Mathijs, Robbert en Rick aan voor de website (OneDrive Header images/Klaar/Our team); rollen zoals op de oude site — rollen nog even nalopen",
     gecontroleerd: "2026-11-01",
   },
+  vierUitvoeringen: {
+    status: "verified",
+    claim:
+      "Elk ontwerp is leverbaar als taatsdeur, schuifdeur, draaideur (ook wandvlak) of roomdivider (data/uitvoeringen.ts).",
+    bron: "Robbert, 01-11-2026: \"Alle deuren moeten verkrijgbaar zijn in taats, schuif, wall partition en scharnier.\" Namen gekozen: Taatsdeur, Schuifdeur, Draaideur, Roomdivider",
+    gecontroleerd: "2026-11-01",
+  },
   levertijden: {
     status: "needs_confirmation",
     claim:

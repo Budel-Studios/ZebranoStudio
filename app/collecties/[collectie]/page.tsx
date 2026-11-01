@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { OtherCollections } from "@/components/collection/other-collections";
-import { DoorCards } from "@/components/door/door-cards";
+import { UitvoeringPicker } from "@/components/uitvoering/uitvoering-picker";
 import { Arrow } from "@/components/ui/arrow";
 import { button } from "@/components/ui/button";
 import { container, CtaSection, DotTitle, Eyebrow, PageHeader, SectionHeading } from "@/components/ui/primitives";
@@ -30,7 +30,11 @@ export async function generateMetadata({ params }: { params: Promise<{ collectie
   return pageMetadata({ title: c.meta.title, description: c.meta.description, path: `/collecties/${c.slug}` });
 }
 
-/** Fineer-, 3D- and Ateliercollectie — laid out like the Lovable glass collection. */
+/**
+ * Fineer-, 3D- and Ateliercollectie — laid out like the Lovable glass
+ * collection, with "Kies je uitvoering" (all four, ?uitvoering= from a door
+ * page pre-selects one) feeding the request.
+ */
 export default async function CollectiePage({ params }: { params: Promise<{ collectie: string }> }) {
   const { collectie } = await params;
   const c = getCollectie(collectie);
@@ -70,8 +74,12 @@ export default async function CollectiePage({ params }: { params: Promise<{ coll
       </div>
 
       <section className={cn(container, "py-24 lg:py-32")}>
-        <SectionHeading eyebrow="Beschikbaar als" title="Deurtypes in deze collectie." />
-        <DoorCards hrefs={c.deurtypes.map((d) => d.href)} className="mt-12" />
+        <SectionHeading eyebrow="Eén ontwerp, vier uitvoeringen" title="Kies hoe jouw deur opengaat." />
+        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+          Elke deur uit de {c.name} maken we als taatsdeur, schuifdeur, draaideur of roomdivider. Kies er één, dan nemen we
+          die mee in je aanvraag.
+        </p>
+        <UitvoeringPicker subject={`de ${c.name}`} contactQuery={`collectie=${c.slug}`} className="mt-10" />
       </section>
 
       {c.gallery.length > 0 && (

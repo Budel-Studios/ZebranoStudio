@@ -20,13 +20,13 @@ export const REDEN_OPTIONS = [
   { value: "vraag", label: "Ik heb een algemene vraag" },
 ] as const;
 
+/** The four uitvoeringen (data/uitvoeringen.ts, same slugs), boiserie, or not sure yet. */
 export const PRODUCT_OPTIONS = [
   { value: "taatsdeur", label: "Taatsdeur" },
   { value: "schuifdeur", label: "Schuifdeur" },
   { value: "draaideur", label: "Draaideur" },
-  { value: "wandvlak", label: "Wandvlakke deur" },
   { value: "roomdivider", label: "Roomdivider" },
-  { value: "boiserie", label: "Boiserie" },
+  { value: "boiserie", label: "Boiserie (wandpanelen)" },
   { value: "onbekend", label: "Weet ik nog niet" },
 ] as const;
 

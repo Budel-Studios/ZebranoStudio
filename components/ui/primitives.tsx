@@ -84,7 +84,8 @@ export function Breadcrumbs({ items, className }: { items: Crumb[]; className?: 
 /**
  * Page header with a large image on the right (the Lovable content page):
  * eyebrow, big light title and intro left, image unveiling from the top.
- * `children` go under a hairline at the bottom of the text column.
+ * `children` go under a hairline at the bottom of the text column; `top`
+ * spans the full width above it (the uitvoering tabs on door pages).
  */
 export function PageHero({
   eyebrow,
@@ -93,6 +94,7 @@ export function PageHero({
   image,
   video,
   crumbs,
+  top,
   children,
   imageClassName,
   titleClassName,
@@ -105,13 +107,16 @@ export function PageHero({
   /** Optional muted ambient video over the image (see AmbientVideo). */
   video?: string;
   crumbs?: Crumb[];
+  /** Full-width row above the hero, e.g. the four uitvoeringen as tabs. */
+  top?: ReactNode;
   children?: ReactNode;
   imageClassName?: string;
   titleClassName?: string;
 }) {
   return (
-    <section className={cn(container, "pb-24 pt-32 lg:pt-40")}>
+    <section className={cn(container, "pb-24", top ? "pt-28 lg:pt-32" : "pt-32 lg:pt-40")}>
       {crumbs && <Breadcrumbs items={crumbs} className="mb-8" />}
+      {top && <div className="mb-12 animate-rise lg:mb-16">{top}</div>}
       <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
         {/* Size container: on large screens the title scales with its column, so long Dutch words never overflow. */}
         <div className="@container flex flex-col justify-between lg:col-span-5">

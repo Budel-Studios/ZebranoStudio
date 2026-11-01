@@ -12,9 +12,9 @@ export const metadata: Metadata = {
 const suggesties = [
   { label: "Taatsdeuren", href: "/taatsdeuren" },
   { label: "Schuifdeuren", href: "/schuifdeuren" },
-  { label: "Wandvlakke deuren", href: "/wandvlakke-deuren" },
+  { label: "Draaideuren", href: "/draaideuren" },
+  { label: "Roomdividers", href: "/roomdividers" },
   { label: "Collecties", href: "/collecties" },
-  { label: "Ons verhaal", href: "/ons-verhaal" },
   { label: "Contact", href: "/contact" },
 ];
 

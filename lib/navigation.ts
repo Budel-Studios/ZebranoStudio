@@ -1,3 +1,4 @@
+import { UITVOERINGEN } from "@/data/uitvoeringen";
 import { IMAGES, PHOTOS, type Img } from "@/lib/images";
 import { isModuleOn, type ModuleKey } from "@/lib/site";
 
@@ -26,28 +27,13 @@ export type NavGroup = {
   cta: { label: string; href: string };
 };
 
-/** The five door types as cards (homepage, menu, "other doors"). */
-export const DOOR_TYPES: Array<{ slug: string; label: string; image: Img; note: string }> = [
-  { slug: "taatsdeuren", label: "Taatsdeur", image: IMAGES.heroTaats, note: "Draait op een verborgen as" },
-  { slug: "schuifdeuren", label: "Schuifdeur", image: IMAGES.doorSchuif, note: "Glijdt langs een rail" },
-  { slug: "draaideuren", label: "Draaideur", image: IMAGES.doorDraai, note: "Klassiek, enkel of dubbel" },
-  { slug: "wandvlakke-deuren", label: "Wandvlakke deur", image: IMAGES.doorWandvlak, note: "Onzichtbaar in de wand" },
-  { slug: "roomdividers", label: "Roomdivider", image: IMAGES.doorRoomdivider, note: "Verdeelt, houdt het licht" },
-];
-
 export const NAV: NavGroup[] = [
   {
     id: "deuren",
     label: "Deuren",
-    intro: "Elk type op maat gemaakt, in hout, glas of een combinatie.",
-    items: [
-      { label: "Taatsdeuren", href: "/taatsdeuren", image: IMAGES.heroTaats, note: "Draait op een verborgen as" },
-      { label: "Schuifdeuren", href: "/schuifdeuren", image: IMAGES.doorSchuif, note: "Glijdt langs een rail" },
-      { label: "Draaideuren", href: "/draaideuren", image: IMAGES.doorDraai, note: "Klassiek, enkel of dubbel" },
-      { label: "Wandvlakke deuren", href: "/wandvlakke-deuren", image: IMAGES.doorWandvlak, note: "Onzichtbaar in de wand" },
-      { label: "Roomdividers", href: "/roomdividers", image: IMAGES.doorRoomdivider, note: "Verdeelt, houdt het licht" },
-      { label: "Boiserie", href: "/boiserie", image: IMAGES.col3d, note: "Wandpanelen op maat" },
-    ],
+    intro: "Elk ontwerp in vier uitvoeringen. Jij kiest hoe hij opengaat.",
+    // The four uitvoeringen (data/uitvoeringen.ts); wandvlak is an option of the draaideur.
+    items: UITVOERINGEN.map((u) => ({ label: u.plural, href: u.href, image: u.image, note: u.beweging })),
     // The old menu's "Materialenbibliotheek" pill, with "Bekijk materialen" as fallback when the module is off.
     cta: isModuleOn("materialenbibliotheek")
       ? { label: "Materialenbibliotheek", href: "/materialenbibliotheek" }
@@ -56,7 +42,7 @@ export const NAV: NavGroup[] = [
   {
     id: "collecties",
     label: "Collecties",
-    intro: "Vier startpunten voor jouw ontwerp.",
+    intro: "Vier collecties voor je deur, boiserie voor je wand.",
     items: [
       {
         label: "Glascollectie",
@@ -82,6 +68,7 @@ export const NAV: NavGroup[] = [
         image: IMAGES.colAtelier,
         note: "Volledig maatwerk, ontworpen in onze studio, zonder grenzen.",
       },
+      { label: "Boiserie", href: "/boiserie", image: IMAGES.col3d, note: "Wandpanelen op maat, afgestemd op je deuren." },
     ],
     cta: { label: "Start je ontwerp", href: "/contact" },
   },
@@ -120,9 +107,7 @@ export const footerColumns: Array<{ title: string; links: Array<{ label: string;
       { label: "Taatsdeuren", href: "/taatsdeuren" },
       { label: "Schuifdeuren", href: "/schuifdeuren" },
       { label: "Draaideuren", href: "/draaideuren" },
-      { label: "Wandvlakke deuren", href: "/wandvlakke-deuren" },
       { label: "Roomdividers", href: "/roomdividers" },
-      { label: "Boiserie", href: "/boiserie" },
       { label: "Materialen", href: "/materialen" },
       { label: "Materialenbibliotheek", href: "/materialenbibliotheek", module: "materialenbibliotheek" },
     ],
@@ -131,6 +116,7 @@ export const footerColumns: Array<{ title: string; links: Array<{ label: string;
     title: "Zebrano",
     links: [
       { label: "Collecties", href: "/collecties" },
+      { label: "Boiserie", href: "/boiserie" },
       { label: "Samenwerken", href: "/architecten" },
       { label: "Ons verhaal", href: "/ons-verhaal" },
       { label: "Ontmoet de makers", href: "/de-makers" },

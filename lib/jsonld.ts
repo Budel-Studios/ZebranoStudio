@@ -20,7 +20,7 @@ export function organizationSchema() {
     logo: `${SITE_URL}/brand/logo-512.png`,
     image: `${SITE_URL}/og/default.jpg`,
     description:
-      "Exclusieve binnendeuren op maat: taatsdeuren, schuifdeuren, draaideuren, wandvlakke deuren, roomdividers en boiserie.",
+      "Exclusieve binnendeuren op maat: elk ontwerp als taatsdeur, schuifdeur, draaideur (ook wandvlak) of roomdivider, en boiserie.",
     email: company.email,
     telephone: company.telefoonHref,
     address: {

@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_NAME}`,
   },
   description:
-    "Zebrano Studio maakt taatsdeuren, schuifdeuren, wandvlakke deuren, roomdividers en boiserie op maat — exclusief design, bereikbaar gemaakt. Een merk van MTB Bouw.",
+    "Zebrano Studio maakt exclusieve deuren op maat: elk ontwerp als taatsdeur, schuifdeur, draaideur of roomdivider. Luxe, bereikbaar gemaakt. Een merk van MTB Bouw.",
   applicationName: SITE_NAME,
   openGraph: {
     siteName: SITE_NAME,

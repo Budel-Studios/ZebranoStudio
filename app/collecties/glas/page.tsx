@@ -5,6 +5,7 @@ import { button } from "@/components/ui/button";
 import { Breadcrumbs, container, DotTitle, Eyebrow } from "@/components/ui/primitives";
 import { Reveal } from "@/components/ui/reveal";
 import { OtherCollections } from "@/components/collection/other-collections";
+import { UitvoeringTabs } from "@/components/uitvoering/uitvoering-tabs";
 import { company } from "@/data/company";
 import { FINISHES, GLASS_DOORS } from "@/data/glasdeuren";
 import { pageMetadata } from "@/lib/seo";
@@ -13,7 +14,7 @@ import { cn } from "@/lib/utils";
 export const metadata = pageMetadata({
   title: "Glascollectie: vijf ontwerpen in glas en staal",
   description:
-    "Ontdek de glasdeuren Jesse, Bo, Merle, Lucas en Guus: taats-, schuif- en draaideuren van glas en staal, volledig op maat.",
+    "Ontdek de glasdeuren Jesse, Bo, Merle, Lucas en Guus: elk ontwerp als taatsdeur, schuifdeur, draaideur of roomdivider, van glas en staal en volledig op maat.",
   path: "/collecties/glas",
 });
 
@@ -38,10 +39,13 @@ export default function GlassCollectionPage() {
           <div className="animate-rise [animation-delay:120ms] lg:col-span-5">
             <p className="text-lg leading-relaxed text-muted-foreground">
               Vijf ontwerpen van glas en staal, elk met een eigen karakter. Ieder ontwerp maken we volledig op maat, in het
-              profiel en glas dat bij jouw huis past, met veiligheidsglas en verfijnde afwerkingen.
+              profiel en glas dat bij jouw huis past, met veiligheidsglas en verfijnde afwerkingen. En in de uitvoering die jij
+              kiest.
             </p>
           </div>
         </header>
+
+        <UitvoeringTabs className="mt-10 animate-rise [animation-delay:200ms]" />
 
         <ul className="mt-14 grid gap-x-5 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
           {GLASS_DOORS.map((door, i) => (
@@ -71,8 +75,8 @@ export default function GlassCollectionPage() {
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{door.tagline}</p>
                 <dl className="mt-4 flex flex-wrap gap-x-5 gap-y-1 text-[0.8125rem]">
                   <div className="flex gap-1.5">
-                    <dt className="sr-only">Type</dt>
-                    <dd>{door.type}</dd>
+                    <dt className="text-muted-foreground">Op de foto:</dt>
+                    <dd>{door.type.toLowerCase()}</dd>
                   </div>
                   <div className="flex gap-1.5 text-muted-foreground">
                     <dt className="sr-only">Glas</dt>

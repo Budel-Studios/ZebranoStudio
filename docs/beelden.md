@@ -39,10 +39,10 @@ Gegenereerd met AI in Robberts eigen Lovable-project (het ontwerp dat in novembe
 |---|---|
 | `hero-taatsdeur.jpg` | homepage (hero, "Over Zebrano"), /taatsdeuren, menu (Deuren) — `lib/images.ts` |
 | `door-taats.jpg` | menu (Service) |
-| `door-schuif.jpg` | homepage (Deurtypes), /schuifdeuren, menu |
-| `door-draai.jpg` | homepage (Deurtypes), /draaideuren, menu |
-| `door-wandvlak.jpg` | homepage (Deurtypes), /wandvlakke-deuren, /architecten, menu |
-| `door-roomdivider.jpg` | homepage (Deurtypes), /roomdividers, menu |
+| `door-schuif.jpg` | homepage (vier uitvoeringen), /schuifdeuren, menu |
+| `door-draai.jpg` | homepage (vier uitvoeringen), /draaideuren, menu |
+| `door-wandvlak.jpg` | /draaideuren (blok wandvlak), /architecten, bibliotheek (Lak) |
+| `door-roomdivider.jpg` | homepage (vier uitvoeringen), /roomdividers, menu |
 | `col-glas.jpg` | collecties (glas), menu (Collecties) |
 | `col-fineer.jpg` | collecties (fineer), homepage ("Over Zebrano"), menu |
 | `col-3d.jpg` | collecties (3D), /boiserie, homepage ("Over Zebrano"), menu |
@@ -55,7 +55,7 @@ Uitsneden uit dezelfde Lovable-sfeerbeelden (noten uit `door-taats`, de drie fin
 
 ## 2. Foto's van de oude site (2025) — `.webp`
 
-Omgezet naar WebP. **Herkomst onbekend:** stock, gegenereerd of van internet — de oude site bevatte aantoonbaar beelden van andere bedrijven. Niets hiervan mag live zonder dat je zeker weet dat je het mag gebruiken. Ze staan nu alleen nog op tweede plek (rijen op deurtypepagina's, galerijen van collecties, materialen).
+Omgezet naar WebP. **Herkomst onbekend:** stock, gegenereerd of van internet — de oude site bevatte aantoonbaar beelden van andere bedrijven. Niets hiervan mag live zonder dat je zeker weet dat je het mag gebruiken. Ze staan nu alleen nog op tweede plek (rijen op de uitvoeringspagina's en boiserie, galerijen van collecties, materialen).
 
 Bewust **niet** overgenomen: `FineerCollection01.webp` (logo Portatec), `R.jpeg` (Amerikaanse bouwplaats), `OIP.webp`, `ais15.jpg`, de keukenfoto's uit de template (`cabinetary*`, `img1-4`, `slideImage*`, `architecBanner`, `banner.png`), en de hotlinks naar luminaire-authentik. Verwijderd bij de overstap naar het Lovable-ontwerp (niet meer gebruikt): `boiserie-interieur`, `glas-openslaand`, `hero-paviljoen`, `hero-villa`, `hero-zwembad`, `schuifdeur-tuin`, `taatsdeur-interieur`. Verwijderd op 01-11-2026 (vervangen door Robberts foto's): `verhaal-1` t/m `verhaal-5`.
 

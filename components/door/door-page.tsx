@@ -1,30 +1,54 @@
 import Image from "next/image";
 import Link from "next/link";
-import { DoorCards } from "@/components/door/door-cards";
+import { OntwerpCards } from "@/components/uitvoering/ontwerp-cards";
+import { UitvoeringCards } from "@/components/uitvoering/uitvoering-cards";
+import { UitvoeringTabs } from "@/components/uitvoering/uitvoering-tabs";
 import { Arrow } from "@/components/ui/arrow";
 import { button } from "@/components/ui/button";
 import { container, CtaSection, Eyebrow, JsonLd, PageHero, SectionHeading } from "@/components/ui/primitives";
 import { Reveal } from "@/components/ui/reveal";
 import { company } from "@/data/company";
-import { doorPages, type DoorBlock, type DoorPage } from "@/data/producten";
+import type { DoorBlock, DoorPage } from "@/data/producten";
+import { UITVOERINGEN, uitvoeringForPage } from "@/data/uitvoeringen";
 import { serviceSchema } from "@/lib/jsonld";
 import { primaryCta } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 
 /**
- * Template for every door-type page (taatsdeuren, schuifdeuren, …), in the
- * Lovable design: content-page hero with the big image, the two basics side
- * by side, three alternating image rows, the other door types as cards and
- * the green closing block.
+ * Template for the four uitvoering pages (taatsdeuren, schuifdeuren,
+ * draaideuren, roomdividers) and boiserie, in the Lovable design.
+ *
+ * An uitvoering page says "every design, opened this way": hero with the four
+ * uitvoeringen as tabs (this one filled), what it is / why, the wandvlak
+ * option (draaideur only), every design with this uitvoering pre-chosen,
+ * materials/hardware rows, the other three uitvoeringen and the green CTA.
+ * Boiserie is not a door: no tabs or designs, and the four uitvoeringen as
+ * matching doors at the bottom.
  */
 export function DoorPageView({ page }: { page: DoorPage }) {
-  const others = doorPages.filter((p) => p.slug !== page.slug).map((p) => `/${p.slug}`);
+  const uitvoering = uitvoeringForPage(page.slug);
+  const nr = uitvoering ? UITVOERINGEN.indexOf(uitvoering) + 1 : 0;
+  const others = UITVOERINGEN.filter((u) => u !== uitvoering).map((u) => u.slug);
+  const crumbs = uitvoering
+    ? [{ name: page.name, path: `/${page.slug}` }]
+    : [
+        { name: "Collecties", path: "/collecties" },
+        { name: page.name, path: `/${page.slug}` },
+      ];
+
   return (
     <>
-      <PageHero eyebrow="Deuren" title={page.h1} intro={<p>{page.intro}</p>} image={page.hero} crumbs={[{ name: page.name, path: `/${page.slug}` }]}>
+      <PageHero
+        eyebrow={uitvoering ? `Uitvoering ${String(nr).padStart(2, "0")} / ${String(UITVOERINGEN.length).padStart(2, "0")}` : "Collecties · Wand"}
+        title={page.h1}
+        intro={<p>{page.intro}</p>}
+        image={page.hero}
+        crumbs={crumbs}
+        top={uitvoering && <UitvoeringTabs current={uitvoering.slug} />}
+      >
         <p className="text-sm text-muted-foreground">{page.teaser}</p>
         <div className="mt-5 flex flex-wrap items-center gap-4">
-          <Link href={primaryCta.href} className={button()}>
+          <Link href={uitvoering ? `${primaryCta.href}?uitvoering=${uitvoering.slug}` : `${primaryCta.href}?product=boiserie`} className={button()}>
             {primaryCta.label} <Arrow />
           </Link>
           <a href={`tel:${company.telefoonHref}`} className={button({ variant: "text" })}>
@@ -43,6 +67,61 @@ export function DoorPageView({ page }: { page: DoorPage }) {
           ))}
         </div>
       </section>
+
+      {/* An option of this uitvoering with its own anchor: wandvlak on the draaideur */}
+      {page.optie && (
+        <section id={page.optie.id} className={cn(container, "scroll-mt-28 pb-24 lg:pb-32")}>
+          <div className="grid items-center gap-10 border-t pt-14 lg:grid-cols-12 lg:gap-16">
+            <Reveal className="lg:col-span-6">
+              <div className="group relative aspect-[4/3] overflow-hidden rounded-sm bg-muted">
+                <Image
+                  src={page.optie.image.src}
+                  alt={page.optie.image.alt}
+                  fill
+                  sizes="(min-width: 1024px) 45vw, 100vw"
+                  className="img-zoom object-cover"
+                />
+              </div>
+            </Reveal>
+            <Reveal delay={100} className="lg:col-span-5 lg:col-start-8">
+              <BlockText block={page.optie} />
+              <ul className="mt-8 space-y-3 border-t pt-6">
+                {page.optie.points.map((p) => (
+                  <li key={p} className="flex gap-3 text-[0.9375rem]">
+                    <span aria-hidden className="mt-[0.7em] h-px w-4 shrink-0 bg-copper" />
+                    {p}
+                  </li>
+                ))}
+              </ul>
+              {uitvoering && (
+                <Link href={`${primaryCta.href}?uitvoering=${uitvoering.slug}&optie=${page.optie.id}`} className={cn(button(), "mt-8")}>
+                  Vraag een voorstel voor een wandvlakke deur <Arrow />
+                </Link>
+              )}
+            </Reveal>
+          </div>
+        </section>
+      )}
+
+      {/* Every design, with this uitvoering already chosen */}
+      {uitvoering && (
+        <section className={cn(container, "pb-24 lg:pb-32")}>
+          <SectionHeading
+            eyebrow={`Elk ontwerp als ${uitvoering.label.toLowerCase()}`}
+            title="Kies je ontwerp."
+            action={
+              <Link href="/collecties" className={button({ variant: "text" })}>
+                Alle collecties
+              </Link>
+            }
+          />
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+            Elk ontwerp uit onze collecties maken we ook als {uitvoering.label.toLowerCase()}. Kies er één: de{" "}
+            {uitvoering.label.toLowerCase()} staat dan al voor je klaar in je aanvraag.
+          </p>
+          <OntwerpCards uitvoering={uitvoering} className="mt-12" />
+        </section>
+      )}
 
       {/* Materials, hardware, integration */}
       <section className="bg-sand">
@@ -74,18 +153,18 @@ export function DoorPageView({ page }: { page: DoorPage }) {
         </div>
       </section>
 
-      {/* The other door types */}
+      {/* The other uitvoeringen (or, for boiserie, all four as matching doors) */}
       <section className={cn(container, "py-24 lg:py-32")}>
         <SectionHeading
-          eyebrow="Andere deurtypes"
-          title="Ontdek ook."
+          eyebrow={uitvoering ? "Andere uitvoeringen" : "Bijpassende deuren"}
+          title={uitvoering ? "Hetzelfde ontwerp, anders open." : "Eén ontwerp, vier uitvoeringen."}
           action={
             <Link href="/materialen" className={button({ variant: "text" })}>
               Bekijk materialen
             </Link>
           }
         />
-        <DoorCards hrefs={others} className="mt-12" />
+        <UitvoeringCards slugs={uitvoering ? others : undefined} className="mt-12" />
       </section>
 
       <CtaSection />

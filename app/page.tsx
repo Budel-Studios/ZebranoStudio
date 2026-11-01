@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { AboutAccordion, type AboutItem } from "@/components/home/about-accordion";
+import { UitvoeringCards } from "@/components/uitvoering/uitvoering-cards";
 import { Arrow } from "@/components/ui/arrow";
 import { button } from "@/components/ui/button";
 import { container, Eyebrow } from "@/components/ui/primitives";
@@ -9,19 +10,20 @@ import { collecties } from "@/data/collecties";
 import { company } from "@/data/company";
 import { merkfamilie } from "@/data/mtb-bouw";
 import { IMAGES, PHOTOS } from "@/lib/images";
-import { DOOR_TYPES, primaryCta } from "@/lib/navigation";
+import { primaryCta } from "@/lib/navigation";
 import { pageMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export const metadata = pageMetadata({
   absoluteTitle: "Exclusieve binnendeuren op maat | Zebrano Studio",
   description:
-    "Zebrano Studio maakt taatsdeuren, schuifdeuren, wandvlakke deuren, roomdividers en boiserie op maat — exclusief design, bereikbaar gemaakt. Een merk van MTB Bouw.",
+    "Zebrano Studio maakt exclusieve deuren op maat: elk ontwerp als taatsdeur, schuifdeur, draaideur of roomdivider. Luxe, bereikbaar gemaakt. Een merk van MTB Bouw.",
   path: "/",
 });
 
 /**
- * Homepage — the Lovable design section by section: hero, door types, why
+ * Homepage — the Lovable design section by section: hero, the four
+ * uitvoeringen ("één ontwerp, vier uitvoeringen", was: door types), why
  * Zebrano, "passie voor hout", way of working, collections, our story and the
  * MTB Bouw family.
  */
@@ -29,7 +31,7 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <DoorTypes />
+      <Uitvoeringen />
       <WhyZebrano />
       <About />
       <Process />
@@ -116,46 +118,28 @@ function Hero() {
 
 /* ------------------------------------------------------------------ */
 
-function DoorTypes() {
+function Uitvoeringen() {
   return (
-    <section className={cn(container, "py-24 lg:py-32")}>
+    <section id="uitvoeringen" className={cn(container, "scroll-mt-24 py-24 lg:py-32")}>
       <Reveal className="flex flex-wrap items-end justify-between gap-6">
         <div>
-          <Eyebrow>Deurtypes</Eyebrow>
-          <h2 className="mt-5 text-4xl sm:text-5xl">Elke opening verdient een eigen deur.</h2>
+          <Eyebrow>Eén ontwerp, vier uitvoeringen</Eyebrow>
+          <h2 className="mt-5 text-4xl sm:text-5xl">
+            Kies je ontwerp.
+            <br />
+            <span className="text-muted-foreground">Kies hoe hij opengaat.</span>
+          </h2>
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
+            Elk ontwerp uit onze collecties maken we als taatsdeur, schuifdeur, draaideur of roomdivider. Zo kies je eerst wat je
+            mooi vindt, en daarna hoe de deur in jouw ruimte werkt.
+          </p>
         </div>
-        <Link href="/materialen" className={button({ variant: "text" })}>
-          Bekijk materialen
+        <Link href="/collecties" className={button({ variant: "text" })}>
+          Bekijk de ontwerpen
         </Link>
       </Reveal>
 
-      <div className="no-scrollbar -mx-4 mt-12 flex snap-x gap-4 overflow-x-auto px-4 sm:-mx-8 sm:px-8 lg:mx-0 lg:grid lg:grid-cols-5 lg:overflow-visible lg:px-0">
-        {DOOR_TYPES.map((d, i) => (
-          <Reveal key={d.slug} delay={i * 70} className="w-[68vw] shrink-0 snap-start sm:w-[42vw] lg:w-auto">
-            <Link href={`/${d.slug}`} className="group block">
-              <div className="relative aspect-[3/4.4] overflow-hidden rounded-sm bg-muted">
-                <Image
-                  src={d.image.src}
-                  alt={d.label}
-                  fill
-                  sizes="(min-width: 1024px) 20vw, (min-width: 640px) 42vw, 68vw"
-                  className="img-zoom object-cover"
-                />
-              </div>
-              <div className="mt-4 flex items-start justify-between gap-3">
-                <div>
-                  <p className="text-[0.6875rem] tabular-nums text-muted-foreground">{String(i + 1).padStart(2, "0")}</p>
-                  <p className="mt-1 font-display text-xl">
-                    <span className="link-line">{d.label}</span>
-                  </p>
-                  <p className="mt-1 text-sm text-muted-foreground">{d.note}</p>
-                </div>
-                <Arrow diagonal={false} className="mt-6 text-muted-foreground" />
-              </div>
-            </Link>
-          </Reveal>
-        ))}
-      </div>
+      <UitvoeringCards className="mt-12" />
     </section>
   );
 }

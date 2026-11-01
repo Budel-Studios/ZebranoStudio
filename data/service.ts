@@ -81,9 +81,9 @@ export const faqCategories: FaqCategory[] = [
   {
     title: "Producten & materialen",
     items: [
-      { question: "Wat maken jullie?", answer: ["Taatsdeuren, schuifdeuren, draaideuren, wandvlakke deuren, roomdividers en boiserie (decoratieve wandbekleding) — allemaal op maat."] },
+      { question: "Wat maken jullie?", answer: ["Deuren op maat in vier uitvoeringen: taatsdeur, schuifdeur, draaideur (ook wandvlak) en roomdivider. Elk ontwerp uit onze collecties is in alle vier leverbaar. Daarnaast maken we boiserie (decoratieve wandbekleding)."] },
       { question: "Welke materialen en afwerkingen zijn er?", answer: ["Massief hout, fineer, lak (RAL-kleuren), glas, natuursteen en keramiek of porselein. Beslag is er onder meer in zwart, rvs, brons en PVD."] },
-      { question: "Maken jullie ook wandvlakke (rasomuro) deuren?", answer: ["Ja. Met verdekte kozijnen en verborgen beslag ligt de deur exact gelijk met de wand, voor een naadloos effect."] },
+      { question: "Maken jullie ook wandvlakke (rasomuro) deuren?", answer: ["Ja, als uitvoering van de draaideur. Met verdekte kozijnen en verborgen beslag ligt de deur exact gelijk met de wand, voor een naadloos effect."] },
       { question: "Hoe ver kan ik mijn deur personaliseren?", answer: ["Maten, afwerkingen, glas, randen en beslag zijn allemaal aan te passen. Voor ultiem maatwerk maken we een voorstel op basis van jouw wensen."] },
       { question: "Zijn natuurlijke variaties normaal?", answer: ["Ja. Houtnerf en -kleur en de adering van natuursteen verschillen altijd een beetje — dat maakt elk stuk uniek."] },
       { question: "Kunnen jullie een bestaande afwerking nabootsen?", answer: ["Met een fysiek monster kunnen we een bestaande afwerking dicht benaderen. Een exacte match kunnen we niet garanderen."] },

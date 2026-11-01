@@ -6,6 +6,10 @@
  * Hero images come from the Lovable design (november 2026); the images in
  * the rows are from the old site and their origin still has to be confirmed —
  * see docs/beelden.md before going live.
+ *
+ * Since 01-11-2026 the door pages are the four uitvoeringen (data/uitvoeringen.ts);
+ * wandvlak is an option on the draaideur page (`optie`), boiserie is the one
+ * page here that is not a door (it sits under Collecties).
  */
 
 export type DoorBlock = {
@@ -31,6 +35,8 @@ export type DoorPage = {
   rows: [DoorBlock, DoorBlock, DoorBlock];
   /** One-line teaser for cards on other pages. */
   teaser: string;
+  /** An option of this uitvoering with its own block and anchor (wandvlak on the draaideur). */
+  optie?: DoorBlock & { id: string; image: { src: string; alt: string }; points: string[] };
 };
 
 const COLLECTIES = { label: "Bekijk de collecties", href: "/collecties" };
@@ -144,11 +150,11 @@ export const doorPages: DoorPage[] = [
     name: "Draaideuren",
     h1: "Draaideuren",
     intro:
-      "Een draaideur hangt aan scharnieren aan de zijkant en zwaait open en dicht. De klassieker onder de deuren: eenvoudig in gebruik, betrouwbaar en eindeloos aan te passen.",
+      "Een draaideur hangt aan scharnieren aan de zijkant en zwaait open en dicht. De klassieker onder de deuren: eenvoudig in gebruik, betrouwbaar en eindeloos aan te passen. Ook als wandvlakke deur, gelijk met de wand.",
     meta: {
       title: "Draaideuren op maat",
       description:
-        "Luxe draaideuren op maat van Zebrano Studio: enkel of dubbel, in hout, fineer, lak of met glas, met beslag dat bij je interieur past. Vraag een voorstel.",
+        "Luxe draaideuren op maat van Zebrano Studio: enkel of dubbel, ook wandvlak zonder zichtbaar kozijn, in hout, fineer, lak of glas. Vraag een voorstel.",
     },
     hero: { src: "/images/door-draai.jpg", alt: "Dubbele houten draaideuren die openstaan naar een zitkamer" },
     basics: [
@@ -188,56 +194,18 @@ export const doorPages: DoorPage[] = [
       },
     ],
     teaser: "De klassieker op zijscharnieren — enkel of dubbel, in elke stijl.",
-  },
-  {
-    slug: "wandvlakke-deuren",
-    name: "Wandvlakke deuren",
-    h1: "Wandvlakke deuren",
-    intro:
-      "Wandvlakke deuren — ook wel verborgen deuren, deuren met een verdekt kozijn of onzichtbare deuren genoemd — zijn het toppunt van minimalistische architectuur. Ze liggen exact gelijk met je wand, zodat kozijn en scharnieren volledig verdwijnen.",
-    meta: {
-      title: "Wandvlakke deuren (onzichtbare deuren)",
-      description:
-        "Wandvlakke deuren van Zebrano Studio: onzichtbare deuren met verdekt kozijn en verborgen scharnieren, exact gelijk met je wand. Op maat gemaakt. Vraag een voorstel.",
+    optie: {
+      id: "wandvlak",
+      label: "Ook wandvlak",
+      title: "De kunst van verdwijnen",
+      text: "Een wandvlakke deur ligt exact gelijk met je wand — zonder zichtbaar kozijn, scharnieren of lijsten. Hij gaat naadloos op in de architectuur: één strak, ononderbroken vlak. Meegeschilderd in de kleur van de muur of juist afgewerkt als statement.",
+      image: { src: "/images/door-wandvlak.jpg", alt: "Wandvlakke deur, strak opgenomen in een lichte wand" },
+      points: [
+        "Verdekt kozijn en verborgen scharnieren",
+        "Magneetsloten en precisiekozijnen, volledig uit het zicht",
+        "In fineer, lak, glas of met stenen inlays",
+      ],
     },
-    hero: { src: "/images/door-wandvlak.jpg", alt: "Wandvlakke deur, strak opgenomen in een lichte wand" },
-    basics: [
-      {
-        label: "Wat is een wandvlakke deur?",
-        title: "De kunst van verdwijnen",
-        text: "Een wandvlakke deur ligt exact gelijk met je wand — zonder zichtbaar kozijn, scharnieren of lijsten. Hij gaat naadloos op in de architectuur: één strak, ononderbroken vlak.",
-        cta: COLLECTIES,
-      },
-      {
-        label: "Waarom een wandvlakke deur?",
-        title: "Minimalisme, verheven",
-        text: "Ideaal voor interieurs waar rust en doorlopende lijnen centraal staan. Meegeschilderd in de kleur van de muur of juist afgewerkt als statement: de aandacht blijft bij de ruimte, niet bij het beslag.",
-      },
-    ],
-    rows: [
-      {
-        label: "Materiaalmogelijkheden",
-        title: "Gemaakt voor jouw ruimte",
-        text: "Van luxe fineer tot gladde lak, gestructureerd glas of stenen inlays — elke wandvlakke deur wordt volledig op maat gemaakt, passend bij jouw afmetingen en ontwerp.",
-        cta: MATERIALEN,
-        image: { src: "/images/fineer-rollen.webp", alt: "Rollen houtfineer in warme tinten" },
-      },
-      {
-        label: "Beslag & details",
-        title: "Verborgen techniek",
-        text: "Verborgen scharnieren, magneetsloten en precisiekozijnen zorgen voor een perfecte werking — en blijven volledig uit het zicht.",
-        cta: BESLAG,
-        image: { src: "/images/metaal-profielen.webp", alt: "Metalen profielen en staven in verschillende afwerkingen" },
-      },
-      {
-        label: "Integratieopties",
-        title: "Eén doorlopend oppervlak",
-        text: "Combineer je wandvlakke deur met bijpassende wandpanelen of geïntegreerde kasten. Zo loopt het ene vlak ongemerkt over in het andere.",
-        cta: CONTACT,
-        image: { src: "/images/boiserie-3.webp", alt: "Interieur met doorlopende wandpanelen" },
-      },
-    ],
-    teaser: "Gelijk met de wand, zonder zichtbaar kozijn — minimalisme ten top.",
   },
   {
     slug: "roomdividers",

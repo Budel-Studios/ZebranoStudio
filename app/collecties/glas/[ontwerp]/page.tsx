@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { UitvoeringPicker } from "@/components/uitvoering/uitvoering-picker";
 import { Arrow } from "@/components/ui/arrow";
 import { button } from "@/components/ui/button";
 import { Breadcrumbs, container, DotTitle, Eyebrow } from "@/components/ui/primitives";
@@ -21,13 +22,17 @@ export async function generateMetadata({ params }: { params: Promise<{ ontwerp: 
   const door = getGlassDoor(ontwerp);
   if (!door) return {};
   return pageMetadata({
-    title: `${door.name}: ${door.type.toLowerCase()} van glas`,
-    description: `${door.tagline} ${door.description}`,
+    title: `${door.name}: glazen deur op maat`,
+    description: `${door.tagline} Leverbaar als taatsdeur, schuifdeur, draaideur of roomdivider, volledig op maat.`,
     path: `/collecties/glas/${door.slug}`,
   });
 }
 
-/** One glass design — the Lovable product page: image left, sticky details right. */
+/**
+ * One glass design — the Lovable product page: image left, sticky details
+ * right. "Kies je uitvoering" picks one of the four (pre-selected: the one in
+ * the photo, or ?uitvoering= from a door page) and fills the request.
+ */
 export default async function GlassDoorPage({ params }: { params: Promise<{ ontwerp: string }> }) {
   const { ontwerp } = await params;
   const door = getGlassDoor(ontwerp);
@@ -38,7 +43,7 @@ export default async function GlassDoorPage({ params }: { params: Promise<{ ontw
   const others = GLASS_DOORS.filter((d) => d.slug !== door.slug);
 
   const specs: Array<[string, string]> = [
-    ["Deurtype", door.type],
+    ["Op de foto", door.type],
     ["Glas", door.glass],
     ["Indeling", door.layout],
     ["Standaard profiel", FINISHES[door.finish].label],
@@ -81,15 +86,7 @@ export default async function GlassDoorPage({ params }: { params: Promise<{ ontw
               {specs.map(([label, value]) => (
                 <div key={label} className="grid grid-cols-2 gap-4 border-b py-3.5 text-[0.9375rem]">
                   <dt className="text-muted-foreground">{label}</dt>
-                  <dd>
-                    {label === "Deurtype" ? (
-                      <Link href={door.typeHref} className="link-line">
-                        {value}
-                      </Link>
-                    ) : (
-                      value
-                    )}
-                  </dd>
+                  <dd>{value}</dd>
                 </div>
               ))}
             </dl>
@@ -108,11 +105,15 @@ export default async function GlassDoorPage({ params }: { params: Promise<{ ontw
               </ul>
             </div>
 
-            <div className="mt-10 flex animate-rise flex-wrap items-center gap-4 [animation-delay:240ms]">
-              <Link href={`/contact?ontwerp=${door.slug}`} className={button({ size: "lg" })}>
-                Vraag een voorstel voor {door.name} <Arrow />
-              </Link>
-              <a href={`tel:${company.telefoonHref}`} className={button({ variant: "text" })}>
+            <div className="mt-10 animate-rise border-t pt-8 [animation-delay:240ms]">
+              <UitvoeringPicker
+                subject={door.name}
+                contactQuery={`ontwerp=${door.slug}`}
+                initial={door.uitvoering}
+                note={`Op de foto als ${door.type.toLowerCase()}. ${door.name} kan in alle vier.`}
+                compact
+              />
+              <a href={`tel:${company.telefoonHref}`} className={cn(button({ variant: "text" }), "mt-4")}>
                 of bel {company.telefoon}
               </a>
             </div>
@@ -138,7 +139,7 @@ export default async function GlassDoorPage({ params }: { params: Promise<{ ontw
                   <h3 className="text-2xl">
                     <span className="link-line">{d.name}</span>
                   </h3>
-                  <span className="text-[0.8125rem] text-muted-foreground">{d.type}</span>
+                  <span className="text-[0.8125rem] text-muted-foreground">{d.glass}</span>
                 </div>
               </Link>
             </li>

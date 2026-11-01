@@ -12,7 +12,7 @@ const redirects: Array<{ source: string; destination: string }> = [
   { source: "/products/PivotDoor", destination: "/taatsdeuren" },
   { source: "/products/SlideDoor", destination: "/schuifdeuren" },
   { source: "/products/HingedDoors", destination: "/draaideuren" },
-  { source: "/products/flushTowall", destination: "/wandvlakke-deuren" },
+  { source: "/products/flushTowall", destination: "/draaideuren#wandvlak" },
   { source: "/products/wallPartition", destination: "/roomdividers" },
   { source: "/products/biosirie", destination: "/boiserie" },
   { source: "/products/material", destination: "/materialen" },
@@ -34,6 +34,8 @@ const redirects: Array<{ source: string; destination: string }> = [
   { source: "/privacy-Policy", destination: "/privacy" },
   { source: "/terms", destination: "/algemene-voorwaarden" },
   { source: "/library", destination: "/materialenbibliotheek" },
+  // 01-11-2026: wandvlak is an option of the draaideur (four uitvoeringen, data/uitvoeringen.ts).
+  { source: "/wandvlakke-deuren", destination: "/draaideuren#wandvlak" },
   { source: "/search", destination: "/" },
   { source: "/projects", destination: "/" },
   { source: "/projects/:id", destination: "/" },

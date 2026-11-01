@@ -3,8 +3,10 @@ import { AanvraagForm } from "@/components/aanvraag-form";
 import { WhatsAppIcon } from "@/components/icons";
 import { Breadcrumbs, container, Eyebrow } from "@/components/ui/primitives";
 import { company } from "@/data/company";
+import { getCollectie } from "@/data/collecties";
 import { getGlassDoor } from "@/data/glasdeuren";
 import { getMaterial } from "@/data/materialenbibliotheek";
+import { getUitvoering } from "@/data/uitvoeringen";
 import { pageMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
@@ -20,18 +22,39 @@ const row = "group flex items-center justify-between gap-6 border-b py-5";
 export default async function ContactPage({
   searchParams,
 }: {
-  searchParams: Promise<{ type?: string; materiaal?: string; ontwerp?: string }>;
+  searchParams: Promise<{
+    type?: string;
+    materiaal?: string;
+    ontwerp?: string;
+    collectie?: string;
+    uitvoering?: string;
+    optie?: string;
+    product?: string;
+  }>;
 }) {
-  const { type, materiaal, ontwerp } = await searchParams;
+  const { type, materiaal, ontwerp, collectie, uitvoering, optie, product } = await searchParams;
   const initialType = type === "zakelijk" ? "zakelijk" : "particulier";
-  // Coming from the materials library or a glass design: start the message for them.
+  // Coming from a material, a design, a collection or an uitvoering page:
+  // start the message for them and tick the uitvoering in the form.
   const material = materiaal ? getMaterial(materiaal) : null;
   const design = ontwerp ? getGlassDoor(ontwerp) : null;
+  const collection = collectie ? getCollectie(collectie) : null;
+  const u = getUitvoering(uitvoering);
+  const wandvlak = u?.slug === "draaideur" && optie === "wandvlak";
+  const uitvoeringNaam = u ? (wandvlak ? "wandvlakke draaideur" : u.label.toLowerCase()) : null;
+  const als = uitvoeringNaam ? ` als ${uitvoeringNaam}` : "";
   const initialMessage = material
     ? `Ik ben geïnteresseerd in ${material.name} (${material.code}) uit de materialenbibliotheek.\n\n`
     : design
-      ? `Ik ben geïnteresseerd in het glasontwerp ${design.name} (${design.type.toLowerCase()}).\n\n`
-      : undefined;
+      ? `Ik ben geïnteresseerd in het glasontwerp ${design.name}${als}.\n\n`
+      : collection
+        ? `Ik ben geïnteresseerd in de ${collection.name}${als}.\n\n`
+        : uitvoeringNaam
+          ? `Ik ben geïnteresseerd in een ${uitvoeringNaam}.\n\n`
+          : product === "boiserie"
+            ? "Ik ben geïnteresseerd in boiserie (wandpanelen).\n\n"
+            : undefined;
+  const initialProducten = u ? [u.slug] : product === "boiserie" ? ["boiserie"] : [];
   return (
     <section className={cn(container, "pb-24 pt-32 lg:pb-32 lg:pt-40")}>
       <Breadcrumbs items={[{ name: "Contact", path: "/contact" }]} />
@@ -91,7 +114,7 @@ export default async function ContactPage({
           <div className="animate-rise rounded-sm border bg-card p-6 [animation-delay:100ms] sm:p-10 lg:p-12">
             <Eyebrow>Vraag een voorstel</Eyebrow>
             <h2 className="mb-10 mt-5 text-3xl sm:text-4xl">Vertel ons over je ruimte.</h2>
-            <AanvraagForm initialType={initialType} initialMessage={initialMessage} />
+            <AanvraagForm initialType={initialType} initialMessage={initialMessage} initialProducten={initialProducten} />
           </div>
         </div>
       </div>

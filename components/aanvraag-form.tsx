@@ -31,16 +31,19 @@ const optional = "font-normal normal-case tracking-normal text-muted-foreground/
 export function AanvraagForm({
   initialType = "particulier",
   initialMessage,
+  initialProducten = [],
 }: {
   initialType?: "particulier" | "zakelijk";
   /** Pre-filled message, e.g. when coming from a material or glass design page. */
   initialMessage?: string;
+  /** Pre-ticked uitvoering(en), e.g. "taatsdeur" when coming from a design picked as a pivot door. */
+  initialProducten?: string[];
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [type, setType] = useState<string>(initialType);
   const [reden, setReden] = useState<string>(initialType === "zakelijk" ? "partner" : "voorstel");
-  const [producten, setProducten] = useState<string[]>([]);
+  const [producten, setProducten] = useState<string[]>(initialProducten);
   const [errors, setErrors] = useState<Errors>({});
   const [serverError, setServerError] = useState<string | null>(null);
   const [files, setFiles] = useState<File[]>([]);
@@ -171,8 +174,9 @@ export function AanvraagForm({
 
       <fieldset>
         <legend className={label}>
-          Waar gaat het om? <span className={optional}>(optioneel)</span>
+          Welke uitvoering? <span className={optional}>(optioneel, meer kiezen mag)</span>
         </legend>
+        <p className="-mt-1 mb-3 text-[0.8125rem] text-muted-foreground">Elk ontwerp kan als taatsdeur, schuifdeur, draaideur of roomdivider.</p>
         <div className="flex flex-wrap gap-2">
           {PRODUCT_OPTIONS.map((o) => {
             const on = producten.includes(o.value);
