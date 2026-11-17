@@ -128,7 +128,7 @@ export function DesignTab({ project, update, claude, goto }: TabProps) {
               ? "Claude leest de hoofdstukken, verhalen en fotogegevens en bepaalt de volgorde, de sjablonen en waar elk verhaal landt. Teksten van het bruidspaar worden nooit herschreven."
               : "Er is geen Claude API-sleutel ingesteld op de server. Het boek wordt nu ontworpen door de ingebouwde opmaakregels met dezelfde parameters. Stel ANTHROPIC_API_KEY in om Claude te laten ontwerpen."}
           </p>
-          <p className="mt-3 text-xs text-muted-foreground">{project.photos.length} foto&apos;s · {project.stories.length} verhalen · {project.chapters.length} hoofdstukken{locked ? ` · ${locked} spread(s) vergrendeld` : ""}</p>
+          <p className="mt-3 text-xs text-muted-foreground">{project.photos.length} foto&apos;s, {project.stories.length} verhalen, {project.chapters.length} hoofdstukken{locked ? `, ${locked} spread(s) vergrendeld` : ""}</p>
           <button type="button" className={cn(btnPrimary, "mt-4 h-11 w-full")} onClick={design} disabled={Boolean(busy) || project.photos.length === 0}>
             {busy ? "Bezig…" : project.spreads.length ? "Ontwerp het boek opnieuw" : "Ontwerp het boek"}
           </button>
@@ -142,7 +142,7 @@ export function DesignTab({ project, update, claude, goto }: TabProps) {
           )}
           {report && (
             <div className="mt-4 border-t pt-4">
-              <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">{report.by === "claude" ? "Concept van Claude" : "Ontwerp klaar"}</p>
+              <p className="text-xs font-medium text-muted-foreground">{report.by === "claude" ? "Concept van Claude" : "Ontwerp klaar"}</p>
               <p className="mt-2 font-display text-lg leading-snug">{report.concept}</p>
               {report.notes.map((n) => <p key={n} className="mt-2 text-xs text-muted-foreground">{n}</p>)}
               <button type="button" className={cn(btnOutline, "mt-4 w-full")} onClick={() => goto("boek")}>Bekijk de {project.spreads.length} spreads</button>

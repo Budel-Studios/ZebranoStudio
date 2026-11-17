@@ -142,16 +142,16 @@ export function BookTab({ project, update, role, studio, claude, goto, focusSpre
   const approved = Boolean(spread.approved?.[role]);
 
   return (
-    <div className="grid lg:h-[calc(100dvh-6.4rem)] lg:grid-cols-[13rem_minmax(0,1fr)_20rem]">
+    <div className="grid grid-cols-[minmax(0,1fr)] lg:h-[calc(100dvh-6.4rem)] lg:grid-cols-[13rem_minmax(0,1fr)_20rem]">
       {/* Storyboard */}
-      <aside className="border-b bg-background lg:overflow-y-auto lg:border-b-0 lg:border-r">
+      <aside className="min-w-0 border-b bg-background lg:overflow-y-auto lg:border-b-0 lg:border-r">
         <ol ref={listRef} className="flex gap-2 overflow-x-auto p-3 lg:block lg:space-y-2 lg:overflow-visible">
           {project.spreads.map((s, i) => {
             const first = i === 0 || project.spreads[i - 1].chapterId !== s.chapterId;
             const open = s.comments.filter((c) => !c.resolved).length;
             return (
               <li key={s.id} className="shrink-0 lg:shrink">
-                {first && <p className="mb-1.5 mt-3 hidden truncate text-[0.625rem] uppercase tracking-[0.16em] text-muted-foreground first:mt-0 lg:block">{project.chapters.find((c) => c.id === s.chapterId)?.title ?? (i === 0 ? "Voorwerk" : "Slot")}</p>}
+                {first && <p className="mb-1.5 mt-3 hidden truncate text-xs font-medium text-muted-foreground first:mt-0 lg:block">{project.chapters.find((c) => c.id === s.chapterId)?.title ?? (i === 0 ? "Voorwerk" : "Slot")}</p>}
                 <button type="button" onClick={() => select(s.id)} aria-current={s.id === spread.id} className={cn("relative block w-36 rounded-[2px] p-0.5 lg:w-full", s.id === spread.id ? "ring-2 ring-primary" : "hover:ring-1 hover:ring-foreground/30")}>
                   <SpreadView spread={s} formatId={project.formatId} style={project.style} className="pointer-events-none" />
                   <span className="absolute left-1.5 top-1.5 rounded-sm bg-black/50 px-1 text-[0.5625rem] text-white">{i + 1}</span>
@@ -170,7 +170,7 @@ export function BookTab({ project, update, role, studio, claude, goto, focusSpre
       {/* Canvas */}
       <section className="flex min-w-0 flex-col lg:overflow-y-auto">
         <div className="flex flex-wrap items-center gap-1 border-b bg-background px-3 py-1.5">
-          <span className="mr-2 text-xs text-muted-foreground">Spread {index + 1}/{project.spreads.length} · p. {index * 2 + 1}–{index * 2 + 2} · {chapter?.title ?? "—"} · {templateOf(spread.template).name}</span>
+          <span className="mr-2 text-xs text-muted-foreground">Spread {index + 1}/{project.spreads.length}, p. {index * 2 + 1}–{index * 2 + 2}, {chapter?.title ?? "—"}, {templateOf(spread.template).name}</span>
           <span className="ml-auto flex items-center gap-0.5">
             <button type="button" className={iconBtn} onClick={() => setGuides((g) => !g)} aria-pressed={guides} title="Veilige marge en vouw tonen"><Ruler className={cn("h-4 w-4", guides && "text-primary")} strokeWidth={1.5} /></button>
             {photographer && (
@@ -186,7 +186,7 @@ export function BookTab({ project, update, role, studio, claude, goto, focusSpre
           </span>
         </div>
 
-        <div className="flex-1 bg-linen/60 p-4 sm:p-8">
+        <div className="flex-1 bg-board/30 p-4 sm:p-8">
           <div className="mx-auto max-w-5xl">
             <SpreadView spread={spread} formatId={project.formatId} style={project.style} guides={guides ? { safeMm: studio.safeMm } : undefined}
               selectedId={photographer ? frameId : undefined}
@@ -237,7 +237,7 @@ export function BookTab({ project, update, role, studio, claude, goto, focusSpre
           <div className="space-y-4">
             <p className="eyebrow">Spread</p>
             <Field label="Sjabloon">
-              <select className={inputCls} value={spread.template} onChange={(e) => retemplate(e.target.value)}>{TEMPLATES.map((t) => <option key={t.id} value={t.id}>{t.name} · {t.photos} foto{t.photos === 1 ? "" : "'s"}</option>)}</select>
+              <select className={inputCls} value={spread.template} onChange={(e) => retemplate(e.target.value)}>{TEMPLATES.map((t) => <option key={t.id} value={t.id}>{t.name}, {t.photos} foto{t.photos === 1 ? "" : "'s"}</option>)}</select>
             </Field>
             <p className="-mt-2 text-xs leading-relaxed text-muted-foreground">{templateOf(spread.template).use}</p>
             <Field label="Achtergrond"><Segmented<SpreadBackground> value={spread.background} onChange={(background) => patchSpread(spread.id, (s) => ({ ...s, background }))} options={[{ value: "paper", label: "Papier" }, { value: "tint", label: "Tint" }, { value: "dark", label: "Donker" }]} /></Field>
@@ -255,10 +255,10 @@ export function BookTab({ project, update, role, studio, claude, goto, focusSpre
         )}
 
         <div className="space-y-3 border-t pt-4">
-          <p className="eyebrow"><MessageSquare className="h-3.5 w-3.5" strokeWidth={1.5} /> Opmerkingen</p>
+          <p className="eyebrow flex items-center gap-2"><MessageSquare className="h-3.5 w-3.5" strokeWidth={1.5} /> Opmerkingen</p>
           {spread.comments.map((c) => (
             <div key={c.id} className={cn("rounded-sm border p-2.5 text-sm", c.resolved && "opacity-50")}>
-              <p className="text-[0.6875rem] uppercase tracking-[0.14em] text-muted-foreground">{c.role === "klant" ? "Bruidspaar" : "Fotograaf"} · {new Date(c.at).toLocaleDateString("nl-NL", { day: "numeric", month: "short" })}</p>
+              <p className="text-xs font-medium text-muted-foreground">{c.role === "klant" ? "Bruidspaar" : "Fotograaf"}, {new Date(c.at).toLocaleDateString("nl-NL", { day: "numeric", month: "short" })}</p>
               <p className="mt-1 whitespace-pre-line">{c.text}</p>
               {photographer && <button type="button" className="mt-1.5 text-xs underline decoration-ribbon underline-offset-4" onClick={() => patchSpread(spread.id, (s) => ({ ...s, comments: s.comments.map((x) => (x.id === c.id ? { ...x, resolved: !x.resolved } : x)) }))}>{c.resolved ? "Heropenen" : "Afgehandeld"}</button>}
             </div>
@@ -342,7 +342,7 @@ function TextInspector({ frame, onChange, onRemove }: { frame: TextFrame; onChan
 
 function Geometry({ frame, onChange }: { frame: Frame; onChange: (f: Frame) => void }) {
   const num = (key: "x" | "y" | "w" | "h", label: string) => (
-    <label className="block text-[0.6875rem] uppercase tracking-[0.14em] text-muted-foreground">{label}
+    <label className="block text-xs font-medium text-foreground/80">{label}
       <input type="number" step={0.5} min={0} max={100} value={Math.round(frame[key] * 10) / 10} onChange={(e) => onChange({ ...frame, [key]: Math.min(100, Math.max(0, Number(e.target.value))) })} className={cn(inputCls, "mt-1 px-2 py-1 text-xs")} />
     </label>
   );

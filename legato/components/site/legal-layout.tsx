@@ -22,12 +22,12 @@ export function LegalLayout({
 }) {
   return (
     <>
-      <PageHeader eyebrow="Juridisch · concept" crumbs={[{ name: typeof title === "string" ? title : "Juridisch", path }]} title={title} intro={<p>{intro}</p>} />
-      <section className={cn(container, "pb-24 pt-12 lg:pb-32")}>
+      <PageHeader eyebrow="Juridisch concept" crumbs={[{ name: typeof title === "string" ? title : "Juridisch", path }]} title={title} intro={<p>{intro}</p>} />
+      <section className={cn(container, "pb-20 pt-12 lg:pb-28")}>
         <div className="mx-auto max-w-3xl">
-          <div role="note" className="rounded-sm border border-ribbon/60 bg-ribbon/10 px-5 py-4 text-[0.9375rem] leading-relaxed">
-            <p className="text-[0.6875rem] font-medium uppercase tracking-[0.2em]">Concept</p>
-            <p className="mt-2">
+          <div role="note" className="border-l-4 border-ribbon bg-linen px-5 py-4 text-[0.9375rem]">
+            <p className="font-semibold">Concept</p>
+            <p className="mt-1">
               Dit is een concepttekst die nog juridisch getoetst moet worden. Gegevens tussen [vierkante haken] zijn nog niet
               ingevuld. Aan deze versie kunnen geen rechten worden ontleend. Versie van {updated}.
             </p>
@@ -35,11 +35,10 @@ export function LegalLayout({
           <div className="mt-12 space-y-12">
             {sections.map((s, i) => (
               <section key={s.heading}>
-                <h2 className="flex items-baseline gap-4 text-3xl">
-                  <span className="font-sans text-[0.6875rem] tabular-nums tracking-[0.2em] text-ribbon">{String(i + 1).padStart(2, "0")}</span>
-                  {s.heading}
+                <h2 className="text-h3">
+                  {i + 1}. {s.heading}
                 </h2>
-                <div className="mt-4 space-y-4 text-lg leading-relaxed text-muted-foreground [&_a]:text-foreground [&_li]:ml-5 [&_li]:list-disc [&_ul]:space-y-1.5">
+                <div className="mt-4 space-y-4 text-base text-muted-foreground [&_a]:text-foreground [&_li]:ml-5 [&_li]:list-disc [&_ul]:space-y-1.5">
                   {s.body}
                 </div>
               </section>

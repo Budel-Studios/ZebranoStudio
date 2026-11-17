@@ -1,7 +1,7 @@
-import { ArrowUpRight, LogIn, Mail } from "lucide-react";
+import { LogIn, Mail } from "lucide-react";
 import Link from "next/link";
 import { ContactForm } from "@/components/site/contact-form";
-import { Breadcrumbs, container, Eyebrow, Soft } from "@/components/ui/primitives";
+import { Breadcrumbs, container, Eyebrow } from "@/components/ui/primitives";
 import { getAccessoire } from "@/data/accessoires";
 import { BRAND } from "@/lib/brand";
 import { pageMetadata } from "@/lib/seo";
@@ -13,8 +13,7 @@ export const metadata = pageMetadata({
   path: "/contact",
 });
 
-const row = "group flex items-center justify-between gap-6 border-b py-5";
-const rowIcon = "size-4 text-muted-foreground transition-transform duration-500 ease-page group-hover:-translate-y-0.5 group-hover:translate-x-0.5";
+const row = "group flex items-center gap-6 border-b py-5";
 
 export default async function ContactPage({
   searchParams,
@@ -41,24 +40,23 @@ export default async function ContactPage({
         : [];
 
   return (
-    <section className={cn(container, "pb-24 pt-32 lg:pb-32 lg:pt-40")}>
+    <section className={cn(container, "pb-20 pt-32 lg:pb-28 lg:pt-44")}>
       <Breadcrumbs items={[{ name: "Contact", path: "/contact" }]} />
       <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-5">
-          <div className="animate-rise">
-            <Eyebrow>Contact</Eyebrow>
-            <h1 className="mt-6 text-5xl leading-[1] sm:text-6xl lg:text-7xl">
+          <div>
+            <h1>
               {fotograaf ? (
                 <>
-                  Vraag een <Soft>demo aan.</Soft>
+                  Vraag een demo aan.
                 </>
               ) : (
                 <>
-                  Vertel ons <Soft>over jullie dag.</Soft>
+                  Vertel ons over jullie dag.
                 </>
               )}
             </h1>
-            <div className="mt-8 max-w-md space-y-4 text-lg leading-relaxed text-muted-foreground">
+            <div className="mt-8 max-w-md space-y-4 text-lead text-muted-foreground">
               {fotograaf ? (
                 <p>
                   Benieuwd of {BRAND.name} bij je studio past? Laat je gegevens achter, dan lopen we samen door de studio, de
@@ -76,32 +74,30 @@ export default async function ContactPage({
             </div>
           </div>
 
-          <div className="mt-12 animate-rise border-t [animation-delay:150ms]">
+          <div className="mt-12 border-t">
             <a href={`mailto:${BRAND.email}`} className={row}>
               <span className="flex items-center gap-4">
-                <Mail strokeWidth={1.25} aria-hidden className="size-5 text-ribbon" />
+                <Mail strokeWidth={1.5} aria-hidden className="size-5 text-cloth" />
                 <span>
-                  <span className="block text-[0.6875rem] uppercase tracking-[0.2em] text-muted-foreground">Mail ons</span>
+                  <span className="block text-sm font-medium text-muted-foreground">Mail ons</span>
                   <span className="mt-1 block font-display text-2xl">
                     <span className="link-line break-all">{BRAND.email}</span>
                   </span>
                 </span>
               </span>
-              <ArrowUpRight strokeWidth={1.25} aria-hidden className={rowIcon} />
             </a>
             <Link href="/studio" className={row}>
               <span className="flex items-center gap-4">
-                <LogIn strokeWidth={1.25} aria-hidden className="size-5 text-ribbon" />
+                <LogIn strokeWidth={1.5} aria-hidden className="size-5 text-cloth" />
                 <span>
-                  <span className="block text-[0.6875rem] uppercase tracking-[0.2em] text-muted-foreground">Fotograaf met een studio</span>
+                  <span className="block text-sm font-medium text-muted-foreground">Fotograaf met een studio</span>
                   <span className="mt-1 block font-display text-2xl">
                     <span className="link-line">Inloggen studio</span>
                   </span>
                 </span>
               </span>
-              <ArrowUpRight strokeWidth={1.25} aria-hidden className={rowIcon} />
             </Link>
-            <p className="pt-5 text-sm leading-relaxed text-muted-foreground">
+            <p className="pt-5 text-small text-muted-foreground">
               We bewaren niets op deze website: je bericht komt als e-mail bij ons binnen. Meer in de{" "}
               <Link href="/privacy" className="link-line text-foreground">
                 privacyverklaring
@@ -112,9 +108,9 @@ export default async function ContactPage({
         </div>
 
         <div className="lg:col-span-7">
-          <div className="animate-rise rounded-sm border bg-card p-6 [animation-delay:100ms] sm:p-10 lg:p-12">
-            <Eyebrow>{fotograaf ? "Vraag een demo aan" : "Vraag een voorstel"}</Eyebrow>
-            <h2 className="mb-10 mt-5 text-3xl sm:text-4xl">{fotograaf ? "Vertel ons over je studio." : "Waar mogen we mee helpen?"}</h2>
+          <div className="border bg-card p-6 sm:p-10 lg:p-12">
+            <Eyebrow className="mb-3">{fotograaf ? "Vraag een demo aan" : "Vraag een voorstel"}</Eyebrow>
+            <h2 className="mb-10 text-h3 sm:text-[2.25rem]">{fotograaf ? "Vertel ons over je studio." : "Waar mogen we mee helpen?"}</h2>
             <ContactForm key={fotograaf ? "fotograaf" : "paar"} initialType={fotograaf ? "fotograaf" : "paar"} initialMessage={initialMessage} initialInteresse={initialInteresse} />
           </div>
         </div>

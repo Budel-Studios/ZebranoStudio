@@ -63,9 +63,9 @@ export function StoryTab({ project, update, role, claude }: TabProps) {
           {project.chapters.map((c, i) => (
             <li key={c.id} className="group flex items-center gap-1">
               <button type="button" onClick={() => setSel(c.id)} className={cn("flex min-w-0 flex-1 items-baseline gap-2.5 rounded-sm px-3 py-2 text-left text-sm", sel === c.id ? "bg-foreground text-background" : "hover:bg-foreground/5")}>
-                <span className="text-[0.625rem] tracking-[0.14em] opacity-60">{String(i + 1).padStart(2, "0")}</span>
+                <span className="text-[0.6875rem] tabular-nums opacity-60">{String(i + 1).padStart(2, "0")}</span>
                 <span className="min-w-0 flex-1 truncate">{c.title}</span>
-                <span className="text-xs opacity-60">{project.photos.filter((p) => p.chapterId === c.id).length} · {project.stories.filter((s) => s.chapterId === c.id).length}</span>
+                <span className="text-xs opacity-60">{project.photos.filter((p) => p.chapterId === c.id).length} / {project.stories.filter((s) => s.chapterId === c.id).length}</span>
               </button>
               {photographer && (
                 <span className="flex opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100">
@@ -76,7 +76,7 @@ export function StoryTab({ project, update, role, claude }: TabProps) {
             </li>
           ))}
         </ol>
-        <p className="mt-2 px-3 text-[0.6875rem] text-muted-foreground">Aantallen: foto&apos;s · verhalen</p>
+        <p className="mt-2 px-3 text-[0.6875rem] text-muted-foreground">Aantallen: foto&apos;s / verhalen</p>
         {photographer && (
           <div className="mt-5 border-t pt-4">
             <button type="button" className={cn(btnOutline, "w-full")} onClick={() => addChapter()}><Plus className="h-4 w-4" /> Eigen hoofdstuk</button>
@@ -149,7 +149,7 @@ function StoryCard({ story, claude, onPatch, onRemove, onAddQuote }: { story: St
         <select value={story.kind} onChange={(e) => onPatch({ kind: e.target.value as StoryKind })} className="rounded-sm border border-input bg-background px-2 py-1 text-sm" aria-label="Soort verhaal">
           {STORY_KINDS.map((k) => <option key={k.id} value={k.id}>{k.name}</option>)}
         </select>
-        <span className="text-xs text-muted-foreground">{story.by === "klant" ? "Ingevuld door het bruidspaar" : "Ingevuld door de fotograaf"} · {story.text.length} tekens</span>
+        <span className="text-xs text-muted-foreground">{story.by === "klant" ? "Ingevuld door het bruidspaar" : "Ingevuld door de fotograaf"}, {story.text.length} tekens</span>
         <button type="button" className={cn(iconBtn, "ml-auto")} onClick={onRemove} aria-label="Verhaal verwijderen"><Trash2 className="h-4 w-4" strokeWidth={1.5} /></button>
       </header>
       <div className="space-y-4 p-5">

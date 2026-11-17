@@ -178,7 +178,7 @@ export const ACCESSORIES: Accessory[] = [
 export const DEFAULT_STUDIO: StudioSettings = {
   name: "Jouw fotostudio",
   tagline: "Trouwboeken op maat",
-  accent: "#5b1f2a",
+  accent: "#2D4379",
   bookPrice: {},
   includedSpreads: 30,
   extraSpreadPrice: 0,

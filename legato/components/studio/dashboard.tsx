@@ -55,7 +55,7 @@ export function Dashboard() {
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4">
           <div>
             <p className="font-display text-2xl leading-none">{studio?.name ?? "Studio"}</p>
-            <p className="mt-1 text-xs text-muted-foreground">{studio?.tagline} · boekenstudio van {BRAND.name}</p>
+            <p className="mt-1 text-xs text-muted-foreground">{studio?.tagline}, boekenstudio van {BRAND.name}</p>
           </div>
           <div className="flex items-center gap-2">
             <Link href="/" className="hidden text-sm text-muted-foreground hover:text-foreground sm:block">Naar de website</Link>
@@ -67,8 +67,7 @@ export function Dashboard() {
       <main className="mx-auto max-w-6xl px-5 py-10">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="eyebrow">Projecten</p>
-            <h1 className="mt-3 text-4xl">Boeken in de maak</h1>
+            <h1 className="text-4xl">Boeken in de maak</h1>
           </div>
           <div className="flex gap-2">
             <button type="button" className={btnOutline} onClick={openDemo} disabled={Boolean(demo)}><Sparkles className="h-4 w-4" strokeWidth={1.5} /> {demo ?? "Open een voorbeeldboek"}</button>
@@ -78,22 +77,22 @@ export function Dashboard() {
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {projects?.map((p) => (
-            <article key={p.id} className="group relative rounded-sm border bg-card p-5 transition-shadow hover:shadow-[var(--shadow-soft)]">
+            <article key={p.id} className="group relative border bg-card p-5 transition-colors hover:border-foreground/40">
               <Link href={`/studio/project/${p.id}`} className="absolute inset-0" aria-label={`Open ${p.title}`} />
               <div className="flex items-start justify-between gap-3">
-                <span className="rounded-full border px-2.5 py-0.5 text-[0.6875rem] uppercase tracking-[0.14em] text-muted-foreground">{STATUS[p.status]}</span>
+                <span className="rounded-sm border px-2 py-0.5 text-xs font-medium text-muted-foreground">{STATUS[p.status]}</span>
                 <button type="button" className={`${iconBtn} relative z-10 opacity-0 group-hover:opacity-100 focus:opacity-100`} aria-label={`Verwijder ${p.title}`}
                   onClick={async () => { if (confirm(`“${p.title}” met alle foto's verwijderen? Dit kan niet ongedaan worden gemaakt.`)) { await deleteProject(p.id); refresh(); } }}>
                   <Trash2 className="h-4 w-4" strokeWidth={1.5} />
                 </button>
               </div>
               <h2 className="mt-6 text-3xl leading-tight">{p.title}</h2>
-              <p className="mt-1 text-sm text-muted-foreground">{p.kind === "reis" ? "Reisboek" : "Trouwboek"}{p.date ? ` · ${p.date}` : ""}</p>
-              <p className="mt-6 border-t pt-3 text-xs text-muted-foreground">{p.photos} foto&apos;s · {p.spreads} spreads · bewerkt {new Date(p.updatedAt).toLocaleDateString("nl-NL", { day: "numeric", month: "short" })}</p>
+              <p className="mt-1 text-sm text-muted-foreground">{p.kind === "reis" ? "Reisboek" : "Trouwboek"}{p.date ? `, ${p.date}` : ""}</p>
+              <p className="mt-6 border-t pt-3 text-xs text-muted-foreground">{p.photos} foto&apos;s, {p.spreads} spreads, bewerkt {new Date(p.updatedAt).toLocaleDateString("nl-NL", { day: "numeric", month: "short" })}</p>
             </article>
           ))}
           {projects?.length === 0 && (
-            <div className="rounded-sm border border-dashed p-10 text-center sm:col-span-2 lg:col-span-3">
+            <div className="border border-dashed p-10 text-center sm:col-span-2 lg:col-span-3">
               <BookOpen className="mx-auto h-8 w-8 text-ribbon" strokeWidth={1} />
               <h2 className="mt-4 text-2xl">Nog geen boeken</h2>
               <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-muted-foreground">Begin een boek voor een bruidspaar, of open het voorbeeldboek om te zien hoe hoofdstukken, verhalen en foto&apos;s samen een ontwerp worden.</p>

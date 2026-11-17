@@ -32,12 +32,12 @@ export type Materiaal = {
 };
 
 export const materialen: Materiaal[] = [
-  { id: "linnen", name: "Linnen", text: "Geweven, mat en tijdloos. De structuur van het doek blijft zichtbaar en voelbaar.", color: "oklch(0.85 0.022 80)", texture: "weave" },
-  { id: "leer", name: "Leer", text: "Glad en warm in de hand. Een omslag dat met de jaren mooier wordt.", color: "oklch(0.44 0.075 48)", texture: "grain" },
-  { id: "suede", name: "Suède", text: "Zacht en geborsteld. Vangt het licht steeds net anders.", color: "oklch(0.64 0.035 62)", texture: "nap" },
-  { id: "fluweel", name: "Fluweel", text: "Diep van kleur, met een zachte glans. Het meest uitgesproken omslag.", color: "oklch(0.33 0.08 18)", texture: "nap" },
+  { id: "linnen", name: "Linnen", text: "Geweven, mat en tijdloos. De structuur van het doek blijft zichtbaar en voelbaar.", color: "#2d4379", texture: "weave" },
+  { id: "leer", name: "Leer", text: "Glad en warm in de hand. Een omslag dat met de jaren mooier wordt.", color: "oklch(0.42 0.06 50)", texture: "grain" },
+  { id: "suede", name: "Suède", text: "Zacht en geborsteld. Vangt het licht steeds net anders.", color: "oklch(0.63 0.02 70)", texture: "nap" },
+  { id: "fluweel", name: "Fluweel", text: "Diep van kleur, met een zachte glans. Het meest uitgesproken omslag.", color: "#1b2a52", texture: "nap" },
   { id: "katoen", name: "Katoen", text: "Fijn geweven en licht. Ingetogen, met een heldere tint.", color: "oklch(0.925 0.012 88)", texture: "weave" },
-  { id: "canvas", name: "Canvas", text: "Stevig en iets grover van draad. Een omslag met karakter.", color: "oklch(0.62 0.03 105)", texture: "weave" },
+  { id: "canvas", name: "Canvas", text: "Stevig en iets grover van draad. Een omslag met karakter.", color: "oklch(0.76 0.018 95)", texture: "weave" },
 ];
 
 /** What is inside, from front to back. */

@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function StudioLayout({ children }: { children: React.ReactNode }) {
-  return <div className="min-h-dvh bg-linen/50">{children}</div>;
+  return <div className="min-h-dvh bg-board/35">{children}</div>;
 }

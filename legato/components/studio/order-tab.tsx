@@ -67,7 +67,7 @@ export function OrderTab({ project, update, role, studio, goto }: TabProps) {
               return (
                 <li key={n} className="flex items-start gap-3 py-2.5 text-sm">
                   <Icon className={cn("mt-0.5 h-4 w-4 shrink-0", TONE[i.level])} strokeWidth={1.5} />
-                  <span className="flex-1">{i.spread && <span className="text-muted-foreground">Spread {i.spread} · </span>}{i.text}</span>
+                  <span className="flex-1">{i.spread && <span className="text-muted-foreground">Spread {i.spread}: </span>}{i.text}</span>
                   {i.spreadId && <button type="button" className="shrink-0 text-xs underline decoration-ribbon underline-offset-4" onClick={() => goto("boek", i.spreadId)}>Bekijk</button>}
                 </li>
               );
@@ -108,7 +108,7 @@ export function OrderTab({ project, update, role, studio, goto }: TabProps) {
               const n = qty(a.id);
               return (
                 <li key={a.id} className={cn("flex flex-col rounded-sm border p-4 transition-colors", n > 0 && "border-primary bg-background")}>
-                  <p className="text-[0.625rem] uppercase tracking-[0.16em] text-muted-foreground">{a.group}</p>
+                  <p className="text-xs font-medium text-muted-foreground">{a.group}</p>
                   <p className="mt-1 font-display text-xl">{a.name}</p>
                   <p className="mt-1 flex-1 text-xs leading-relaxed text-muted-foreground">{a.text}</p>
                   <div className="mt-3 flex items-center justify-between">

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { MockStage, SampleSpread } from "@/components/site/book-mock";
 import { button } from "@/components/ui/button";
-import { container, CtaSection, Eyebrow, NumberedGrid, PageHero, Soft, SplitIntro } from "@/components/ui/primitives";
+import { container, CtaSection, NumberedGrid, PageHero, SplitIntro } from "@/components/ui/primitives";
 import { Reveal } from "@/components/ui/reveal";
 import { BRAND } from "@/lib/brand";
 import { pageMetadata } from "@/lib/seo";
@@ -26,11 +26,7 @@ export default function OverPage() {
       <PageHero
         eyebrow={`Over ${BRAND.name}`}
         crumbs={[{ name: "Over ons", path: "/over" }]}
-        title={
-          <>
-            Gebonden, <Soft>in elke betekenis.</Soft>
-          </>
-        }
+        title="Gebonden, in elke betekenis."
         intro={
           <>
             <p>
@@ -42,20 +38,13 @@ export default function OverPage() {
         }
         visual={
           <MockStage tone="cloth" className="aspect-[5/4] lg:aspect-[6/5]">
-            <SampleSpread kind="quote" className="w-[86%]" board="oklch(0.85 0.022 80)" />
+            <SampleSpread kind="quote" className="w-[86%]" />
           </MockStage>
         }
       />
 
-      <section className={cn(container, "pb-24 lg:pb-32")}>
-        <SplitIntro
-          eyebrow="Waarom een boek"
-          title={
-            <>
-              Het album <Soft>mist de helft.</Soft>
-            </>
-          }
-        >
+      <section className={cn(container, "pb-20 lg:pb-28")}>
+        <SplitIntro title="Het album mist de helft.">
           <p>
             Een goede trouwfotograaf legt een dag prachtig vast. Maar een dag bestaat niet alleen uit beeld. Er wordt gesproken,
             beloofd, voorgelezen, gezongen. Juist dat verdwijnt het snelst: in een notitie-app, op een papiertje in een
@@ -66,18 +55,15 @@ export default function OverPage() {
             Met hoofdstukken, zodat je erin kunt lezen. En gemaakt met de fotograaf, omdat die de dag van dichtbij heeft gezien.
           </p>
         </SplitIntro>
-        <NumberedGrid items={PRINCIPLES} className="mt-16" />
+        <NumberedGrid items={PRINCIPLES} className="mt-14" />
       </section>
 
       <section className="bg-linen">
-        <div className={cn(container, "py-24 lg:py-32")}>
+        <div className={cn(container, "py-20 lg:py-28")}>
           <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
             <Reveal className="lg:col-span-5">
-              <Eyebrow>Hoe we werken</Eyebrow>
-              <h2 className="mt-5 text-4xl leading-[1.05] sm:text-5xl">
-                Software van nu, <Soft>bindwerk van vroeger.</Soft>
-              </h2>
-              <div className="mt-6 space-y-4 text-lg leading-relaxed text-muted-foreground">
+              <h2>Software van nu, bindwerk van vroeger.</h2>
+              <div className="mt-6 space-y-4 text-lead text-muted-foreground">
                 <p>
                   Het ontwerpen gebeurt in een studio in de browser, met een AI-assistent die opmaakvoorstellen doet. Het boek
                   zelf is ouderwets tastbaar: gedrukt en gebonden in Italië door {BRAND.printer}, met een omslag van stof of leer.
@@ -97,7 +83,7 @@ export default function OverPage() {
               </div>
             </Reveal>
             <Reveal delay={100} className="lg:col-span-7">
-              <MockStage tone="paper" className="aspect-[4/3] border">
+              <MockStage tone="paper" className="aspect-[4/3]">
                 <SampleSpread kind="colofon" className="w-[86%]" />
               </MockStage>
             </Reveal>
@@ -105,7 +91,6 @@ export default function OverPage() {
         </div>
       </section>
 
-      <div className="h-24 lg:h-32" />
       <CtaSection />
     </>
   );

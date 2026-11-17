@@ -34,8 +34,8 @@ export function PrintView({ id }: { id: string }) {
       <style>{`@page { size: ${W}mm ${H}mm; margin: 0 } @media print { html, body { background: #fff !important } .lg-sheet { margin: 0 !important; box-shadow: none !important } }`}</style>
       <div className="sticky top-0 z-10 flex flex-wrap items-center gap-4 border-b bg-background px-5 py-3 print:hidden">
         <div className="min-w-0 flex-1">
-          <p className="font-display text-xl">{project.title} · drukbestand</p>
-          <p className="text-xs text-muted-foreground">{project.spreads.length} spreads · pagina {W} × {H} mm (snijformaat {f.pageW * 2} × {f.pageH} mm + {b} mm afloop) · omslag: {material?.name} {color?.name?.toLowerCase()}, {project.cover.debossing === "blind" ? "blinddruk" : `${project.cover.debossing}folie`} “{project.cover.title}”</p>
+          <p className="font-display text-xl">{project.title}, drukbestand</p>
+          <p className="text-xs text-muted-foreground">{project.spreads.length} spreads, pagina {W} × {H} mm (snijformaat {f.pageW * 2} × {f.pageH} mm + {b} mm afloop), omslag: {material?.name} {color?.name?.toLowerCase()}, {project.cover.debossing === "blind" ? "blinddruk" : `${project.cover.debossing}folie`} “{project.cover.title}”</p>
         </div>
         <button type="button" className={btnOutline} onClick={() => window.close()}>Sluiten</button>
         <button type="button" className={btnPrimary} onClick={() => window.print()}>Bewaar als PDF</button>

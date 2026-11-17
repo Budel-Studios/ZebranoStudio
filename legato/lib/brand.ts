@@ -10,7 +10,7 @@ export const BRAND = {
   email: "hallo@legato.example",
   /** Print partner — the books are bought from Graphistudio (Italy). */
   printer: "Graphistudio",
-  printerLine: "Tramontina Collection · Coffee Table Book",
+  printerLine: "Tramontina Collection, Coffee Table Book",
 } as const;
 
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/$/, "");

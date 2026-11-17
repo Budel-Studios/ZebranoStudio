@@ -25,9 +25,9 @@ export function Preview({ project, onClose }: { project: Project; onClose: () =>
   const chapter = project.chapters.find((c) => c.id === spread?.chapterId);
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-[#161412] text-white/80" role="dialog" aria-modal="true" aria-label="Voorvertoning">
-      <div className="flex items-center justify-between px-5 py-3 text-xs tracking-[0.14em]">
-        <span className="uppercase">{i < 0 ? "Omslag" : `${chapter?.title ?? "Boek"} · pagina ${i * 2 + 1}–${i * 2 + 2} van ${project.spreads.length * 2}`}</span>
-        <button type="button" onClick={onClose} className="flex items-center gap-2 uppercase hover:text-white"><X className="h-4 w-4" /> Sluiten</button>
+      <div className="flex items-center justify-between px-5 py-3 text-[0.8125rem] font-medium">
+        <span>{i < 0 ? "Omslag" : `${chapter?.title ?? "Boek"}, pagina ${i * 2 + 1}–${i * 2 + 2} van ${project.spreads.length * 2}`}</span>
+        <button type="button" onClick={onClose} className="flex items-center gap-2 hover:text-white"><X className="h-4 w-4" /> Sluiten</button>
       </div>
       <div className="flex min-h-0 flex-1 items-center justify-center gap-3 px-3 pb-6">
         <button type="button" onClick={() => setI((n) => Math.max(-1, n - 1))} disabled={i < 0} className="p-2 disabled:opacity-20" aria-label="Vorige"><ChevronLeft className="h-7 w-7" strokeWidth={1} /></button>

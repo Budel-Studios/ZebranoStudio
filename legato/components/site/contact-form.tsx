@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { submitContact } from "@/app/(site)/contact/actions";
-import { Arrow } from "@/components/ui/arrow";
 import { button } from "@/components/ui/button";
 import { BRAND } from "@/lib/brand";
 import { contactSchema, INTERESSE_OPTIONS, REDEN_OPTIONS, TYPE_OPTIONS } from "@/lib/contact-schema";
@@ -13,9 +12,9 @@ import { cn } from "@/lib/utils";
 type Errors = Partial<Record<string, string>>;
 
 const field =
-  "w-full rounded-sm border border-input bg-background px-4 py-3 text-[0.9375rem] text-foreground outline-none transition-colors duration-300 placeholder:text-muted-foreground/70 hover:border-foreground/40 focus:border-foreground";
-const label = "mb-2.5 block text-[0.6875rem] font-medium uppercase tracking-[0.2em] text-muted-foreground";
-const optional = "font-normal normal-case tracking-normal text-muted-foreground/70";
+  "w-full rounded-sm border border-input bg-background px-4 py-3 text-[0.9375rem] text-foreground transition-colors duration-200 placeholder:text-muted-foreground hover:border-foreground/60 focus:border-foreground";
+const label = "mb-2 block text-sm font-medium text-foreground";
+const optional = "font-normal text-muted-foreground";
 
 /**
  * Request form: couple or photographer, reason, interest, contact details
@@ -99,7 +98,7 @@ export function ContactForm({
             <label
               key={o.value}
               className={cn(
-                "flex cursor-pointer items-center gap-3 rounded-sm border px-4 py-3 text-[0.9375rem] transition-colors duration-300 has-[:focus-visible]:ring-1 has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2",
+                "flex cursor-pointer items-center gap-3 rounded-sm border px-4 py-3 text-[0.9375rem] transition-colors duration-200 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ribbon has-[:focus-visible]:shadow-[0_0_0_2px_var(--ink)]",
                 type === o.value ? "border-primary bg-primary text-primary-foreground" : "border-input bg-background hover:border-foreground",
               )}
             >
@@ -150,7 +149,7 @@ export function ContactForm({
                 aria-pressed={on}
                 onClick={() => toggle(o.value)}
                 className={cn(
-                  "rounded-sm border px-3 py-1.5 text-[0.8125rem] transition-colors duration-300",
+                  "rounded-sm border px-3 py-1.5 text-small transition-colors duration-200",
                   on ? "border-primary bg-primary text-primary-foreground" : "border-input bg-background hover:border-foreground",
                 )}
               >
@@ -230,7 +229,7 @@ export function ContactForm({
       </div>
 
       <div>
-        <label className="flex items-start gap-3 text-sm leading-relaxed text-muted-foreground">
+        <label className="flex items-start gap-3 text-small text-muted-foreground">
           <input id="f-privacyAkkoord" name="privacyAkkoord" type="checkbox" className="mt-0.5 size-4 accent-primary" />
           <span>
             Ik ga akkoord met de{" "}
@@ -244,7 +243,7 @@ export function ContactForm({
       </div>
 
       {serverError && (
-        <p role="alert" className="rounded-sm border border-destructive/40 bg-destructive/5 px-4 py-3 text-sm leading-relaxed">
+        <p role="alert" className="rounded-sm border border-destructive/40 bg-destructive/5 px-4 py-3 text-small">
           {serverError}{" "}
           <a href={`mailto:${BRAND.email}`} className="link-line font-medium">
             {BRAND.email}
@@ -254,7 +253,6 @@ export function ContactForm({
 
       <button type="submit" disabled={pending} className={button({ size: "lg" })}>
         {pending ? "Versturen…" : "Verstuur bericht"}
-        <Arrow />
       </button>
     </form>
   );
