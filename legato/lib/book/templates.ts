@@ -158,7 +158,7 @@ export const TEMPLATES: TemplateDef[] = [
       const w = (100 - 2 * mx - 2 * gx) / 3;
       return keep([
         img(c, 0, mx, 24, w, 46), img(c, 1, mx + w + gx, 24, w, 46), img(c, 2, mx + 2 * (w + gx), 24, w, 46),
-        txt("caption", c.t.caption, mx, 73, 100 - 2 * mx, 6, { align: "center" }),
+        txt("caption", c.t.caption, mx, 73, w, 6),
       ]);
     },
   },
