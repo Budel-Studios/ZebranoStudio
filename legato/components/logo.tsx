@@ -2,60 +2,51 @@ import { BRAND } from "@/lib/brand";
 import { cn } from "@/lib/utils";
 
 /**
- * Brand mark: an open book seen from the edge, its two pages tied together by
- * a slur, the arc that means "legato" in music notation (and "bound" in
- * Italian). The slur is the ribbon accent; it redraws when the logo is hovered
- * (group/logo).
+ * Brand mark: a closed, cloth-bound book seen from the spine, with the
+ * ribbon marker hanging out at the foot. On paper the book is cloth blue; on
+ * cloth (`onCloth`) it is drawn in paper white. The ribbon is always saffron.
  */
-export function BookMark({ className }: { className?: string }) {
+export function BookMark({ className, onCloth = false }: { className?: string; onCloth?: boolean }) {
+  const body = onCloth ? "var(--paper)" : "var(--cloth)";
+  const line = onCloth ? "var(--cloth-deep)" : "var(--paper)";
   return (
-    <svg viewBox="0 0 48 34" fill="none" aria-hidden="true" className={cn("inline-block shrink-0 overflow-visible", className)}>
-      {/* Pages */}
-      <path d="M3 30 V15.5 C9 11.5 17.5 11.5 24 16.5 C30.5 11.5 39 11.5 45 15.5 V30" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
-      <path d="M3 30 C9.5 26.6 17.5 26.6 24 30.8 C30.5 26.6 38.5 26.6 45 30" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M24 16.5 V30.8" stroke="currentColor" strokeWidth="2" />
-      {/* Slur */}
-      <path
-        d="M9 7.5 C16 0.5 32 0.5 39 7.5"
-        stroke="var(--ribbon)"
-        strokeWidth="2"
-        strokeLinecap="round"
-        pathLength={1}
-        strokeDasharray={1}
-        className="[stroke-dashoffset:0] group-hover/logo:animate-[slur_0.9s_var(--ease-page)]"
-      />
+    <svg viewBox="0 0 20 36" fill="none" aria-hidden="true" className={cn("inline-block shrink-0", className)}>
+      {/* Ribbon, behind the spine */}
+      <path d="M11 24 H15.5 V36 L13.25 33.2 L11 36 Z" fill="var(--ribbon)" />
+      {/* Spine */}
+      <rect x="2" y="1" width="16" height="26" rx="1" fill={body} />
+      {/* Stamped bands */}
+      <path d="M2 6 H18 M2 22 H18" stroke={line} strokeWidth="1.2" />
+      <path d="M2 8.4 H18" stroke={line} strokeWidth="0.6" />
     </svg>
   );
 }
 
 /** Mark + name, for the menu bar. Scales with the font size of its parent. */
-export function Wordmark({ className }: { className?: string }) {
+export function Wordmark({ className, onCloth = false }: { className?: string; onCloth?: boolean }) {
   return (
-    <span className={cn("group/logo inline-flex items-center gap-[0.42em] font-display leading-none", className)}>
-      <BookMark className="h-[0.74em] w-auto" />
-      <span className="translate-y-[-0.02em] font-medium tracking-[0.015em]">{BRAND.name}</span>
+    <span className={cn("inline-flex items-center gap-[0.36em] font-display leading-none", className)}>
+      <BookMark onCloth={onCloth} className="h-[1.02em] w-auto translate-y-[0.1em]" />
+      <span className="font-medium tracking-[-0.01em]">{BRAND.name}</span>
     </span>
   );
 }
 
-/** Oversized wordmark that spans the full width of its container (footer). */
+/**
+ * Oversized wordmark that spans the width of its container (footer), stamped
+ * into the cloth like the title on the front cover.
+ */
 export function GiantWordmark({ className }: { className?: string }) {
-  const letters = BRAND.name.toUpperCase().split("");
   // Size follows the number of letters, so a new working name still fits.
-  const size = `min(${(100 / letters.length).toFixed(2)}vw, ${(104 / letters.length).toFixed(2)}rem)`;
+  const size = `${(92 / (BRAND.name.length * 0.5)).toFixed(1)}cqi`;
   return (
-    <div role="img" aria-label={`${BRAND.name}, ${BRAND.descriptor}`} className={cn("group/logo select-none font-display leading-[0.78]", className)}>
-      <div className="flex items-end justify-between font-medium" style={{ fontSize: size }} aria-hidden="true">
-        {letters.map((l, i) => (
-          <span key={i}>{l}</span>
-        ))}
+    <div role="img" aria-label={`${BRAND.name}, ${BRAND.descriptor}`} className={cn("select-none font-display [container-type:inline-size]", className)}>
+      <div aria-hidden="true" className="foil-stamp whitespace-nowrap font-medium leading-[0.8] tracking-[-0.03em]" style={{ fontSize: size }}>
+        {BRAND.name}
       </div>
-      <div className="mt-[2.2vw] flex items-center gap-[0.5em] text-[5vw] xl:mt-8 xl:text-[4rem]" aria-hidden="true">
-        <BookMark className="h-[0.62em] w-auto" />
-        <span className="italic leading-none">
-          {BRAND.descriptor}
-          <span className="text-ribbon">.</span>
-        </span>
+      <div aria-hidden="true" className="mt-[3.5cqi] flex items-center gap-[0.5em] text-[clamp(1.25rem,3.4cqi,3rem)]">
+        <BookMark onCloth className="h-[1em] w-auto" />
+        <span className="italic leading-none">{BRAND.descriptor}</span>
       </div>
     </div>
   );

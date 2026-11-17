@@ -173,8 +173,8 @@
     line-height: 1.35;
   }
 
-  /* Running text on the site keeps to roughly 70 characters a line. */
-  #inhoud p {
+  /* Running text on the site keeps to roughly 70 characters a line (not inside drawn mocks). */
+  #inhoud p:not([role="img"] *) {
     max-width: 70ch;
   }
 

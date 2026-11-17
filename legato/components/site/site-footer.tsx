@@ -1,33 +1,30 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { GiantWordmark } from "@/components/logo";
-import { Arrow } from "@/components/ui/arrow";
 import { button } from "@/components/ui/button";
 import { BRAND } from "@/lib/brand";
+import { container } from "@/components/ui/primitives";
 import { footerColumns, primaryCta } from "@/lib/navigation";
+import { cn } from "@/lib/utils";
 
 function ColTitle({ children }: { children: ReactNode }) {
-  return <p className="mb-5 text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-board-foreground/60">{children}</p>;
+  return <p className="mb-4 text-sm font-semibold text-cloth-foreground">{children}</p>;
 }
 
 /**
- * Footer, built like the Zebrano Studio one: inset board panel with the
- * closing line, three link columns and contact, the giant wordmark and the
- * legal line. Company details (KvK, address) are not known yet and are
- * deliberately absent.
+ * Footer: the inside of the back cover. Deep cloth with the weave, three link
+ * columns and contact, the giant stamped wordmark and the legal line. Company
+ * details (KvK, address) are not known yet and are deliberately absent.
  */
 export function SiteFooter() {
   return (
-    <footer className="px-3 pb-3 sm:px-4 sm:pb-4">
-      <div className="mx-auto max-w-[1600px] overflow-hidden rounded-sm bg-board px-6 pt-16 text-board-foreground sm:px-10 lg:px-14 lg:pt-20">
+    <footer className="cloth-weave bg-cloth-deep text-cloth-foreground">
+      <div className={cn(container, "pt-16 lg:pt-20")}>
         <div className="grid gap-14 lg:grid-cols-12">
           <div className="lg:col-span-4">
-            <h2 className="max-w-[11ch] text-balance text-4xl leading-[1.05] sm:text-5xl">
-              {BRAND.tagline.replace(/\.$/, "")}
-              <span className="text-cloth">.</span>
-            </h2>
-            <Link href={primaryCta.href} className={`${button({ size: "md" })} mt-8`}>
-              {primaryCta.label} <Arrow />
+            <p className="max-w-[12ch] font-display text-h2 leading-[1.02] tracking-[-0.015em]">{BRAND.tagline}</p>
+            <Link href={primaryCta.href} className={cn(button({ variant: "light", size: "md" }), "mt-8")}>
+              {primaryCta.label}
             </Link>
           </div>
 
@@ -35,10 +32,10 @@ export function SiteFooter() {
             {footerColumns.map((col) => (
               <nav key={col.title} aria-label={col.title}>
                 <ColTitle>{col.title}</ColTitle>
-                <ul className="space-y-2.5 text-[0.9375rem]">
+                <ul className="space-y-2.5 text-[0.9375rem] text-cloth-muted">
                   {col.links.map((l) => (
                     <li key={l.label}>
-                      <Link href={l.href} className="link-line">
+                      <Link href={l.href} className="hover:text-cloth-foreground hover:underline hover:underline-offset-4">
                         {l.label}
                       </Link>
                     </li>
@@ -48,49 +45,43 @@ export function SiteFooter() {
             ))}
             <div>
               <ColTitle>Contact</ColTitle>
-              <div className="space-y-2.5 text-[0.9375rem]">
+              <div className="space-y-2.5 text-[0.9375rem] text-cloth-muted">
                 <p>
-                  <a href={`mailto:${BRAND.email}`} className="link-line break-all">
+                  <a href={`mailto:${BRAND.email}`} className="break-all hover:text-cloth-foreground hover:underline hover:underline-offset-4">
                     {BRAND.email}
                   </a>
                 </p>
                 <p>
-                  <Link href="/contact" className="link-line">
+                  <Link href="/contact" className="hover:text-cloth-foreground hover:underline hover:underline-offset-4">
                     Contactformulier
                   </Link>
                 </p>
-                <p className="text-board-foreground/60">
-                  Gedrukt en gebonden in Italië door {BRAND.printer}
-                </p>
+                <p>Gedrukt en gebonden in Italië door {BRAND.printer}</p>
               </div>
             </div>
           </div>
         </div>
 
-        <Link href="/" aria-label={`${BRAND.name}, naar de homepage`} className="mt-16 block border-t border-board-foreground/15 pt-10 text-background lg:mt-20">
+        <Link href="/" aria-label={`${BRAND.name}, naar de homepage`} className="mt-16 block border-t border-cloth-line pt-12 lg:mt-20">
           <GiantWordmark />
         </Link>
 
-        <div className="mt-10 flex flex-col gap-4 border-t border-board-foreground/15 py-7 text-[0.8125rem] sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-12 flex flex-col gap-4 border-t border-cloth-line py-7 text-sm text-cloth-muted sm:flex-row sm:items-center sm:justify-between">
           <ul className="flex gap-6">
-            <li>
-              <Link href="/privacy" className="link-line">
-                Privacy
-              </Link>
-            </li>
-            <li>
-              <Link href="/voorwaarden" className="link-line">
-                Voorwaarden
-              </Link>
-            </li>
-            <li>
-              <Link href="/studio" className="link-line">
-                Studio
-              </Link>
-            </li>
+            {[
+              ["Privacy", "/privacy"],
+              ["Voorwaarden", "/voorwaarden"],
+              ["Studio", "/studio"],
+            ].map(([label, href]) => (
+              <li key={href}>
+                <Link href={href!} className="hover:text-cloth-foreground hover:underline hover:underline-offset-4">
+                  {label}
+                </Link>
+              </li>
+            ))}
           </ul>
-          <p className="text-board-foreground/70">
-            © {new Date().getFullYear()} {BRAND.name} · {BRAND.descriptor}
+          <p>
+            © {new Date().getFullYear()} {BRAND.name}, {BRAND.descriptor.toLowerCase()}
           </p>
         </div>
       </div>

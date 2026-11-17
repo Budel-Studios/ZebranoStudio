@@ -2,19 +2,21 @@ import type { CSSProperties, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * The site's imagery, drawn in CSS: an open book spread, a closed cover with
- * a debossed title and a set of typographic sample spreads. No photography
- * exists yet, so soft toned blocks stand where photos will go. All sample
- * text is obviously sample ("Noor & Daan").
+ * The site's imagery, drawn in CSS: an open book spread (cloth cover, white
+ * paper pages, the ribbon marker hanging from the gutter), a closed cover
+ * with a foil-stamped title and a set of typographic sample spreads set in
+ * Bodoni. No photography exists yet, so greyboard blocks stand where photos
+ * will go. All sample text is obviously sample ("Noor & Daan").
  *
  * Everything scales with the width of the mock: the wrapper is a size
  * container and the inner font size is set in cqw, so every measure inside is
  * written in em.
  */
 
-const PAPER = "oklch(0.978 0.006 85)";
-const INK = "oklch(0.27 0.014 45)";
-const SOFT = "oklch(0.52 0.018 50)";
+const PAPER = "#ffffff";
+const INK = "var(--ink)";
+const SOFT = "rgb(14 22 48 / 0.62)";
+const HAIR = "rgb(14 22 48 / 0.14)";
 const RIBBON = "var(--ribbon)";
 
 /** Fine paper/fabric grain as an inline SVG (no external request). */
@@ -27,18 +29,19 @@ const GRAIN =
 
 export type Tone = "board" | "sand" | "stone" | "dusk" | "cloth" | "olive" | "sky" | "night";
 
+/* Greyboard in a few depths; "cloth" and "night" are the dark, blue ones. */
 const TONES: Record<Tone, [string, string]> = {
-  board: ["oklch(0.89 0.03 45)", "oklch(0.76 0.05 38)"],
-  sand: ["oklch(0.91 0.022 82)", "oklch(0.8 0.035 75)"],
-  stone: ["oklch(0.84 0.012 70)", "oklch(0.68 0.018 60)"],
-  dusk: ["oklch(0.74 0.045 30)", "oklch(0.5 0.06 20)"],
-  cloth: ["oklch(0.45 0.08 18)", "oklch(0.27 0.07 18)"],
-  olive: ["oklch(0.8 0.03 110)", "oklch(0.6 0.04 115)"],
-  sky: ["oklch(0.88 0.02 230)", "oklch(0.74 0.035 240)"],
-  night: ["oklch(0.4 0.03 280)", "oklch(0.23 0.03 300)"],
+  board: ["#dad6ce", "#cbc7be"],
+  sand: ["#e2dfd8", "#d2cec6"],
+  stone: ["#c9c5bc", "#b6b2a9"],
+  dusk: ["#b4b1ab", "#96949a"],
+  cloth: ["#3a4f85", "#263a6c"],
+  olive: ["#cfccc3", "#bcb9af"],
+  sky: ["#d5d6d6", "#bfc3c8"],
+  night: ["#2a3963", "#18244a"],
 };
 
-/** Soft toned block where a photo will go. */
+/** Greyboard block where a photo will go. Square corners. */
 export function PhotoBlock({ tone = "board", className, style }: { tone?: Tone; className?: string; style?: CSSProperties }) {
   const [a, b] = TONES[tone];
   return (
@@ -46,11 +49,11 @@ export function PhotoBlock({ tone = "board", className, style }: { tone?: Tone; 
       aria-hidden
       className={cn("relative overflow-hidden", className)}
       style={{
-        backgroundImage: `radial-gradient(110% 80% at 18% 8%, oklch(1 0 0 / 0.38), transparent 58%), radial-gradient(90% 70% at 90% 100%, oklch(0.2 0.02 40 / 0.16), transparent 60%), linear-gradient(155deg, ${a}, ${b})`,
+        backgroundImage: `linear-gradient(155deg, ${a}, ${b})`,
         ...style,
       }}
     >
-      <span className="absolute inset-0 opacity-25 mix-blend-multiply" style={{ backgroundImage: GRAIN }} />
+      <span className="absolute inset-0 opacity-20 mix-blend-multiply" style={{ backgroundImage: GRAIN }} />
     </div>
   );
 }
@@ -84,33 +87,34 @@ export function Spread({
   return (
     <div role="img" aria-label={label} className={cn("w-full select-none [container-type:inline-size]", className)}>
       <div aria-hidden className="relative" style={{ aspectRatio: ratio, fontSize: "1.62cqw", color: INK }}>
+        {/* Ribbon marker, hanging from the gutter below the foot of the book */}
+        <span
+          className="absolute left-[51.2%] top-[97%] h-[11%] w-[1.5%]"
+          style={{ background: RIBBON, clipPath: "polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%)" }}
+        />
         <div
-          className="absolute inset-0 rounded-[0.45em]"
+          className="cloth-weave absolute inset-0 rounded-[0.12em]"
           style={{
-            background: board,
-            boxShadow: "0 2.6em 4.5em -2.4em oklch(0.2 0.02 40 / 0.6), 0 0.25em 0.7em oklch(0.2 0.02 40 / 0.16)",
+            backgroundColor: board,
+            boxShadow: "0 2.2em 3.6em -2.4em rgb(14 22 48 / 0.55), 0 0.2em 0.6em rgb(14 22 48 / 0.14)",
           }}
         />
         {/* Page block edges */}
-        <div className="absolute inset-x-[1%] inset-y-[1.5%] rounded-[0.15em]" style={{ background: "oklch(0.9 0.012 85)" }} />
-        <div className="absolute inset-x-[1.35%] inset-y-[1.8%] rounded-[0.12em]" style={{ background: "oklch(0.94 0.009 85)" }} />
+        <div className="absolute inset-x-[1%] inset-y-[1.5%]" style={{ background: "#dcdad3" }} />
+        <div className="absolute inset-x-[1.35%] inset-y-[1.8%]" style={{ background: "#ecebe6" }} />
         <div className="absolute inset-x-[1.7%] inset-y-[2.1%] flex">
           <div className="relative w-1/2 overflow-hidden" style={{ background: PAPER }}>
             {left}
             <span
               className="pointer-events-none absolute inset-y-0 right-0 w-[16%]"
-              style={{ background: "linear-gradient(to left, oklch(0.3 0.02 50 / 0.2), oklch(0.3 0.02 50 / 0.05) 45%, transparent)" }}
+              style={{ background: "linear-gradient(to left, rgb(14 22 48 / 0.14), rgb(14 22 48 / 0.04) 45%, transparent)" }}
             />
           </div>
           <div className="relative w-1/2 overflow-hidden" style={{ background: PAPER }}>
             {right}
             <span
               className="pointer-events-none absolute inset-y-0 left-0 w-[16%]"
-              style={{ background: "linear-gradient(to right, oklch(0.3 0.02 50 / 0.24), oklch(0.3 0.02 50 / 0.06) 45%, transparent)" }}
-            />
-            <span
-              className="pointer-events-none absolute inset-y-0 right-0 w-[30%]"
-              style={{ background: "linear-gradient(to left, oklch(1 0 0 / 0.5), transparent)" }}
+              style={{ background: "linear-gradient(to right, rgb(14 22 48 / 0.17), rgb(14 22 48 / 0.05) 45%, transparent)" }}
             />
           </div>
         </div>
@@ -124,20 +128,25 @@ export function Page({ children, bleed = false, className }: { children?: ReactN
   return <div className={cn("absolute inset-0 flex flex-col", !bleed && "p-[3.4em]", className)}>{children}</div>;
 }
 
-function Folio({ children, align = "left" }: { children: ReactNode; align?: "left" | "right" | "center" }) {
+/** Page number and running title at the foot of a page: "42 · De ceremonie" is set as two items. */
+function Folio({ children, align = "left" }: { children: string; align?: "left" | "right" | "center" }) {
+  const parts = children.split(" · ");
   return (
     <p
-      className={cn("mt-auto pt-[1em] text-[0.58em] uppercase tracking-[0.24em]", align === "right" && "text-right", align === "center" && "text-center")}
+      className={cn("mt-auto flex gap-[1.4em] pt-[1em] text-[0.62em] tabular-nums", align === "right" && "justify-end", align === "center" && "justify-center")}
       style={{ color: SOFT }}
     >
-      {children}
+      {parts.map((part) => (
+        <span key={part}>{part}</span>
+      ))}
     </p>
   );
 }
 
+/** Small sentence-case line above a text (which chapter, whose words). */
 function Kicker({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <p className={cn("text-[0.6em] font-medium uppercase tracking-[0.28em]", className)} style={{ color: SOFT }}>
+    <p className={cn("text-[0.68em] font-medium", className)} style={{ color: SOFT }}>
       {children}
     </p>
   );
@@ -153,7 +162,7 @@ function Lines({ n = 5, className }: { n?: number; className?: string }) {
   return (
     <div className={cn("space-y-[0.62em]", className)}>
       {Array.from({ length: n }, (_, i) => (
-        <span key={i} className="block h-[0.14em] rounded-full" style={{ width: widths[i % widths.length], background: "oklch(0.27 0.014 45 / 0.28)" }} />
+        <span key={i} className="block h-[0.14em] rounded-full" style={{ width: widths[i % widths.length], background: "rgb(14 22 48 / 0.24)" }} />
       ))}
     </div>
   );
@@ -197,7 +206,7 @@ const SAMPLES: Record<SpreadKind, Sample> = {
         <div className="my-auto flex flex-col items-center">
           <Kicker>Een bruiloft in negen hoofdstukken</Kicker>
           <p className="mt-[0.5em] whitespace-nowrap font-display text-[3.7em] leading-[0.95] tracking-[-0.01em]">
-            Noor <span className="italic">&amp;</span> Daan
+            Noor &amp; Daan
           </p>
           <Rule className="mt-[1.6em]" />
           <p className="mt-[1.4em] font-display text-[1.15em] italic">veertien juni</p>
@@ -218,7 +227,7 @@ const SAMPLES: Record<SpreadKind, Sample> = {
         <Kicker>Hoofdstuk drie</Kicker>
         <div className="my-auto">
           <p className="font-display text-[4.4em] leading-[0.95] tracking-[-0.01em]">
-            De <span className="italic">ceremonie</span>
+            De ceremonie
           </p>
           <Rule className="mt-[1.6em]" />
           <p className="mt-[1.4em] max-w-[19em] font-display text-[1.2em] italic leading-snug" style={{ color: SOFT }}>
@@ -233,7 +242,7 @@ const SAMPLES: Record<SpreadKind, Sample> = {
     label: "Voorbeeldspread: de geloften van Noor en Daan, naast elkaar",
     left: (
       <Page>
-        <Kicker>Geloften · Noor</Kicker>
+        <Kicker>De geloften van Noor</Kicker>
         <p className="mt-[1.6em] font-display text-[1.62em] italic leading-[1.28]">
           Lieve Daan, ik beloof je dat ik blijf lachen om je slechtste grappen, dat ik je wakker maak als het sneeuwt en dat ik
           de laatste hap altijd met je deel.
@@ -244,7 +253,7 @@ const SAMPLES: Record<SpreadKind, Sample> = {
     ),
     right: (
       <Page>
-        <Kicker>Geloften · Daan</Kicker>
+        <Kicker>De geloften van Daan</Kicker>
         <p className="mt-[1.6em] font-display text-[1.62em] italic leading-[1.28]">
           Noor, ik had een heel verhaal. Toen zag ik je het pad op komen en wist ik alleen nog dit: bij jou ben ik thuis.
         </p>
@@ -274,7 +283,7 @@ const SAMPLES: Record<SpreadKind, Sample> = {
           </p>
           <p className="font-display text-[2.5em] italic leading-[1.12]">Ze kwam binnen en het werd stil. Zelfs oom Kees.</p>
           <Rule className="mt-[1.8em]" />
-          <p className="mt-[1.2em] text-[0.68em] uppercase tracking-[0.22em]" style={{ color: SOFT }}>
+          <p className="mt-[1.2em] text-[0.68em] font-medium" style={{ color: SOFT }}>
             Uit de speech van de getuige
           </p>
         </div>
@@ -286,9 +295,9 @@ const SAMPLES: Record<SpreadKind, Sample> = {
     label: "Voorbeeldspread: een speech, volledig uitgeschreven in twee kolommen",
     left: (
       <Page>
-        <Kicker>Speeches · Vader van de bruid</Kicker>
+        <Kicker>De speech van de vader van de bruid</Kicker>
         <p className="mt-[1.2em] font-display text-[2.6em] leading-[1.02]">
-          “Ik zou het <span className="italic">kort</span> houden.”
+          “Ik zou het kort houden.”
         </p>
         <div className="mt-[2em] grid grid-cols-2 gap-[1.6em]">
           <Lines n={9} />
@@ -317,7 +326,7 @@ const SAMPLES: Record<SpreadKind, Sample> = {
     ),
     right: (
       <Page className="px-[4.6em]">
-        <Kicker>Een brief · Van mama</Kicker>
+        <Kicker>Een brief van mama</Kicker>
         <p className="mt-[1.8em] font-display text-[1.7em] italic leading-[1.25]">Lieve Noor,</p>
         <p className="mt-[0.8em] font-display text-[1.28em] leading-[1.38]">
           Vanochtend stond je in de gang, net als toen je zes was en voor het eerst alleen naar school wilde. Ik heb niets gezegd.
@@ -343,7 +352,7 @@ const SAMPLES: Record<SpreadKind, Sample> = {
             ["Na", "Bruidstaart, drie lagen"],
           ].map(([k, v]) => (
             <li key={k}>
-              <span className="block font-sans text-[0.48em] uppercase tracking-[0.26em]" style={{ color: SOFT }}>
+              <span className="block font-sans text-[0.5em] font-medium" style={{ color: SOFT }}>
                 {k}
               </span>
               {v}
@@ -355,10 +364,10 @@ const SAMPLES: Record<SpreadKind, Sample> = {
     ),
     right: (
       <Page>
-        <Kicker>Playlist · Het feest</Kicker>
+        <Kicker>De playlist van het feest</Kicker>
         <ol className="mt-[1.6em] text-[0.86em]">
           {["Openingsdans", "Het nummer van opa", "De polonaise (ja, echt)", "Meezinger één", "Meezinger twee", "Laatste dans"].map((t, i) => (
-            <li key={t} className="flex items-baseline gap-[1em] border-b py-[0.72em]" style={{ borderColor: "oklch(0.27 0.014 45 / 0.14)" }}>
+            <li key={t} className="flex items-baseline gap-[1em] border-b py-[0.72em]" style={{ borderColor: "rgb(14 22 48 / 0.14)" }}>
               <span className="w-[1.6em] tabular-nums" style={{ color: RIBBON }}>
                 {String(i + 1).padStart(2, "0")}
               </span>
@@ -386,8 +395,8 @@ const SAMPLES: Record<SpreadKind, Sample> = {
             ["22.00", "Feest"],
             ["03.10", "Laatste dans"],
           ].map(([t, n]) => (
-            <li key={t} className="flex items-baseline gap-[1.2em] border-b py-[0.66em]" style={{ borderColor: "oklch(0.27 0.014 45 / 0.14)" }}>
-              <span className="w-[3.4em] text-[0.74em] tabular-nums tracking-[0.08em]" style={{ color: RIBBON }}>
+            <li key={t} className="flex items-baseline gap-[1.2em] border-b py-[0.66em]" style={{ borderColor: "rgb(14 22 48 / 0.14)" }}>
+              <span className="w-[3.4em] text-[0.74em] tabular-nums " style={{ color: RIBBON }}>
                 {t}
               </span>
               <span className="font-display text-[1.46em] leading-none">{n}</span>
@@ -417,7 +426,7 @@ const SAMPLES: Record<SpreadKind, Sample> = {
           ].map(([q, a]) => (
             <div key={a}>
               <p className="font-display text-[1.3em] italic leading-[1.2]">{q}</p>
-              <p className="mt-[0.7em] text-[0.56em] uppercase tracking-[0.22em]" style={{ color: SOFT }}>
+              <p className="mt-[0.7em] text-[0.6em] font-medium" style={{ color: SOFT }}>
                 {a}
               </p>
             </div>
@@ -448,7 +457,7 @@ const SAMPLES: Record<SpreadKind, Sample> = {
     right: (
       <Page bleed>
         <PhotoBlock tone="night" className="h-full w-full" style={{ transform: "scaleX(-1)" }} />
-        <p className="absolute bottom-[2.4em] right-[2.6em] max-w-[13em] text-right font-display text-[1.7em] italic leading-[1.15]" style={{ color: "oklch(0.95 0.01 85)" }}>
+        <p className="absolute bottom-[2.4em] right-[2.6em] max-w-[13em] text-right font-display text-[1.7em] italic leading-[1.15]" style={{ color: "var(--paper)" }}>
           Om tien over drie ging het licht aan. Niemand wilde naar huis.
         </p>
       </Page>
@@ -460,7 +469,7 @@ const SAMPLES: Record<SpreadKind, Sample> = {
       <Page className="items-center justify-center text-center">
         <Rule />
         <p className="mt-[1.4em] font-display text-[1.9em] italic">Exemplaar 1 van 1</p>
-        <p className="mt-[0.9em] text-[0.58em] uppercase tracking-[0.26em]" style={{ color: SOFT }}>
+        <p className="mt-[0.9em] text-[0.62em] font-medium" style={{ color: SOFT }}>
           Gemaakt voor Noor &amp; Daan
         </p>
       </Page>
@@ -476,7 +485,7 @@ const SAMPLES: Record<SpreadKind, Sample> = {
             ["Druk en bindwerk", "Italië"],
           ].map(([k, v]) => (
             <div key={k}>
-              <dt className="text-[0.72em] uppercase tracking-[0.24em]" style={{ color: SOFT }}>
+              <dt className="text-[0.78em] font-medium" style={{ color: SOFT }}>
                 {k}
               </dt>
               <dd className="mt-[0.25em] font-display text-[1.6em] leading-tight">{v}</dd>
@@ -493,8 +502,8 @@ const SAMPLES: Record<SpreadKind, Sample> = {
       <Page>
         <Kicker>De route</Kicker>
         <svg viewBox="0 0 200 230" className="mt-[1em] min-h-0 w-full flex-1" fill="none">
-          <path d="M30 196 C 52 150, 28 128, 66 110 S 120 124, 132 84 S 150 40, 176 30" stroke="oklch(0.27 0.014 45 / 0.55)" strokeWidth="1" strokeDasharray="1.5 4" strokeLinecap="round" />
-          <path d="M8 60 C 40 44, 70 70, 104 52 S 170 76, 196 60 M4 150 C 50 140, 80 170, 130 156 S 180 150, 198 164" stroke="oklch(0.27 0.014 45 / 0.12)" strokeWidth="0.8" />
+          <path d="M30 196 C 52 150, 28 128, 66 110 S 120 124, 132 84 S 150 40, 176 30" stroke="rgb(14 22 48 / 0.55)" strokeWidth="1" strokeDasharray="1.5 4" strokeLinecap="round" />
+          <path d="M8 60 C 40 44, 70 70, 104 52 S 170 76, 196 60 M4 150 C 50 140, 80 170, 130 156 S 180 150, 198 164" stroke="rgb(14 22 48 / 0.12)" strokeWidth="0.8" />
           {[
             [30, 196, "Vertrek"],
             [66, 110, "Dag 2"],
@@ -503,7 +512,7 @@ const SAMPLES: Record<SpreadKind, Sample> = {
           ].map(([x, y, t]) => (
             <g key={t}>
               <circle cx={x} cy={y} r="3.2" fill="var(--ribbon)" />
-              <text x={Number(x) + 8} y={Number(y) + 3} fontSize="7.5" fill="oklch(0.27 0.014 45)" style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}>
+              <text x={Number(x) + 8} y={Number(y) + 3} fontSize="7.5" fill="var(--ink)" style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}>
                 {t}
               </text>
             </g>
@@ -517,7 +526,7 @@ const SAMPLES: Record<SpreadKind, Sample> = {
         <Kicker>Dag vier</Kicker>
         <div className="my-auto">
           <p className="font-display text-[4.2em] leading-[0.95] tracking-[-0.01em]">
-            Over de <span className="italic">pas</span>
+            Over de pas
           </p>
           <Rule className="mt-[1.6em]" />
           <p className="mt-[1.4em] max-w-[19em] font-display text-[1.2em] italic leading-snug" style={{ color: SOFT }}>
@@ -570,14 +579,27 @@ const TEXTURES: Record<CoverTexture, string> = {
   nap: "linear-gradient(115deg, oklch(1 0 0 / 0.12), transparent 35%, oklch(0 0 0 / 0.1) 70%, oklch(1 0 0 / 0.07))",
 };
 
+/** Rough lightness (0-1) of an oklch() or #hex colour; decides foil or blind stamping. */
+function lightness(color: string): number {
+  const ok = /oklch\(\s*([\d.]+)/.exec(color);
+  if (ok) return Number(ok[1]);
+  const hex = /^#([0-9a-f]{6})$/i.exec(color.trim());
+  if (hex) {
+    const n = parseInt(hex[1]!, 16);
+    return (0.2126 * ((n >> 16) & 255) + 0.7152 * ((n >> 8) & 255) + 0.0722 * (n & 255)) / 255;
+  }
+  return 0.3;
+}
+
 /**
  * Closed book, front view: cloth texture, hinge groove along the spine and a
- * blind-debossed title. `ratio` is width / height of the cover.
+ * stamped title. Dark covers get white foil, light covers a blind stamp (the
+ * title pressed into the material without foil). `ratio` is width / height.
  */
 export function BookCover({
   title = "Noor & Daan",
-  sub = "XIV · VI",
-  color = "oklch(0.85 0.022 80)",
+  sub = "Veertien juni",
+  color = "var(--cloth)",
   texture = "weave",
   ratio = "5 / 7",
   label,
@@ -591,40 +613,45 @@ export function BookCover({
   label?: string;
   className?: string;
 }) {
-  const deboss: CSSProperties = {
-    color: `color-mix(in oklab, ${color} 72%, black)`,
-    textShadow: "0 0.05em 0 oklch(1 0 0 / 0.3), 0 -0.035em 0 oklch(0 0 0 / 0.25)",
-  };
+  const foil = color.startsWith("var(") || lightness(color) < 0.6;
+  const stamp: CSSProperties = foil
+    ? { color: "var(--paper)", textShadow: "0 -0.02em 0.03em rgb(8 14 36 / 0.5), 0 0.02em 0 rgb(255 255 255 / 0.14)" }
+    : { color: `color-mix(in oklab, ${color} 66%, black)`, textShadow: "0 0.05em 0 rgb(255 255 255 / 0.3), 0 -0.035em 0 rgb(0 0 0 / 0.22)" };
   return (
     <div role="img" aria-label={label ?? `Voorbeeld van een boekomslag met de titel ${title}`} className={cn("w-full select-none [container-type:inline-size]", className)}>
       <div
         aria-hidden
-        className="relative overflow-hidden rounded-[0.22em]"
-        style={{
-          aspectRatio: ratio,
-          fontSize: "5cqw",
-          backgroundColor: color,
-          backgroundImage: TEXTURES[texture],
-          boxShadow:
-            "0 2em 3.4em -1.8em oklch(0.2 0.02 40 / 0.6), 0 0.12em 0.4em oklch(0.2 0.02 40 / 0.2), inset -0.1em 0 0 oklch(1 0 0 / 0.14), inset 0 -0.1em 0 oklch(0 0 0 / 0.1)",
-        }}
+        className="relative"
+        style={{ aspectRatio: ratio, fontSize: "5cqw" }}
       >
-        <span className="absolute inset-0 mix-blend-multiply" style={{ backgroundImage: GRAIN, opacity: texture === "weave" ? 0.3 : 0.5 }} />
-        {/* Hinge groove */}
+        {/* Ribbon marker, hanging out at the foot */}
         <span
-          className="absolute inset-y-0 left-[5.5%] w-[1.8%]"
-          style={{ background: "linear-gradient(to right, oklch(0 0 0 / 0.22), oklch(0 0 0 / 0.05) 55%, oklch(1 0 0 / 0.22))" }}
+          className="absolute left-[68%] top-[99%] h-[9%] w-[3.4%]"
+          style={{ background: RIBBON, clipPath: "polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%)" }}
         />
-        {/* Light falling across the board */}
-        <span className="absolute inset-0" style={{ background: "linear-gradient(100deg, oklch(1 0 0 / 0.12), transparent 40%, oklch(0 0 0 / 0.08))" }} />
-        <div className="absolute inset-y-0 left-[7.3%] right-0 flex flex-col items-center px-[1em] pt-[30%] text-center">
-          <p className="font-display text-[2.3em] font-semibold leading-[1.02] tracking-[0.01em]" style={deboss}>
-            {title}
-          </p>
-          <span className="mt-[0.9em] block h-[0.05em] w-[2.2em]" style={{ background: deboss.color, boxShadow: "0 0.05em 0 oklch(1 0 0 / 0.3)" }} />
-          <p className="mt-[0.9em] text-[0.62em] font-medium uppercase tracking-[0.34em]" style={deboss}>
-            {sub}
-          </p>
+        <div
+          className="absolute inset-0 overflow-hidden rounded-[0.08em]"
+          style={{
+            backgroundColor: color,
+            backgroundImage: TEXTURES[texture],
+            boxShadow:
+              "0 1.8em 3em -1.8em rgb(14 22 48 / 0.55), 0 0.12em 0.4em rgb(14 22 48 / 0.18), inset -0.1em 0 0 rgb(255 255 255 / 0.1), inset 0 -0.1em 0 rgb(0 0 0 / 0.1)",
+          }}
+        >
+          <span className="absolute inset-0 mix-blend-multiply" style={{ backgroundImage: GRAIN, opacity: texture === "weave" ? 0.25 : 0.45 }} />
+          {/* Hinge groove */}
+          <span
+            className="absolute inset-y-0 left-[5.5%] w-[1.8%]"
+            style={{ background: "linear-gradient(to right, rgb(0 0 0 / 0.24), rgb(0 0 0 / 0.05) 55%, rgb(255 255 255 / 0.18))" }}
+          />
+          <div className="absolute inset-y-0 left-[7.3%] right-0 flex flex-col px-[1.1em] pt-[26%]">
+            <p className="font-display text-[2.3em] font-medium leading-[0.98] tracking-[-0.015em]" style={stamp}>
+              {title}
+            </p>
+            <p className="mt-[0.9em] font-display text-[0.86em] italic" style={stamp}>
+              {sub}
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -638,13 +665,14 @@ export function BookCover({
 const STAGE = {
   linen: "bg-linen",
   board: "bg-board",
-  cloth: "bg-cloth",
+  cloth: "cloth-weave bg-cloth",
   paper: "bg-card",
 } as const;
 
 /**
- * Toned surface a mock lies on (the "table"). Used wherever Zebrano shows a
- * photograph. `caption` sits bottom left and says honestly what you look at.
+ * Flat, square surface a mock lies on (the "table"): greyboard, linen, paper
+ * or cloth. `caption` sits under the bottom left corner of the mock area and
+ * says honestly what you look at.
  */
 export function MockStage({
   children,
@@ -658,24 +686,14 @@ export function MockStage({
   className?: string;
 }) {
   return (
-    <div className={cn("relative overflow-hidden rounded-sm", STAGE[tone], className)}>
-      <span
-        aria-hidden
-        className="absolute inset-0"
-        style={{ background: "radial-gradient(90% 70% at 25% 15%, oklch(1 0 0 / 0.35), transparent 60%), radial-gradient(80% 60% at 100% 100%, oklch(0.2 0.02 40 / 0.1), transparent 60%)" }}
-      />
-      <span aria-hidden className="absolute inset-0 opacity-20 mix-blend-multiply" style={{ backgroundImage: GRAIN }} />
+    <div className={cn("relative overflow-hidden", STAGE[tone], className)}>
       <div className="relative flex h-full w-full items-center justify-center">{children}</div>
-      {caption && (
-        <p className="absolute bottom-3 left-3 rounded-sm bg-background/90 px-3 py-2 text-[0.6875rem] uppercase tracking-[0.18em] text-foreground backdrop-blur sm:bottom-4 sm:left-4">
-          {caption}
-        </p>
-      )}
+      {caption && <p className="absolute bottom-3 left-3 bg-background px-2.5 py-1.5 text-[0.8125rem] font-medium leading-tight text-foreground sm:bottom-4 sm:left-4">{caption}</p>}
     </div>
   );
 }
 
-/** Hero composition: a closed linen cover behind an open spread. */
+/** Composition: a closed cover behind an open spread. */
 export function BookStill({
   kind = "opener",
   coverColor,

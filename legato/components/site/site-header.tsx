@@ -7,19 +7,20 @@ import { useEffect, useState } from "react";
 import { Wordmark } from "@/components/logo";
 import { AccessoryArt } from "@/components/site/accessory-art";
 import { BookCover, SampleSpread } from "@/components/site/book-mock";
-import { Arrow } from "@/components/ui/arrow";
 import { button } from "@/components/ui/button";
+import { container } from "@/components/ui/primitives";
 import { materialen } from "@/data/boek";
 import { BRAND } from "@/lib/brand";
 import { NAV, primaryCta, studioLink, type NavGroup, type NavPreview } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 
 /**
- * Menu bar, built like the Zebrano Studio one: a floating, hairline-framed
- * bar with the four groups left, the wordmark in the middle, and the studio
- * login and "Vraag een voorstel" right. Hovering a group opens a mega panel
- * (intro + CTA · numbered links · drawn preview); on small screens the menu
- * becomes a full-screen accordion.
+ * Menu bar: a floating paper bar with square corners, in line with the page
+ * gutters (the ribbon marker hangs beside it). The four groups left, the
+ * wordmark in the middle, the studio login and the ribbon button "Vraag een
+ * voorstel" right. Hovering a group opens a mega panel (intro and action,
+ * links, drawn preview); on small screens the menu becomes a full-screen
+ * accordion.
  */
 export function SiteHeader() {
   const [openId, setOpenId] = useState<string | null>(null);
@@ -63,13 +64,13 @@ export function SiteHeader() {
   const active = NAV.find((g) => g.id === openId) ?? null;
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-4 sm:pt-4">
-      <div onMouseLeave={() => setOpenId(null)} className="relative mx-auto max-w-[1600px]">
+    <header className={cn(container, "fixed inset-x-0 top-0 z-50 max-sm:px-3 pt-3 sm:pt-4")}>
+      <div onMouseLeave={() => setOpenId(null)} className="relative">
         <div
           className={cn(
-            "relative z-10 grid h-14 grid-cols-[1fr_auto_1fr] items-stretch rounded-sm border bg-background/90 backdrop-blur-md transition-shadow duration-500",
+            "relative z-10 grid h-14 grid-cols-[1fr_auto_1fr] items-stretch border bg-background transition-shadow duration-300",
             (scrolled || openId) && "shadow-[var(--shadow-soft)]",
-            openId && "rounded-b-none border-b-transparent",
+            openId && "border-b-transparent",
           )}
         >
           {/* Left: navigation */}
@@ -83,8 +84,8 @@ export function SiteHeader() {
               className="flex items-center gap-3 border-r px-3 text-sm sm:px-4 xl:hidden"
             >
               <span className="relative block h-2.5 w-5" aria-hidden="true">
-                <span className={cn("absolute left-0 top-0 h-px w-5 bg-foreground transition-transform duration-500 ease-page", mobileOpen && "translate-y-[5px] rotate-45")} />
-                <span className={cn("absolute bottom-0 left-0 h-px w-5 bg-foreground transition-transform duration-500 ease-page", mobileOpen && "-translate-y-[4px] -rotate-45")} />
+                <span className={cn("absolute left-0 top-0 h-px w-5 bg-foreground transition-transform duration-300 ease-page", mobileOpen && "translate-y-[5px] rotate-45")} />
+                <span className={cn("absolute bottom-0 left-0 h-px w-5 bg-foreground transition-transform duration-300 ease-page", mobileOpen && "-translate-y-[4px] -rotate-45")} />
               </span>
               <span className="hidden sm:inline">{mobileOpen ? "Sluiten" : "Menu"}</span>
             </button>
@@ -114,7 +115,7 @@ export function SiteHeader() {
             href="/"
             aria-label={`${BRAND.name}, naar de homepage`}
             onMouseEnter={() => setOpenId(null)}
-            className="flex items-center px-3 text-[1.5rem] text-foreground sm:px-4 sm:text-[1.75rem]"
+            className="flex items-center px-3 text-[1.5rem] text-foreground sm:px-4 sm:text-[1.625rem]"
           >
             <Wordmark />
           </Link>
@@ -122,13 +123,12 @@ export function SiteHeader() {
           {/* Right: actions */}
           <div className="flex items-stretch justify-end" onMouseEnter={() => setOpenId(null)}>
             <Link href={studioLink.href} className="flex items-center gap-2 px-3 text-sm sm:px-4" aria-label={studioLink.label}>
-              <LogIn strokeWidth={1.25} className="size-4" aria-hidden />
+              <LogIn strokeWidth={1.5} className="size-4" aria-hidden />
               <span className="link-line hidden md:inline">{studioLink.label}</span>
             </Link>
             <div className="hidden items-center p-1.5 sm:flex">
-              <Link href={primaryCta.href} className={cn(button({ size: "sm" }), "h-full rounded-[2px]")}>
+              <Link href={primaryCta.href} className={cn(button({ size: "sm" }), "h-full")}>
                 {primaryCta.label}
-                <Arrow />
               </Link>
             </div>
           </div>
@@ -168,45 +168,39 @@ function MegaPanel({ group }: { group: NavGroup }) {
   const current = group.items[preview];
 
   return (
-    <div className="absolute inset-x-0 top-full hidden animate-in fade-in slide-in-from-top-1 duration-300 xl:block">
-      <div className="grid grid-cols-12 gap-10 rounded-b-sm border border-t bg-background px-10 py-10 shadow-[var(--shadow-soft)]">
+    <div className="absolute inset-x-0 top-full hidden xl:block">
+      <div className="grid grid-cols-12 gap-10 border border-t bg-background px-10 py-10 shadow-[var(--shadow-soft)]">
         <div className="col-span-3 flex flex-col justify-between">
-          <div>
-            <p className="eyebrow">{group.label}</p>
-            <p className="mt-5 max-w-[20ch] font-display text-[1.75rem] leading-[1.15]">{group.intro}</p>
-          </div>
+          <p className="max-w-[20ch] font-display text-h3 leading-[1.15]">{group.intro}</p>
           <Link href={group.cta.href} className={cn(button({ variant: "outline", size: "sm" }), "mt-8 self-start")}>
             {group.cta.label}
-            <Arrow />
           </Link>
         </div>
 
         <ul className="col-span-5 self-start border-t">
           {group.items.map((item, i) => (
             <li key={item.label} className="border-b">
-              <Link href={item.href} onMouseEnter={() => setPreview(i)} onFocus={() => setPreview(i)} className="group flex items-baseline gap-5 py-3.5">
-                <span className="w-6 text-[0.6875rem] tabular-nums text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
-                <span className="link-line font-display text-2xl" data-active={preview === i}>
-                  {item.label}
-                </span>
-                <Arrow
-                  diagonal={false}
-                  className={cn("ml-auto self-center text-muted-foreground opacity-0 transition-opacity duration-300 group-hover:opacity-100", preview === i && "opacity-100")}
-                />
+              <Link
+                href={item.href}
+                onMouseEnter={() => setPreview(i)}
+                onFocus={() => setPreview(i)}
+                className={cn("block py-3.5 font-display text-2xl leading-tight transition-colors duration-200", preview === i ? "text-cloth" : "text-foreground")}
+              >
+                {item.label}
               </Link>
             </li>
           ))}
         </ul>
 
         <div className="col-span-4">
-          <div className="relative flex aspect-[4/3] w-full items-center justify-center overflow-hidden rounded-sm bg-linen">
+          <div className="relative flex aspect-[4/3] w-full items-center justify-center overflow-hidden bg-linen">
             {current && (
-              <div key={current.label} className="flex w-full animate-in fade-in items-center justify-center duration-700">
+              <div key={current.label} className="flex w-full items-center justify-center">
                 <Preview preview={current.preview} />
               </div>
             )}
           </div>
-          {current?.note && <p className="mt-3 text-[0.8125rem] leading-relaxed text-muted-foreground">{current.note}</p>}
+          {current?.note && <p className="mt-3 text-small text-muted-foreground">{current.note}</p>}
         </div>
       </div>
     </div>
@@ -219,7 +213,7 @@ function MobileMenu({ onNavigate }: { onNavigate: () => void }) {
   return (
     <div
       id="mobiel-menu"
-      className="fixed inset-x-0 bottom-0 top-[4.75rem] z-40 animate-in fade-in overflow-y-auto bg-background px-5 pb-10 pt-4 duration-300 xl:hidden"
+      className="fixed inset-x-0 bottom-0 top-[4.75rem] z-40 overflow-y-auto bg-background px-5 pb-10 pt-4 sm:top-20 sm:px-[clamp(3rem,7.5vw,7.5rem)] xl:hidden"
     >
       <ul className="border-t">
         {NAV.map((group) => {
@@ -230,13 +224,13 @@ function MobileMenu({ onNavigate }: { onNavigate: () => void }) {
                 type="button"
                 onClick={() => setExpanded(isOpen ? null : group.id)}
                 aria-expanded={isOpen}
-                className="flex w-full items-center justify-between py-5 font-display text-[2rem] leading-none"
+                className="flex w-full items-center justify-between py-5 text-left font-display text-[2rem] leading-none"
               >
                 {group.label}
-                {isOpen ? <Minus strokeWidth={1} className="size-5" /> : <Plus strokeWidth={1} className="size-5" />}
+                {isOpen ? <Minus strokeWidth={1.5} className="size-5" aria-hidden /> : <Plus strokeWidth={1.5} className="size-5" aria-hidden />}
               </button>
               {isOpen && (
-                <ul className="animate-in fade-in pb-5 duration-300">
+                <ul className="pb-5">
                   {group.items.map((item) => (
                     <li key={item.label}>
                       <Link href={item.href} onClick={onNavigate} className="block py-2 text-base text-foreground/80">
@@ -245,9 +239,8 @@ function MobileMenu({ onNavigate }: { onNavigate: () => void }) {
                     </li>
                   ))}
                   <li>
-                    <Link href={group.cta.href} onClick={onNavigate} className="group mt-2 inline-flex items-center gap-2 py-2 text-base">
-                      <span className="link-line">{group.cta.label}</span>
-                      <Arrow className="text-ribbon" />
+                    <Link href={group.cta.href} onClick={onNavigate} className="link-line mt-2 inline-block py-2 text-base font-medium">
+                      {group.cta.label}
                     </Link>
                   </li>
                 </ul>
@@ -258,10 +251,10 @@ function MobileMenu({ onNavigate }: { onNavigate: () => void }) {
       </ul>
       <div className="mt-8 flex flex-col gap-3">
         <Link href={primaryCta.href} onClick={onNavigate} className={button({ size: "lg" })}>
-          {primaryCta.label} <Arrow />
+          {primaryCta.label}
         </Link>
         <Link href={studioLink.href} onClick={onNavigate} className={button({ variant: "outline", size: "lg" })}>
-          <LogIn strokeWidth={1.25} className="size-4" aria-hidden /> {studioLink.label}
+          <LogIn strokeWidth={1.5} className="size-4" aria-hidden /> {studioLink.label}
         </Link>
       </div>
     </div>
