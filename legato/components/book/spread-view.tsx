@@ -72,7 +72,7 @@ export function SpreadView({ spread, formatId, style, className, selectedId, onS
 
   const box = (fr: Frame): CSSProperties => {
     // In print, frames that touch the trim edge run on into the bleed.
-    const b = print?.bleedMm ?? 0;
+    const b = fr.kind === "text" ? 0 : (print?.bleedMm ?? 0);
     const l = b && fr.x <= EDGE, t = b && fr.y <= EDGE, r = b && fr.x + fr.w >= 100 - EDGE, bt = b && fr.y + fr.h >= 100 - EDGE;
     return {
       left: `calc(${fr.x}% - ${l ? b : 0} * var(--mm))`,
@@ -106,7 +106,7 @@ export function SpreadView({ spread, formatId, style, className, selectedId, onS
             } : undefined}
           >
             {fr.kind === "image" && <ImageBox frame={fr} full={Boolean(print)} tint={pal.tint} ink={pal.ink} />}
-            {fr.kind === "text" && <TextBox frame={fr} formatId={formatId} style={style} dark={onDark(fr)} />}
+            {fr.kind === "text" && <TextBox frame={fr} formatId={formatId} style={style} dark={onDark(fr)} editable={editable} />}
             {fr.kind === "block" && <div className="h-full w-full" style={{ background: fr.tone === "dark" ? pal.dark : fr.tone === "accent" ? pal.accent : pal.tint }} />}
             {selected && editable && (
               <div className="absolute -bottom-1.5 -right-1.5 h-3 w-3 cursor-nwse-resize rounded-full border border-white bg-sky-500" onPointerDown={(e) => drag(e, fr, "resize")} />
@@ -139,7 +139,9 @@ function ImageBox({ frame, full, tint, ink }: { frame: ImageFrame; full: boolean
   );
 }
 
-function TextBox({ frame, formatId, style, dark }: { frame: TextFrame; formatId: string; style: StyleParams; dark: boolean }) {
+const ROLE_HINT: Record<TextFrame["role"], string> = { title: "Titel", subtitle: "Ondertitel", kicker: "Bovenkop", body: "Tekst", list: "Lijst", quote: "Citaat", attribution: "Naam", caption: "Bijschrift", script: "Handschrift" };
+
+function TextBox({ frame, formatId, style, dark, editable }: { frame: TextFrame; formatId: string; style: StyleParams; dark: boolean; editable: boolean }) {
   const pal = paletteOf(style.palette);
   const fonts = fontPairOf(style.fontPair);
   const size = sizeMm(frame, formatId);
@@ -173,7 +175,8 @@ function TextBox({ frame, formatId, style, dark }: { frame: TextFrame; formatId:
   return (
     <div className="flex h-full w-full flex-col overflow-hidden" style={{ justifyContent: frame.valign === "middle" ? "center" : frame.valign === "bottom" ? "flex-end" : "flex-start" }} lang="nl">
       <div className={cn(frame.dropCap && frame.text.length > 200 && "lg-dropcap")} style={{ ...base, ...byRole[frame.role] }}>
-        {frame.text || (frame.role === "title" ? "Titel" : "")}
+        {/* The hint for an empty frame exists only on the editing canvas, never in proof or print. */}
+        {frame.text || (editable ? <span style={{ opacity: 0.35 }}>{ROLE_HINT[frame.role]}</span> : "")}
       </div>
     </div>
   );

@@ -234,5 +234,7 @@ export interface SpreadPlan {
   texts: Partial<Record<"title" | "subtitle" | "kicker" | "body" | "body2" | "quote" | "attribution" | "caption", string>>;
   background: SpreadBackground;
   bw?: boolean;
+  /** Drop photo slots that stay empty (text continuation spreads). */
+  textOnly?: boolean;
   rationale?: string;
 }

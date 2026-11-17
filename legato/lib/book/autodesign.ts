@@ -75,8 +75,9 @@ function storyPlans(story: Story, chapter: Chapter | undefined, project: Project
       ...base,
       template,
       photoIds: photo(portrait),
+      textOnly: true,
       texts: {
-        kicker: i === 0 ? kicker : `${kicker} · vervolg`,
+        kicker: i === 0 ? kicker : `${kicker}, vervolg`,
         title: i === 0 ? story.title : "",
         body,
         attribution: i === parts.length - 1 ? by : "",
@@ -98,7 +99,7 @@ function storyPlans(story: Story, chapter: Chapter | undefined, project: Project
         : [{ ...base, template: "anekdote", photoIds: pool.next(2).map((p) => p.id), texts: { kicker: "Moment", title: story.title, body: story.text }, rationale: "Kort verhaal in een getint vlak, zodat het opvalt tussen de fotospreads." }];
     case "quote": {
       const ids = photo(portrait);
-      return [{ ...base, template: ids.length ? "quote-beeld" : "quote", photoIds: ids, texts: { quote: `“${story.text.replace(/^[“"]|[”"]$/g, "")}”`, attribution: by }, background: project.style.mood === "editorial" && !ids.length ? "dark" : "paper", rationale: "Eén zin krijgt de hele spread." }];
+      return [{ ...base, template: ids.length ? "quote-beeld" : "quote", photoIds: ids, textOnly: true, texts: { quote: `“${story.text.replace(/^[“"]|[”"]$/g, "")}”`, attribution: by }, background: project.style.mood === "editorial" && !ids.length ? "dark" : "paper", rationale: "Eén zin krijgt de hele spread." }];
     }
     case "menu":
     case "playlist":
@@ -129,7 +130,7 @@ function vowPlans(vows: Story[], chapter: Chapter | undefined, project: Project,
       const parts = splitText(a.text, bodyCapacity("gelofte-beeld", project));
       parts.forEach((body, n) => {
         const p = pool.take(portrait);
-        out.push({ ...base, template: "gelofte-beeld", photoIds: p ? [p.id] : [], texts: { title: n === 0 ? a.title || "Gelofte" : "", body, attribution: n === parts.length - 1 ? a.author : "" }, rationale: "Gelofte met portret van wie hem uitsprak." });
+        out.push({ ...base, template: "gelofte-beeld", photoIds: p ? [p.id] : [], textOnly: true, texts: { title: n === 0 ? a.title || "Gelofte" : "", body, attribution: n === parts.length - 1 ? a.author : "" }, rationale: "Gelofte met portret van wie hem uitsprak." });
       });
       i += 1;
     }
@@ -166,7 +167,8 @@ function photoPlans(pool: Pool, count: number, chapter: Chapter | undefined, pro
 }
 
 /** Designs the whole book. Returns plans; `plansToSpreads` positions them. */
-export function designBook(project: Project): SpreadPlan[] {
+export function designBook(input: Project): SpreadPlan[] {
+  const project = { ...input, photos: assignLoose(input) };
   const { style, chapters, stories, photos } = project;
   const plans: SpreadPlan[] = [];
   const loose = (kind: Story["kind"]) => stories.filter((s) => s.kind === kind && !s.chapterId);
@@ -179,6 +181,7 @@ export function designBook(project: Project): SpreadPlan[] {
   const frontPool = new Pool([]);
   for (const s of loose("opdracht")) plans.push(...storyPlans(s, undefined, project, frontPool));
   for (const s of loose("tijdlijn")) plans.push(...storyPlans(s, undefined, project, frontPool));
+  plans.push(...vowPlans(loose("gelofte"), undefined, project, frontPool));
 
   // Text spreads are fixed; what is left of the target goes to photographs.
   const perChapter = chapters.map((ch) => {
@@ -200,8 +203,9 @@ export function designBook(project: Project): SpreadPlan[] {
     });
     const texts: SpreadPlan[] = [];
     texts.push(...vowPlans(own.filter((s) => s.kind === "gelofte"), ch, project, pool));
-    // With little room for text, quotes and anecdotes go first; long texts stay.
-    const others = own.filter((s) => s.kind !== "gelofte");
+    // With little room for text, the stories people would miss most stay: speeches
+    // and letters before anecdotes, quotes and lists. Preflight reports the rest.
+    const others = own.filter((s) => s.kind !== "gelofte").sort((a, b) => KEEP_ORDER.indexOf(a.kind) - KEEP_ORDER.indexOf(b.kind));
     const limit = textShare <= 1 ? 1 : textShare === 2 ? 2 : 99;
     others.slice(0, limit).forEach((s) => texts.push(...storyPlans(s, ch, project, pool)));
     return { ch, pool, head, texts, total };
@@ -265,17 +269,63 @@ export function plansToSpreads(plans: SpreadPlan[], project: Project): Spread[] 
   );
   const locked = project.spreads.filter((s) => s.locked);
   if (!locked.length) return fresh;
-  // Photos used on locked spreads must not appear twice.
-  const taken = new Set(locked.flatMap((s) => s.frames.flatMap((f) => (f.kind === "image" && f.photoId ? [f.photoId] : []))));
-  const cleaned = fresh
-    .map((s) => ({ ...s, frames: s.frames.map((f) => (f.kind === "image" && f.photoId && taken.has(f.photoId) ? { ...f, photoId: undefined } : f)) }))
-    .filter((s) => !s.frames.some((f) => f.kind === "image") || s.frames.some((f) => f.kind === "image" && f.photoId));
+  // Photos used on locked spreads must not appear twice. A fresh spread that
+  // loses all its photographs this way is dropped only when it carries no words.
+  const taken = lockedContent(project).photoIds;
+  const hasWords = (s: Spread) => s.frames.some((f) => f.kind === "text" && f.text.trim());
+  const cleaned = fresh.flatMap((s) => {
+    const before = s.frames.filter((f) => f.kind === "image" && f.photoId).length;
+    const frames = s.frames.map((f) => (f.kind === "image" && f.photoId && taken.has(f.photoId) ? { ...f, photoId: undefined } : f));
+    const after = frames.filter((f) => f.kind === "image" && f.photoId).length;
+    return before > 0 && after === 0 && !hasWords(s) ? [] : [{ ...s, frames }];
+  });
   const out = [...cleaned];
   for (const l of locked) {
-    const oldIndex = project.spreads.indexOf(l);
-    out.splice(Math.min(out.length, oldIndex), 0, l);
+    // Back to its old place, but inside its own chapter and never after the colophon.
+    let at = Math.min(project.spreads.indexOf(l), Math.max(0, out.length - 1));
+    const own = out.map((s, i) => (s.chapterId === l.chapterId ? i : -1)).filter((i) => i >= 0);
+    if (l.chapterId && own.length) at = Math.min(Math.max(at, own[0] + 1), own[own.length - 1] + 1);
+    out.splice(at, 0, l);
   }
   return out;
+}
+
+const flat = (s: string) => s.toLowerCase().replace(/\s+/g, " ").trim();
+
+/** Photographs and stories that sit on locked spreads: a new design leaves them alone. */
+export function lockedContent(project: Project): { photoIds: Set<string>; storyIds: Set<string> } {
+  const locked = project.spreads.filter((s) => s.locked);
+  const photoIds = new Set(locked.flatMap((s) => s.frames.flatMap((f) => (f.kind === "image" && f.photoId ? [f.photoId] : []))));
+  const words = flat(locked.flatMap((s) => s.frames.flatMap((f) => (f.kind === "text" ? [f.text] : []))).join(" "));
+  const storyIds = new Set(project.stories.filter((s) => s.text.trim() && words.includes(flat(s.text).slice(0, 60))).map((s) => s.id));
+  return { photoIds, storyIds };
+}
+
+/** Stories of which no opening words appear anywhere in the book. */
+export function unplacedStories(project: Project): Story[] {
+  const words = flat(project.spreads.flatMap((s) => s.frames.flatMap((f) => (f.kind === "text" ? [f.text] : []))).join(" "));
+  return project.stories.filter((s) => s.text.trim() && !words.includes(flat(s.text).slice(0, 60).replace(/^[“"]|[”"]$/g, "")));
+}
+
+const KEEP_ORDER: Story["kind"][] = ["speech", "brief", "verhaal", "in-memoriam", "anekdote", "quote", "menu", "playlist", "tijdlijn", "opdracht", "gelofte"];
+
+/**
+ * Photographs without a chapter join the chapter whose photographs are
+ * closest in time; if no chapter has any, they are spread evenly in order.
+ */
+function assignLoose(project: Project): Photo[] {
+  const ids = new Set(project.chapters.map((c) => c.id));
+  const loose = project.photos.filter((p) => !p.chapterId || !ids.has(p.chapterId));
+  if (!loose.length || !project.chapters.length) return project.photos;
+  const placed = project.photos.filter((p) => p.chapterId && ids.has(p.chapterId));
+  const sorted = [...loose].sort((a, b) => a.takenAt - b.takenAt);
+  const per = Math.ceil(sorted.length / project.chapters.length);
+  const target = new Map<string, string>();
+  sorted.forEach((p, i) => {
+    const nearest = placed.length ? placed.reduce((a, b) => (Math.abs(b.takenAt - p.takenAt) < Math.abs(a.takenAt - p.takenAt) ? b : a)).chapterId! : project.chapters[Math.min(project.chapters.length - 1, Math.floor(i / per))].id;
+    target.set(p.id, nearest);
+  });
+  return project.photos.map((p) => (target.has(p.id) ? { ...p, chapterId: target.get(p.id) } : p));
 }
 
 /** Alternative templates for one spread that can hold the same content. */

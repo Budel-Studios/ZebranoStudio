@@ -1,4 +1,5 @@
 import { askClaude, DesignerError } from "@/lib/ai/claude";
+import { GuardError, guardedJson } from "@/lib/ai/guard";
 import { TEXT_SYSTEM, TEXT_TASKS } from "@/lib/ai/prompts";
 import { TextResult } from "@/lib/ai/schema";
 
@@ -7,9 +8,10 @@ export const maxDuration = 120;
 export async function POST(request: Request) {
   let body: { task?: string; text?: string; kind?: string; author?: string };
   try {
-    body = await request.json();
-  } catch {
-    return Response.json({ error: "Ongeldig verzoek." }, { status: 400 });
+    body = await guardedJson(request, { bucket: "text", perHour: 120, maxBytes: 100_000 });
+  } catch (e) {
+    if (e instanceof GuardError) return Response.json({ error: e.message }, { status: e.status });
+    throw e;
   }
   const task = TEXT_TASKS[body.task ?? ""];
   const text = (body.text ?? "").trim();

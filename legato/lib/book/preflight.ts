@@ -1,4 +1,5 @@
 import { formatOf } from "./catalog";
+import { unplacedStories } from "./autodesign";
 import { capacity } from "./typography";
 import type { Project, StudioSettings } from "./types";
 
@@ -52,7 +53,7 @@ export function preflight(project: Project, studio: StudioSettings): Issue[] {
         if (out) issues.push({ level: "let op", ...at, text: `Tekst staat binnen ${studio.safeMm} mm van de snijrand.` });
         if (fr.x < 50 - fold / 2 && fr.x + fr.w > 50 + fold / 2) issues.push({ level: "let op", ...at, text: "Tekst loopt over de vouw. Zet de tekst op één pagina." });
         if ((fr.role === "body" || fr.role === "list") && fr.text.length > capacity(fr, project.formatId) * 1.12) issues.push({ level: "let op", ...at, text: "Tekst past waarschijnlijk niet in het kader. Kort in, vergroot het kader of verdeel over twee spreads." });
-        if (/\b(lorem|todo|xxx)\b/i.test(fr.text)) issues.push({ level: "blokkerend", ...at, text: "Er staat nog voorbeeldtekst." });
+        if (/lorem ipsum/i.test(fr.text) || /^(nieuwe tekst|titel|bovenkop|ondertitel|bijschrift)$/i.test(fr.text.trim())) issues.push({ level: "let op", ...at, text: "Er staat nog voorbeeldtekst." });
       }
     }
     if (s.comments.some((c) => !c.resolved)) issues.push({ level: "let op", ...at, text: "Er staat nog een open opmerking." });
@@ -61,6 +62,9 @@ export function preflight(project: Project, studio: StudioSettings): Issue[] {
   for (const [id, count] of used) if (count > 1) issues.push({ level: "tip", text: `Foto ${photos.get(id)?.name} staat ${count} keer in het boek.` });
   const missingFav = project.photos.filter((p) => p.favorite && !used.has(p.id));
   if (missingFav.length) issues.push({ level: "let op", text: `${missingFav.length} favoriet${missingFav.length === 1 ? "" : "en"} van het bruidspaar ${missingFav.length === 1 ? "staat" : "staan"} nog niet in het boek.` });
+  if (project.spreads.length) {
+    for (const s of unplacedStories(project)) issues.push({ level: "let op", text: `Het verhaal “${s.title || s.author || s.text.slice(0, 30)}” staat niet in het boek.` });
+  }
   if (project.photos.some((p) => p.placeholder && used.has(p.id))) issues.push({ level: "blokkerend", text: "Het boek bevat demobeelden. Vervang ze door echte foto's voordat je bestelt." });
   if (!project.cover.title.trim()) issues.push({ level: "let op", text: "De omslag heeft nog geen titel." });
   if (!project.signoffs.some((s) => s.role === "klant")) issues.push({ level: "let op", text: "Het bruidspaar heeft nog geen akkoord gegeven." });

@@ -16,7 +16,6 @@ export function plansFromAi(designs: SpreadDesignT[], project: Project, opts: { 
   const stories = new Map(project.stories.map((s) => [s.id, s]));
   const chapters = new Set(project.chapters.map((c) => c.id));
   const used = new Set(opts.reservedPhotos ?? []);
-  const corpus = project.stories.map((s) => norm(s.text));
   const m = metricsFor(project.formatId, project.style.margins);
   const dropped: string[] = [];
   const plans: SpreadPlan[] = [];
@@ -34,7 +33,7 @@ export function plansFromAi(designs: SpreadDesignT[], project: Project, opts: { 
       continue;
     }
     const chapterId = chapters.has(d.chapterId) ? d.chapterId : undefined;
-    const ids = d.photoIds.filter((id) => photos.has(id) && !used.has(id)).slice(0, t.photos);
+    const ids = [...new Set(d.photoIds)].filter((id) => photos.has(id) && !used.has(id)).slice(0, t.photos);
     // Fill missing slots from unused photographs of the same chapter.
     if (ids.length < t.photos && chapterId) {
       for (const p of project.photos) {
@@ -49,8 +48,10 @@ export function plansFromAi(designs: SpreadDesignT[], project: Project, opts: { 
     ids.forEach((id) => used.add(id));
 
     const quote = d.quote.trim();
+    // A quote must be literally in a story, and its name is that story's author.
+    const source = norm(quote).length >= 8 ? project.stories.find((s) => norm(s.text).includes(norm(quote))) : undefined;
     if (t.texts.includes("quote")) {
-      if (!quote || !corpus.some((c) => c.includes(norm(quote)))) {
+      if (!source) {
         dropped.push("Een citaat dat niet letterlijk in een verhaal stond is weggelaten.");
         ids.forEach((id) => used.delete(id));
         continue;
@@ -61,7 +62,7 @@ export function plansFromAi(designs: SpreadDesignT[], project: Project, opts: { 
     const story2 = stories.get(d.storyId2);
     const base: SpreadPlan = {
       template: t.id, chapterId, photoIds: ids, background: d.background, bw: d.blackAndWhite, rationale: d.rationale,
-      texts: { kicker: d.kicker, title: d.title, subtitle: d.subtitle, quote, attribution: d.attribution || story?.author || "", caption: d.caption },
+      texts: { kicker: d.kicker, title: d.title, subtitle: d.subtitle, quote, attribution: (t.texts.includes("quote") ? source?.author : story?.author) || d.attribution || "", caption: d.caption },
     };
 
     if (t.texts.includes("body")) {
@@ -93,10 +94,11 @@ export function plansFromAi(designs: SpreadDesignT[], project: Project, opts: { 
         plans.push({
           ...base,
           photoIds: i === 0 ? ids : [],
+          textOnly: true,
           texts: {
             ...base.texts,
             title: i === 0 ? base.texts.title || story?.title || "" : "",
-            kicker: i === 0 ? base.texts.kicker : base.texts.kicker ? `${base.texts.kicker} · vervolg` : "Vervolg",
+            kicker: i === 0 ? base.texts.kicker : base.texts.kicker ? `${base.texts.kicker}, vervolg` : "Vervolg",
             body,
             attribution: i === parts.length - 1 ? base.texts.attribution : "",
           },

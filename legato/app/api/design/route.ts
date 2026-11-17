@@ -1,5 +1,6 @@
 import { askClaude, claudeConfigured, DesignerError } from "@/lib/ai/claude";
 import { bookPrompt, DESIGN_SYSTEM, spreadPrompt } from "@/lib/ai/prompts";
+import { GuardError, guardedJson } from "@/lib/ai/guard";
 import { BookDesign, SpreadOptions } from "@/lib/ai/schema";
 import type { Project } from "@/lib/book/types";
 
@@ -13,14 +14,20 @@ export function GET() {
 export async function POST(request: Request) {
   let body: { project?: Project; spreadId?: string; instruction?: string };
   try {
-    body = await request.json();
-  } catch {
-    return Response.json({ error: "Ongeldig verzoek." }, { status: 400 });
+    body = await guardedJson(request, { bucket: "design", perHour: 30, maxBytes: 1_500_000 });
+  } catch (e) {
+    if (e instanceof GuardError) return Response.json({ error: e.message }, { status: e.status });
+    throw e;
   }
   const project = body.project;
-  if (!project || !Array.isArray(project.chapters) || !Array.isArray(project.photos)) {
+  if (!project || !Array.isArray(project.chapters) || !Array.isArray(project.photos) || !Array.isArray(project.stories) || !Array.isArray(project.spreads) || !project.style) {
     return Response.json({ error: "Geen project meegestuurd." }, { status: 400 });
   }
+  if (project.photos.length > 2000 || project.stories.length > 200 || project.chapters.length > 40 || project.spreads.length > 150 || (body.instruction ?? "").length > 600) {
+    return Response.json({ error: "Dit boek is te groot om in één keer te ontwerpen." }, { status: 413 });
+  }
+  project.style.targetSpreads = Math.min(100, Math.max(10, Number(project.style.targetSpreads) || 30));
+  project.style.brief = String(project.style.brief ?? "").slice(0, 2000);
   try {
     if (body.spreadId) {
       const spread = project.spreads.find((s) => s.id === body.spreadId);

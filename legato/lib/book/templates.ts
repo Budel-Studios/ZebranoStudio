@@ -71,7 +71,7 @@ const keep = (frames: Array<Frame | false | undefined>) => frames.filter(Boolean
 export const TEMPLATES: TemplateDef[] = [
   {
     id: "panorama", name: "Panorama", use: "Eén beeld over beide pagina's, aflopend. Voor het grootste moment van een hoofdstuk.",
-    photos: 1, texts: ["caption"], energy: "luid",
+    photos: 1, texts: [], energy: "luid",
     build: (c) => keep([img(c, 0, 0, 0, 100, 100)]),
   },
   {
@@ -358,8 +358,12 @@ export const TEMPLATES: TemplateDef[] = [
 
 export const templateOf = (id: string) => TEMPLATES.find((t) => t.id === id) ?? TEMPLATES[0];
 
-/** Turns a plan (from Claude or the local engine) into a positioned spread. */
-export function buildSpread(plan: SpreadPlan, formatId: string, style: StyleParams, keepId?: string): Spread {
+/**
+ * Turns a plan (from Claude or the local engine) into a positioned spread.
+ * Empty text frames are left out, so nothing but real words reaches print;
+ * `keepEmpty` keeps them for a spread the user is about to fill in.
+ */
+export function buildSpread(plan: SpreadPlan, formatId: string, style: StyleParams, keepId?: string, opts: { keepEmpty?: boolean } = {}): Spread {
   const t = templateOf(plan.template);
   const frames = t.build({
     p: Array.from({ length: t.photos }, (_, i) => plan.photoIds[i]),
@@ -367,8 +371,7 @@ export function buildSpread(plan: SpreadPlan, formatId: string, style: StylePara
     m: metricsFor(formatId, style.margins),
     bw: plan.bw,
   });
-  // Text frames without text are dropped, except titles the user will want to fill in.
-  const used = frames.filter((f) => f.kind !== "text" || f.text.trim() !== "" || f.role === "title");
+  const used = frames.filter((f) => (f.kind === "text" ? opts.keepEmpty || f.text.trim() !== "" : f.kind === "image" ? !plan.textOnly || Boolean(f.photoId) : true));
   return {
     id: keepId ?? uid("s"),
     chapterId: plan.chapterId,
