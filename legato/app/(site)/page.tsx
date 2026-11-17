@@ -68,7 +68,7 @@ function Cover() {
       />
       <div className={cn(container, "flex min-h-svh flex-col pt-28 sm:pt-32")}>
         <div className="my-auto py-8">
-          <h1 className="foil-stamp animate-foil text-cover font-normal leading-[0.9] tracking-[-0.035em] max-[400px]:text-[3.5rem]">
+          <h1 className="foil-stamp animate-foil text-cover font-[450] leading-[0.9] tracking-[-0.035em] max-[400px]:text-[3.5rem]">
             Jullie dag,
             <br />
             als boek.
@@ -87,7 +87,9 @@ function Cover() {
           </div>
         </div>
         {/* Imprint line, as at the foot of a cover */}
-        <p className="border-t border-cloth-line py-5 text-sm text-cloth-muted">Trouwboeken en reisboeken. Gedrukt en gebonden in Italië.</p>
+        <div className="border-t border-cloth-line py-5 text-sm text-cloth-muted">
+          <p>Trouwboeken en reisboeken. Gedrukt en gebonden in Italië.</p>
+        </div>
       </div>
     </section>
   );

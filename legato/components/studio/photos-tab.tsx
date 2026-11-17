@@ -2,7 +2,7 @@
 
 import { Heart, Star, Trash2, Upload } from "lucide-react";
 import { useRef, useState } from "react";
-import { importFiles, removePhoto } from "@/lib/book/store";
+import { importFiles } from "@/lib/book/store";
 import type { Photo } from "@/lib/book/types";
 import { cn } from "@/lib/utils";
 import type { TabProps } from "./editor";
@@ -49,15 +49,15 @@ export function PhotosTab({ project, update, role }: TabProps) {
     const map = new Map(loose.map((p, i) => [p.id, project.chapters[Math.min(project.chapters.length - 1, Math.floor(i / per))].id]));
     update((p) => ({ ...p, photos: p.photos.map((ph) => (map.has(ph.id) ? { ...ph, chapterId: map.get(ph.id) } : ph)) }));
   };
-  const remove = async () => {
+  const remove = () => {
     if (!confirm(`${picked.size} foto('s) verwijderen uit dit boek?`)) return;
     const ids = new Set(picked);
     update((p) => ({
       ...p,
       photos: p.photos.filter((ph) => !ids.has(ph.id)),
+      removedPhotoIds: [...(p.removedPhotoIds ?? []), ...ids],
       spreads: p.spreads.map((s) => ({ ...s, frames: s.frames.map((f) => (f.kind === "image" && f.photoId && ids.has(f.photoId) ? { ...f, photoId: undefined } : f)) })),
     }));
-    await Promise.all([...ids].map(removePhoto));
     setPicked(new Set());
   };
 

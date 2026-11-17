@@ -41,7 +41,7 @@ export async function saveProject(p: Project): Promise<void> {
 
 export async function deleteProject(id: string): Promise<void> {
   const p = await loadProject(id);
-  if (p) await Promise.all(p.photos.flatMap((ph) => [del(B(ph.id, "full")), del(B(ph.id, "preview"))]));
+  if (p) await Promise.all([...p.photos.map((ph) => ph.id), ...(p.removedPhotoIds ?? [])].flatMap((id) => [del(B(id, "full")), del(B(id, "preview"))]));
   await del(P(id));
 }
 

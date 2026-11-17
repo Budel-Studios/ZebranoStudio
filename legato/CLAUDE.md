@@ -14,12 +14,14 @@
 ## Hard rules
 - UI text Dutch (couples "jullie", photographers "je"); code and comments English.
 - No invented facts: no reviews, prices, delivery times or partnership claims. Prices are set by the photographer in the studio; empty = "op aanvraag".
-- The couple's words are never rewritten by the model. The AI points at a story id; the app sets the text. Quotes must be literally present in a story (`lib/book/from-ai.ts` refuses others).
+- The designer never rewrites the couple's words: the AI points at a story id and the app sets the text. Quotes must be literally present in a story (`lib/book/from-ai.ts`, `isLiteralQuote`). Text help (opschonen, inkorten) is only a proposal the user accepts; the original is kept on the story and can be restored.
+- A sign-off holds a hash of the book (`lib/book/integrity.ts`); any later change voids it.
+- The AI routes go through `lib/ai/guard.ts` (same origin, size cap, hourly limit, optional `STUDIO_ACCESS_CODE`). There are no accounts yet: set a spend limit on the key before any public deployment.
 - No real photographs exist yet. Site visuals are CSS/SVG book mock-ups; the demo book uses painted placeholders that block ordering.
 - No secrets in the repo. `ANTHROPIC_API_KEY` is server-side only.
 
 ## Structure
-- `app/(site)/` marketing site (same build-up as the Zebrano site, own branding): tokens in `app/globals.css` (paper, linen, blush, wine, ink, gold), Cormorant Garamond + DM Sans, `components/site/*`, `components/ui/*`, `lib/navigation.ts`, `data/*`. Contact form → server action → Resend/SMTP.
+- `app/(site)/` marketing site (same build-up as the Zebrano site, own branding): tokens in `app/globals.css` (cloth `#2D4379`, cloth-deep, paper, linen, ink, ribbon `#F0B429` as the only accent, board), Bodoni Moda (h1–h3) + Albert Sans. Concept: the page is the book (cloth cover hero with foil-stamped title, paper pages, cloth back cover; `components/site/ribbon.tsx` is the ribbon marker that grows with scroll). No all-caps labels, no arrows on buttons, no middle-dot meta strings, no scroll reveals, numbers only for real sequences. `components/site/*`, `components/ui/*`, `lib/navigation.ts`, `data/*`. Contact form → server action → Resend/SMTP.
 - `app/studio/` the portal: dashboard (`components/studio/dashboard.tsx`) and the editor (`editor.tsx`) with five steps: Verhaal, Foto's, Ontwerp, Boek, Controle & bestellen. Role switch Fotograaf / Bruidspaar.
 - `lib/book/` the engine:
   - `types.ts` data model. Geometry is in percent of the open spread, so designs are format-independent.
@@ -39,3 +41,5 @@
 - Real photographs for the site; company details; legal texts are concepts.
 - Photo analysis by Claude (vision) for selection and captions; EXIF capture time for automatic chaptering.
 - Payments, invoices and order status.
+- From the code review, still open: measured text overflow (now only an estimate), re-layout after a format change, stories and book text are separate copies, storage quota and backup, keyboard access to the canvas, a real Chrome print proof.
+- Tests: `npm test` (vitest) covers `lib/book`; the studio UI has no automated tests.

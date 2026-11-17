@@ -134,6 +134,7 @@ export function Dashboard() {
                 <Field label="Afloop (mm)"><input type="number" min={0} max={10} className={inputCls} value={studio.bleedMm} onChange={(e) => patchStudio({ bleedMm: Number(e.target.value) })} /></Field>
                 <Field label="Veilige marge (mm)"><input type="number" min={0} max={30} className={inputCls} value={studio.safeMm} onChange={(e) => patchStudio({ safeMm: Number(e.target.value) })} /></Field>
                 <Field label="Minimum ppi"><input type="number" min={100} max={400} className={inputCls} value={studio.minPpi} onChange={(e) => patchStudio({ minPpi: Number(e.target.value) })} /></Field>
+                <Field label="Toegangscode AI" hint="Alleen nodig als de beheerder een code heeft ingesteld." className="col-span-3"><input className={inputCls} value={studio.accessCode ?? ""} onChange={(e) => patchStudio({ accessCode: e.target.value })} autoComplete="off" /></Field>
               </div>
               <p className="mt-3 text-xs leading-relaxed text-muted-foreground">Neem afloop en veilige marge over uit de Print &amp; Bind-gids van {BRAND.printer} voor het gekozen formaat. De standaardwaarden hier zijn een voorzichtige aanname.</p>
             </Panel>

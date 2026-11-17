@@ -27,7 +27,7 @@ export const button = cva(
         lg: "h-12 px-6",
       },
     },
-    compoundVariants: [{ variant: "text", class: "h-auto px-0 leading-normal" }],
+    compoundVariants: [{ variant: "text", class: "!h-auto !px-0 leading-normal" }],
     defaultVariants: { variant: "primary", size: "md" },
   },
 );

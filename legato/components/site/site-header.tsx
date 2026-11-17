@@ -99,9 +99,9 @@ export function SiteHeader() {
                     onFocus={() => setOpenId(group.id)}
                     onClick={() => setOpenId(openId === group.id ? null : group.id)}
                     aria-expanded={openId === group.id}
-                    className="flex items-center px-4 text-sm"
+                    className="group flex items-center px-4 text-[0.9375rem]"
                   >
-                    <span className="link-line" data-active={openId === group.id}>
+                    <span className="underline decoration-transparent decoration-1 underline-offset-[0.35em] transition-colors duration-200 group-hover:decoration-current data-[active=true]:decoration-current" data-active={openId === group.id}>
                       {group.label}
                     </span>
                   </button>
@@ -122,9 +122,9 @@ export function SiteHeader() {
 
           {/* Right: actions */}
           <div className="flex items-stretch justify-end" onMouseEnter={() => setOpenId(null)}>
-            <Link href={studioLink.href} className="flex items-center gap-2 px-3 text-sm sm:px-4" aria-label={studioLink.label}>
+            <Link href={studioLink.href} className="group flex items-center gap-2 px-3 text-[0.9375rem] sm:px-4" aria-label={studioLink.label}>
               <LogIn strokeWidth={1.5} className="size-4" aria-hidden />
-              <span className="link-line hidden md:inline">{studioLink.label}</span>
+              <span className="hidden underline decoration-transparent decoration-1 underline-offset-[0.35em] transition-colors duration-200 group-hover:decoration-current data-[active=true]:decoration-current md:inline">{studioLink.label}</span>
             </Link>
             <div className="hidden items-center p-1.5 sm:flex">
               <Link href={primaryCta.href} className={cn(button({ size: "sm" }), "h-full")}>

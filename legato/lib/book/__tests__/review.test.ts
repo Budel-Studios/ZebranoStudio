@@ -83,3 +83,21 @@ describe("review findings", () => {
     expect(preflight(kisses, DEFAULT_STUDIO).some((i) => i.level === "blokkerend" && i.text.includes("voorbeeldtekst"))).toBe(false);
   });
 });
+
+import { contentHash, expiredSignoff, isLiteralQuote, validSignoff } from "../integrity";
+
+describe("sign-off and quotes", () => {
+  it("voids a sign-off when the book changes afterwards", () => {
+    const p = design(fixture());
+    const signed = { ...p, signoffs: [{ role: "klant" as const, name: "Noor", at: "nu", hash: contentHash(p) }] };
+    expect(validSignoff(signed, "klant")?.name).toBe("Noor");
+    const changed = { ...signed, cover: { ...signed.cover, title: "Andere titel" } };
+    expect(validSignoff(changed, "klant")).toBeUndefined();
+    expect(expiredSignoff(changed, "klant")).toBe(true);
+  });
+
+  it("accepts only quotes that are word for word in the source", () => {
+    expect(isLiteralQuote("“met jou verdwaal ik graag”", "Ik wist het: met jou verdwaal ik graag.")).toBe(true);
+    expect(isLiteralQuote("Met jou verdwaal ik zo graag", "Ik wist het: met jou verdwaal ik graag.")).toBe(false);
+  });
+});

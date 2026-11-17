@@ -1,5 +1,6 @@
 import { formatOf } from "./catalog";
 import { unplacedStories } from "./autodesign";
+import { expiredSignoff, validSignoff } from "./integrity";
 import { capacity } from "./typography";
 import type { Project, StudioSettings } from "./types";
 
@@ -67,6 +68,7 @@ export function preflight(project: Project, studio: StudioSettings): Issue[] {
   }
   if (project.photos.some((p) => p.placeholder && used.has(p.id))) issues.push({ level: "blokkerend", text: "Het boek bevat demobeelden. Vervang ze door echte foto's voordat je bestelt." });
   if (!project.cover.title.trim()) issues.push({ level: "let op", text: "De omslag heeft nog geen titel." });
-  if (!project.signoffs.some((s) => s.role === "klant")) issues.push({ level: "let op", text: "Het bruidspaar heeft nog geen akkoord gegeven." });
+  if (expiredSignoff(project, "klant")) issues.push({ level: "let op", text: "Het boek is gewijzigd na het akkoord van het bruidspaar. Vraag opnieuw akkoord." });
+  else if (!validSignoff(project, "klant")) issues.push({ level: "let op", text: "Het bruidspaar heeft nog geen akkoord gegeven." });
   return issues;
 }

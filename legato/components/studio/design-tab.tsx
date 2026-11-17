@@ -3,17 +3,20 @@
 import { Sparkles, Wand2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { SpreadView } from "@/components/book/spread-view";
-import { designBook, plansToSpreads } from "@/lib/book/autodesign";
+import { designBook, lockedContent, plansToSpreads, unplacedStories } from "@/lib/book/autodesign";
 import { FONT_PAIRS, FORMATS, MOOD_DEFAULTS, MOODS, PALETTES } from "@/lib/book/catalog";
 import { plansFromAi } from "@/lib/book/from-ai";
 import { buildSpread } from "@/lib/book/templates";
 import type { Project, StyleParams } from "@/lib/book/types";
+import type { SpreadDesignT } from "@/lib/ai/schema";
+import { aiPost } from "./ai";
 import { cn } from "@/lib/utils";
 import type { TabProps } from "./editor";
 import { btnOutline, btnPrimary, Field, inputCls, Panel, Scale, Segmented } from "./ui";
 
-/** Photos on locked spreads stay where they are and are not offered again. */
-const lockedPhotos = (p: Project) => new Set(p.spreads.filter((s) => s.locked).flatMap((s) => s.frames.flatMap((f) => (f.kind === "image" && f.photoId ? [f.photoId] : []))));
+/** Photographs and stories on locked spreads stay where they are and are not offered again. */
+const lockedPhotos = (p: Project) => lockedContent(p).photoIds;
+const missing = (p: Project) => unplacedStories(p).map((s) => `Niet geplaatst: “${s.title || s.author || s.text.slice(0, 30)}”. Voeg het verhaal zelf toe of verhoog het aandeel tekst.`);
 
 export function DesignTab({ project, update, claude, goto }: TabProps) {
   const s = project.style;
@@ -36,9 +39,11 @@ export function DesignTab({ project, update, claude, goto }: TabProps) {
   }, [project.chapters, project.photos, project.stories, project.place, project.formatId, s]);
 
   const applyEngine = (note?: string) => {
-    const plans = designBook({ ...project, photos: project.photos.filter((p) => !lockedPhotos(project).has(p.id)) });
-    update((p) => ({ ...p, spreads: plansToSpreads(plans, p), designedBy: "engine" }));
-    setReport({ by: "engine", concept: "Ontworpen door de vaste opmaakregels: elk hoofdstuk opent met een titel, drukke en rustige spreads wisselen elkaar af en verhalen staan bij het moment waar ze bij horen.", notes: note ? [note] : [] });
+    const held = lockedContent(project);
+    const plans = designBook({ ...project, photos: project.photos.filter((p) => !held.photoIds.has(p.id)), stories: project.stories.filter((s) => !held.storyIds.has(s.id)) });
+    const spreads = plansToSpreads(plans, project);
+    update((p) => ({ ...p, spreads, designedBy: "engine" }));
+    setReport({ by: "engine", concept: "Ontworpen door de vaste opmaakregels: elk hoofdstuk opent met een titel, drukke en rustige spreads wisselen elkaar af en verhalen staan bij het moment waar ze bij horen.", notes: [...(note ? [note] : []), ...missing({ ...project, spreads })] });
   };
 
   const design = async () => {
@@ -48,13 +53,12 @@ export function DesignTab({ project, update, claude, goto }: TabProps) {
     if (!claude) return applyEngine();
     setBusy("Claude ontwerpt het boek. Dit duurt een à twee minuten…");
     try {
-      const r = await fetch("/api/design", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ project }) });
-      const data = await r.json();
-      if (!r.ok) throw new Error(data.error ?? "Er ging iets mis.");
+      const data = await aiPost<{ concept?: string; spreads?: SpreadDesignT[] }>("/api/design", { project });
       const { plans, dropped } = plansFromAi(data.spreads ?? [], project, { reservedPhotos: lockedPhotos(project) });
       if (plans.length < 3) throw new Error("Claude gaf geen bruikbaar ontwerp terug.");
-      update((p) => ({ ...p, spreads: plansToSpreads(plans, p), designedBy: "claude" }));
-      setReport({ by: "claude", concept: data.concept ?? "", notes: [...new Set(dropped)] });
+      const spreads = plansToSpreads(plans, project);
+      update((p) => ({ ...p, spreads, designedBy: "claude" }));
+      setReport({ by: "claude", concept: data.concept ?? "", notes: [...new Set(dropped), ...missing({ ...project, spreads })] });
     } catch (e) {
       setError(`${e instanceof Error ? e.message : "Er ging iets mis."} Het huidige ontwerp is niet gewijzigd.`);
     } finally {
@@ -125,7 +129,7 @@ export function DesignTab({ project, update, claude, goto }: TabProps) {
           </p>
           <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
             {claude
-              ? "Claude leest de hoofdstukken, verhalen en fotogegevens en bepaalt de volgorde, de sjablonen en waar elk verhaal landt. Teksten van het bruidspaar worden nooit herschreven."
+              ? "Claude leest de hoofdstukken, verhalen en fotogegevens en bepaalt de volgorde, de sjablonen en waar elk verhaal landt. Teksten van het bruidspaar komen in het boek zoals ze zijn aangeleverd."
               : "Er is geen Claude API-sleutel ingesteld op de server. Het boek wordt nu ontworpen door de ingebouwde opmaakregels met dezelfde parameters. Stel ANTHROPIC_API_KEY in om Claude te laten ontwerpen."}
           </p>
           <p className="mt-3 text-xs text-muted-foreground">{project.photos.length} foto&apos;s, {project.stories.length} verhalen, {project.chapters.length} hoofdstukken{locked ? `, ${locked} spread(s) vergrendeld` : ""}</p>

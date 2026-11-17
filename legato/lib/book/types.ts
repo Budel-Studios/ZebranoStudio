@@ -117,6 +117,8 @@ export interface Story {
   text: string;
   /** Who entered it — the couple can add stories in the client view. */
   by: Role;
+  /** The text as it was written, kept when an edit proposed by Claude is accepted. */
+  original?: string;
 }
 
 export interface Photo {
@@ -172,6 +174,8 @@ export interface Signoff {
   role: Role;
   name: string;
   at: string;
+  /** Hash of the book at the moment of signing; a later change voids the sign-off. */
+  hash?: string;
 }
 
 export interface Project {
@@ -191,6 +195,8 @@ export interface Project {
   spreads: Spread[];
   order: OrderLine[];
   signoffs: Signoff[];
+  /** Photographs taken out of the book; their files are kept so undo still works. */
+  removedPhotoIds?: string[];
   /** How the current design was made. */
   designedBy?: "claude" | "engine";
   createdAt: string;
@@ -224,6 +230,8 @@ export interface StudioSettings {
   bleedMm: number;
   safeMm: number;
   minPpi: number;
+  /** Shared code for the AI routes (STUDIO_ACCESS_CODE on the server). */
+  accessCode?: string;
 }
 
 /** What a designer (Claude or the local engine) returns for one spread. */

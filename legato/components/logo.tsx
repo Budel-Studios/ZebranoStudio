@@ -41,10 +41,10 @@ export function GiantWordmark({ className }: { className?: string }) {
   const size = `${(92 / (BRAND.name.length * 0.5)).toFixed(1)}cqi`;
   return (
     <div role="img" aria-label={`${BRAND.name}, ${BRAND.descriptor}`} className={cn("select-none font-display [container-type:inline-size]", className)}>
-      <div aria-hidden="true" className="foil-stamp whitespace-nowrap font-medium leading-[0.8] tracking-[-0.03em]" style={{ fontSize: size }}>
+      <div aria-hidden="true" className="foil-stamp whitespace-nowrap pb-[0.2em] font-normal leading-[0.8] tracking-[-0.03em]" style={{ fontSize: size }}>
         {BRAND.name}
       </div>
-      <div aria-hidden="true" className="mt-[3.5cqi] flex items-center gap-[0.5em] text-[clamp(1.25rem,3.4cqi,3rem)]">
+      <div aria-hidden="true" className="mt-[2.5cqi] flex items-center gap-[0.5em] text-[clamp(1.25rem,3.4cqi,3rem)]">
         <BookMark onCloth className="h-[1em] w-auto" />
         <span className="italic leading-none">{BRAND.descriptor}</span>
       </div>

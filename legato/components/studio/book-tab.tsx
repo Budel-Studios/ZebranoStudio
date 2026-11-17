@@ -7,6 +7,8 @@ import { alternatives } from "@/lib/book/autodesign";
 import { plansFromAi } from "@/lib/book/from-ai";
 import { buildSpread, planOf, templateOf, TEMPLATES, uid } from "@/lib/book/templates";
 import type { Frame, ImageFrame, Spread, SpreadBackground, TextFrame, TextRole } from "@/lib/book/types";
+import type { SpreadDesignT } from "@/lib/ai/schema";
+import { aiPost } from "./ai";
 import { cn } from "@/lib/utils";
 import type { TabProps } from "./editor";
 import { PhotoThumb } from "./photo-thumb";
@@ -24,7 +26,7 @@ export function BookTab({ project, update, role, studio, claude, goto, focusSpre
   const [frameId, setFrameId] = useState<string | undefined>();
   const [guides, setGuides] = useState(true);
   const [picker, setPicker] = useState(false);
-  const [options, setOptions] = useState<{ title: string; spreads: Spread[] } | null>(null);
+  const [options, setOptions] = useState<{ title: string; spreads: Spread[]; target: string } | null>(null);
   const [instruction, setInstruction] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -74,7 +76,7 @@ export function BookTab({ project, update, role, studio, claude, goto, focusSpre
     setSelId(next);
   };
   const insert = (template: string) => {
-    const s = buildSpread({ template, chapterId: spread.chapterId, photoIds: [], texts: {}, background: "paper" }, project.formatId, project.style);
+    const s = buildSpread({ template, chapterId: spread.chapterId, photoIds: [], texts: {}, background: "paper" }, project.formatId, project.style, undefined, { keepEmpty: true });
     update((p) => ({ ...p, spreads: [...p.spreads.slice(0, index + 1), s, ...p.spreads.slice(index + 1)] }));
     setPicker(false);
     select(s.id);
@@ -104,24 +106,24 @@ export function BookTab({ project, update, role, studio, claude, goto, focusSpre
 
   const localOptions = () => {
     const ids = alternatives(spread);
-    setOptions({ title: "Andere opmaak voor deze spread", spreads: ids.map((t) => buildSpread({ ...planOf(spread), template: t }, project.formatId, project.style)) });
+    setOptions({ title: "Andere opmaak voor deze spread", target: spread.id, spreads: ids.map((t) => buildSpread({ ...planOf(spread), template: t }, project.formatId, project.style)) });
   };
   const askClaude = async (text: string) => {
     setBusy(true);
     setError(null);
     try {
-      const r = await fetch("/api/design", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ project, spreadId: spread.id, instruction: text }) });
-      const data = await r.json();
-      if (!r.ok) throw new Error(data.error ?? "Er ging iets mis.");
+      const target = spread;
+      const data = await aiPost<{ options?: SpreadDesignT[] }>("/api/design", { project, spreadId: target.id, instruction: text });
       // Photos elsewhere in the book stay reserved; this spread's own photos are free to reuse.
       const own = new Set(spread.frames.flatMap((f) => (f.kind === "image" && f.photoId ? [f.photoId] : [])));
       const reserved = new Set([...usedIds].filter((id) => !own.has(id)));
-      const spreads = (data.options ?? []).flatMap((o: never) => {
+      // An option whose text would not fit on one spread is left out: nothing may be cut.
+      const spreads = (data.options ?? []).flatMap((o) => {
         const { plans } = plansFromAi([o], project, { reservedPhotos: new Set(reserved) });
-        return plans[0] ? [buildSpread({ ...plans[0], chapterId: spread.chapterId }, project.formatId, project.style)] : [];
+        return plans.length === 1 ? [buildSpread({ ...plans[0], chapterId: target.chapterId }, project.formatId, project.style)] : [];
       });
       if (!spreads.length) throw new Error("Claude gaf geen bruikbaar voorstel.");
-      setOptions({ title: text || "Voorstellen van Claude", spreads });
+      setOptions({ title: text || "Voorstellen van Claude", spreads, target: target.id });
     } catch (e) {
       setError(e instanceof Error ? e.message : "Er ging iets mis.");
     } finally {
@@ -129,7 +131,8 @@ export function BookTab({ project, update, role, studio, claude, goto, focusSpre
     }
   };
   const applyOption = (o: Spread) => {
-    patchSpread(spread.id, (s) => ({ ...o, id: s.id, comments: s.comments, locked: s.locked }));
+    if (!options) return;
+    patchSpread(options.target, (s) => ({ ...o, id: s.id, comments: s.comments, locked: s.locked }));
     setOptions(null);
     setFrameId(undefined);
   };

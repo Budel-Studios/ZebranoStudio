@@ -278,7 +278,7 @@ const SAMPLES: Record<SpreadKind, Sample> = {
     right: (
       <Page>
         <div className="my-auto">
-          <p className="font-display text-[5em] leading-[0.5]" style={{ color: RIBBON }}>
+          <p className="font-display text-[5em] leading-[0.5]" style={{ color: "var(--cloth)" }}>
             “
           </p>
           <p className="font-display text-[2.5em] italic leading-[1.12]">Ze kwam binnen en het werd stil. Zelfs oom Kees.</p>
@@ -367,8 +367,8 @@ const SAMPLES: Record<SpreadKind, Sample> = {
         <Kicker>De playlist van het feest</Kicker>
         <ol className="mt-[1.6em] text-[0.86em]">
           {["Openingsdans", "Het nummer van opa", "De polonaise (ja, echt)", "Meezinger één", "Meezinger twee", "Laatste dans"].map((t, i) => (
-            <li key={t} className="flex items-baseline gap-[1em] border-b py-[0.72em]" style={{ borderColor: "rgb(14 22 48 / 0.14)" }}>
-              <span className="w-[1.6em] tabular-nums" style={{ color: RIBBON }}>
+            <li key={t} className="flex items-baseline gap-[1em] border-b py-[0.72em]" style={{ borderColor: HAIR }}>
+              <span className="w-[1.6em] tabular-nums" style={{ color: SOFT }}>
                 {String(i + 1).padStart(2, "0")}
               </span>
               <span className="font-display text-[1.36em] leading-none">{t}</span>
@@ -395,8 +395,8 @@ const SAMPLES: Record<SpreadKind, Sample> = {
             ["22.00", "Feest"],
             ["03.10", "Laatste dans"],
           ].map(([t, n]) => (
-            <li key={t} className="flex items-baseline gap-[1.2em] border-b py-[0.66em]" style={{ borderColor: "rgb(14 22 48 / 0.14)" }}>
-              <span className="w-[3.4em] text-[0.74em] tabular-nums " style={{ color: RIBBON }}>
+            <li key={t} className="flex items-baseline gap-[1.2em] border-b py-[0.66em]" style={{ borderColor: HAIR }}>
+              <span className="w-[3.4em] text-[0.74em] tabular-nums" style={{ color: SOFT }}>
                 {t}
               </span>
               <span className="font-display text-[1.46em] leading-none">{n}</span>

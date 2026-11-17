@@ -95,7 +95,7 @@ export function FormatRow({ className }: { className?: string }) {
               <BookCover ratio={`${f.w} / ${f.h}`} label={`Voorbeeldomslag in het formaat ${f.name}`} />
             </div>
           </div>
-          <h3 className="mt-5 tabular-nums">{f.name}</h3>
+          <h3 className="mt-5 font-sans text-xl font-semibold tracking-normal tabular-nums">{f.name}</h3>
           <p className="mt-2 text-small text-muted-foreground">{f.text}</p>
         </li>
       ))}

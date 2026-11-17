@@ -3,7 +3,9 @@
 import { ArrowDown, ArrowUp, Plus, Sparkles, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { CHAPTER_PRESETS, STORY_KINDS, storyKindName } from "@/lib/book/catalog";
+import { isLiteralQuote } from "@/lib/book/integrity";
 import { uid } from "@/lib/book/templates";
+import { aiPost } from "./ai";
 import type { Chapter, Story, StoryKind } from "@/lib/book/types";
 import { cn } from "@/lib/utils";
 import type { TabProps } from "./editor";
@@ -132,10 +134,11 @@ function StoryCard({ story, claude, onPatch, onRemove, onAddQuote }: { story: St
     setError(null);
     setResult(null);
     try {
-      const r = await fetch("/api/text", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ task, text: story.text, kind: storyKindName(story.kind), author: story.author }) });
-      const data = await r.json();
-      if (!r.ok) throw new Error(data.error ?? "Er ging iets mis.");
-      setResult({ task, options: data.options ?? [], note: data.note ?? "" });
+      const data = await aiPost<{ options?: string[]; note?: string }>("/api/text", { task, text: story.text, kind: storyKindName(story.kind), author: story.author });
+      // A proposed quote counts only when it is word for word in the text.
+      const options = (data.options ?? []).filter((o) => task !== "quotes" || isLiteralQuote(o, story.text));
+      if (task === "quotes" && !options.length) throw new Error("Claude vond geen zin die letterlijk in de tekst staat.");
+      setResult({ task, options, note: data.note ?? "" });
     } catch (e) {
       setError(e instanceof Error ? e.message : "Er ging iets mis.");
     } finally {
@@ -167,6 +170,9 @@ function StoryCard({ story, claude, onPatch, onRemove, onAddQuote }: { story: St
             {!claude && <span className="text-xs text-muted-foreground">Teksthulp werkt zodra de Claude API-sleutel is ingesteld.</span>}
           </div>
         )}
+        {story.original !== undefined && story.original !== story.text && (
+          <p className="text-xs text-muted-foreground">Deze tekst is bewerkt op voorstel van Claude. <button type="button" className="underline underline-offset-4" onClick={() => onPatch({ text: story.original, original: undefined })}>Zet de oorspronkelijke tekst terug</button></p>
+        )}
         {error && <p className="text-sm text-destructive" role="alert">{error}</p>}
         {result && (
           <div className="space-y-3 rounded-sm border border-ribbon/40 bg-background p-4">
@@ -176,7 +182,7 @@ function StoryCard({ story, claude, onPatch, onRemove, onAddQuote }: { story: St
                 <p className="flex-1 whitespace-pre-line font-display text-lg leading-relaxed">{o}</p>
                 {result.task === "quotes" ? <button type="button" className={btnOutline} onClick={() => onAddQuote(o)}>Als citaat toevoegen</button>
                   : result.task === "titel" ? <button type="button" className={btnOutline} onClick={() => { onPatch({ title: o }); setResult(null); }}>Gebruik als titel</button>
-                  : <button type="button" className={btnOutline} onClick={() => { onPatch({ text: o }); setResult(null); }}>Overnemen</button>}
+                  : <button type="button" className={btnOutline} onClick={() => { onPatch({ text: o, original: story.original ?? story.text }); setResult(null); }}>Overnemen</button>}
               </div>
             ))}
             <button type="button" className={btnGhost} onClick={() => setResult(null)}>Sluiten</button>

@@ -60,7 +60,6 @@ export function Ribbon() {
           "linear-gradient(90deg, rgb(120 78 0 / 0.38) 0 2px, transparent 2px), linear-gradient(90deg, transparent 40%, rgb(255 255 255 / 0.18) 55%, transparent 75%), var(--ribbon)",
         // Swallow-tail at the foot.
         clipPath: "polygon(0 0, 100% 0, 100% 100%, 50% calc(100% - 9px), 0 100%)",
-        filter: "drop-shadow(0 1px 1px rgb(14 22 48 / 0.25))",
       }}
     />
   );

@@ -22,7 +22,7 @@ export function SiteFooter() {
       <div className={cn(container, "pt-16 lg:pt-20")}>
         <div className="grid gap-14 lg:grid-cols-12">
           <div className="lg:col-span-4">
-            <p className="max-w-[12ch] font-display text-h2 leading-[1.02] tracking-[-0.015em]">{BRAND.tagline}</p>
+            <p className="max-w-[9ch] font-display text-h2 leading-[1.02] tracking-[-0.015em]">{BRAND.tagline}</p>
             <Link href={primaryCta.href} className={cn(button({ variant: "light", size: "md" }), "mt-8")}>
               {primaryCta.label}
             </Link>

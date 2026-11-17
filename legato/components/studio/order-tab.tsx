@@ -4,6 +4,7 @@ import { AlertTriangle, Check, CircleAlert, Download, Info, Printer } from "luci
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { ACCESSORIES, COVER_MATERIALS, formatOf, FORMATS } from "@/lib/book/catalog";
+import { contentHash, expiredSignoff, validSignoff } from "@/lib/book/integrity";
 import { preflight, type Issue } from "@/lib/book/preflight";
 import type { Cover } from "@/lib/book/types";
 import { BRAND } from "@/lib/brand";
@@ -39,12 +40,13 @@ export function OrderTab({ project, update, role, studio, goto }: TabProps) {
   ];
   const open = lines.some((l) => l.amount === null);
   const total = lines.reduce((n, l) => n + (l.amount ?? 0), 0);
-  const signed = (r: "fotograaf" | "klant") => project.signoffs.find((s) => s.role === r);
+  const signed = (r: "fotograaf" | "klant") => validSignoff(project, r);
   const mine = signed(role);
+  const ready = blocking === 0 && Boolean(signed("klant")) && Boolean(signed("fotograaf"));
 
   const sign = () => {
     if (!name.trim()) return;
-    update((p) => ({ ...p, signoffs: [...p.signoffs.filter((s) => s.role !== role), { role, name: name.trim(), at: new Date().toISOString() }] }));
+    update((p) => ({ ...p, signoffs: [...p.signoffs.filter((s) => s.role !== role), { role, name: name.trim(), at: new Date().toISOString(), hash: contentHash(p) }] }));
     setName("");
   };
   const exportJson = () => {
@@ -138,7 +140,7 @@ export function OrderTab({ project, update, role, studio, goto }: TabProps) {
         <Panel title="Akkoord voor druk">
           {(["klant", "fotograaf"] as const).map((r) => {
             const s = signed(r);
-            return <p key={r} className="flex items-center gap-2 py-1 text-sm">{s ? <Check className="h-4 w-4 text-emerald-700" /> : <span className="h-4 w-4 rounded-full border" />}{r === "klant" ? "Bruidspaar" : "Fotograaf"}{s ? <span className="text-muted-foreground"> · {s.name}, {new Date(s.at).toLocaleString("nl-NL", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</span> : <span className="text-muted-foreground"> · nog niet</span>}</p>;
+            return <p key={r} className="flex items-center gap-2 py-1 text-sm">{s ? <Check className="h-4 w-4 text-emerald-700" /> : <span className="h-4 w-4 rounded-full border" />}{r === "klant" ? "Bruidspaar" : "Fotograaf"}{s ? <span className="text-muted-foreground"> · {s.name}, {new Date(s.at).toLocaleString("nl-NL", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</span> : <span className="text-muted-foreground">{expiredSignoff(project, r) ? ", vervallen door een wijziging" : ", nog niet"}</span>}</p>;
           })}
           {mine ? (
             <button type="button" className={cn(btnOutline, "mt-3")} onClick={() => update((p) => ({ ...p, signoffs: p.signoffs.filter((s) => s.role !== role) }))}>Trek mijn akkoord in</button>
@@ -155,7 +157,7 @@ export function OrderTab({ project, update, role, studio, goto }: TabProps) {
         {photographer && (
           <Panel title="Naar de drukker">
             <p className="text-xs leading-relaxed text-muted-foreground">Het drukbestand bevat elke spread op ware grootte met {studio.bleedMm} mm afloop, in RGB met de originele foto&apos;s. Bewaar het als PDF vanuit het afdrukvenster en upload het in de Trade Area van {BRAND.printer}. De omslag bestel je daar met het gekozen materiaal.</p>
-            <Link href={`/studio/project/${project.id}/print`} target="_blank" className={cn(btnPrimary, "mt-4 w-full")}><Printer className="h-4 w-4" strokeWidth={1.5} /> Open drukbestand</Link>
+            <Link href={`/studio/project/${project.id}/print`} target="_blank" className={cn(btnPrimary, "mt-4 w-full")}><Printer className="h-4 w-4" strokeWidth={1.5} /> {ready ? "Open drukbestand" : "Open proefbestand (nog niet drukklaar)"}</Link>
             <button type="button" className={cn(btnOutline, "mt-2 w-full")} onClick={exportJson}><Download className="h-4 w-4" strokeWidth={1.5} /> Download projectbestand</button>
           </Panel>
         )}

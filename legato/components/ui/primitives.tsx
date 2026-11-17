@@ -33,11 +33,6 @@ export function JsonLd({ data }: { data: unknown }) {
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(data) }} />;
 }
 
-/** Kept for imports: a title is set as written, without a coloured full stop. */
-export function DotTitle({ children }: { children: string }) {
-  return <>{children}</>;
-}
-
 /** Kept for imports: headings are one voice, so this renders its text unchanged. */
 export function Soft({ children }: { children: ReactNode }) {
   return <>{children}</>;
