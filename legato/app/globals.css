@@ -1,0 +1,259 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/*
+  Legato design system. Same building blocks as the Zebrano Studio site
+  (eyebrow, link-line, reveal, hairlines, tight radii) with its own palette:
+  paper, linen, blush, wine (primary), ink, gold (accent). Fonts: Cormorant
+  Garamond (display) and DM Sans (UI/body), self-hosted via next/font/local.
+*/
+
+@theme inline {
+  --font-display: var(--font-cormorant), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-dmsans), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: calc(var(--radius) - 1px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+
+  --color-paper: var(--paper);
+  --color-linen: var(--linen);
+  --color-blush: var(--blush);
+  --color-blush-foreground: var(--blush-foreground);
+  --color-wine: var(--wine);
+  --color-wine-foreground: var(--wine-foreground);
+  --color-wine-muted: var(--wine-muted);
+  --color-wine-line: var(--wine-line);
+  --color-ink: var(--ink);
+  --color-gold: var(--gold);
+
+  --ease-page: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root {
+  --radius: 0.25rem;
+
+  /* Brand */
+  --paper: oklch(0.967 0.009 82);
+  --linen: oklch(0.928 0.016 78);
+  --blush: oklch(0.86 0.032 45);
+  --blush-foreground: oklch(0.24 0.02 30);
+  --wine: oklch(0.31 0.075 18);
+  --wine-foreground: oklch(0.967 0.009 82);
+  --wine-muted: oklch(0.967 0.009 82 / 0.66);
+  --wine-line: oklch(0.967 0.009 82 / 0.18);
+  --ink: oklch(0.2 0.012 45);
+  --gold: oklch(0.66 0.095 78);
+
+  /* Semantic */
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: oklch(0.983 0.006 82);
+  --card-foreground: var(--ink);
+  --popover: var(--paper);
+  --popover-foreground: var(--ink);
+  --primary: var(--wine);
+  --primary-foreground: var(--paper);
+  --primary-hover: oklch(0.26 0.07 18);
+  --secondary: var(--linen);
+  --secondary-foreground: var(--ink);
+  --muted: var(--linen);
+  --muted-foreground: oklch(0.47 0.018 50);
+  --accent: var(--gold);
+  --accent-foreground: var(--paper);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: var(--paper);
+  --border: oklch(0.2 0.012 45 / 0.14);
+  --input: oklch(0.2 0.012 45 / 0.2);
+  --ring: var(--wine);
+
+  --shadow-soft: 0 24px 60px -32px oklch(0.2 0.012 45 / 0.35);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  ::selection {
+    background: var(--wine);
+    color: var(--paper);
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+/* Small uppercase label with a thin leading rule */
+@utility eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  &::before {
+    content: "";
+    width: 1.5rem;
+    height: 1px;
+    background: var(--gold);
+  }
+}
+
+/* Thin 1px underline that draws in from the left */
+@utility link-line {
+  position: relative;
+  background-image: linear-gradient(var(--gold), var(--gold));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size 0.5s var(--ease-page);
+  padding-bottom: 2px;
+  &:hover,
+  &:focus-visible,
+  &[data-active="true"] {
+    background-size: 100% 1px;
+  }
+}
+
+/* Slow, subtle image zoom for cards (parent needs `group`) */
+@utility img-zoom {
+  transition: transform 1.2s var(--ease-page);
+  :where(.group):hover & {
+    transform: scale(1.03);
+  }
+}
+
+/* Scroll reveal, toggled by the Reveal component */
+@utility reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.9s var(--ease-page),
+    transform 0.9s var(--ease-page);
+  &[data-visible="true"] {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes unveil {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* The gold slur in the logo redraws on hover (components/logo.tsx). */
+@keyframes slur {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@utility animate-rise {
+  animation: rise 1s var(--ease-page) both;
+}
+
+@utility animate-unveil {
+  animation: unveil 1.4s var(--ease-page) both;
+}
+
+/* FAQ/service accordions are native <details>: hide the default marker. */
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

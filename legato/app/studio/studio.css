@@ -1,0 +1,28 @@
+/* Book typefaces (OFL, self-hosted through fontsource). */
+@import "@fontsource-variable/cormorant-garamond/wght.css";
+@import "@fontsource-variable/cormorant-garamond/wght-italic.css";
+@import "@fontsource-variable/eb-garamond/wght.css";
+@import "@fontsource-variable/eb-garamond/wght-italic.css";
+@import "@fontsource-variable/playfair-display/wght.css";
+@import "@fontsource-variable/playfair-display/wght-italic.css";
+@import "@fontsource-variable/fraunces/wght.css";
+@import "@fontsource-variable/fraunces/wght-italic.css";
+@import "@fontsource-variable/jost/wght.css";
+@import "@fontsource-variable/dm-sans/wght.css";
+@import "@fontsource/italiana/400.css";
+@import "@fontsource/pinyon-script/400.css";
+
+.lg-dropcap::first-letter {
+  float: left;
+  font-size: 3.3em;
+  line-height: 0.82;
+  padding: 0.06em 0.08em 0 0;
+}
+
+.lg-spread {
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.08), 0 12px 32px -18px rgb(0 0 0 / 0.35);
+}
+
+@media print {
+  .lg-spread { box-shadow: none; }
+}
