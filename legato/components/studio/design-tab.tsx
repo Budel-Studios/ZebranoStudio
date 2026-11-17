@@ -120,7 +120,7 @@ export function DesignTab({ project, update, claude, goto }: TabProps) {
         </div>
         <div className="rounded-sm border bg-card p-5">
           <p className="flex items-center gap-2 text-sm font-medium">
-            {claude ? <Sparkles className="h-4 w-4 text-gold" strokeWidth={1.5} /> : <Wand2 className="h-4 w-4 text-gold" strokeWidth={1.5} />}
+            {claude ? <Sparkles className="h-4 w-4 text-ribbon" strokeWidth={1.5} /> : <Wand2 className="h-4 w-4 text-ribbon" strokeWidth={1.5} />}
             {claude ? "Claude is gekoppeld als ontwerper" : "Ontwerp met de vaste opmaakregels"}
           </p>
           <p className="mt-2 text-xs leading-relaxed text-muted-foreground">

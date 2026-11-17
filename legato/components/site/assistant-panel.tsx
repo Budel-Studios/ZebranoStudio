@@ -36,7 +36,7 @@ export function AssistantPanel({ className }: { className?: string }) {
         {/* Parameters */}
         <div className="border-b p-5 sm:border-b-0 sm:border-r sm:p-6">
           <p className="flex items-center gap-2 text-[0.6875rem] uppercase tracking-[0.2em] text-muted-foreground">
-            <Sparkles strokeWidth={1.25} className="size-3.5 text-gold" /> Ontwerpassistent
+            <Sparkles strokeWidth={1.25} className="size-3.5 text-ribbon" /> Ontwerpassistent
           </p>
           <div className="mt-3 border-t">
             <Row label="Stijl">
@@ -56,7 +56,7 @@ export function AssistantPanel({ className }: { className?: string }) {
               <span className="text-[0.6875rem] text-muted-foreground">Schreef, cursief</span>
             </Row>
             <Row label="Palet">
-              {["var(--paper)", "var(--linen)", "var(--blush)", "var(--gold)", "var(--wine)"].map((c) => (
+              {["var(--paper)", "var(--linen)", "var(--board)", "var(--ribbon)", "var(--cloth)"].map((c) => (
                 <span key={c} className="size-4 rounded-full border" style={{ background: c }} />
               ))}
             </Row>
@@ -88,7 +88,7 @@ export function AssistantPanel({ className }: { className?: string }) {
               <Check strokeWidth={1.5} className="size-3.5" /> Dit voorstel kiezen
             </span>
             <span className="inline-flex h-8 items-center gap-2 rounded-sm border px-3 text-[0.75rem]">
-              <RefreshCw strokeWidth={1.25} className="size-3.5 text-gold" /> Ander voorstel
+              <RefreshCw strokeWidth={1.25} className="size-3.5 text-ribbon" /> Ander voorstel
             </span>
           </div>
         </div>

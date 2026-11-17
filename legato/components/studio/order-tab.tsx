@@ -68,7 +68,7 @@ export function OrderTab({ project, update, role, studio, goto }: TabProps) {
                 <li key={n} className="flex items-start gap-3 py-2.5 text-sm">
                   <Icon className={cn("mt-0.5 h-4 w-4 shrink-0", TONE[i.level])} strokeWidth={1.5} />
                   <span className="flex-1">{i.spread && <span className="text-muted-foreground">Spread {i.spread} · </span>}{i.text}</span>
-                  {i.spreadId && <button type="button" className="shrink-0 text-xs underline decoration-gold underline-offset-4" onClick={() => goto("boek", i.spreadId)}>Bekijk</button>}
+                  {i.spreadId && <button type="button" className="shrink-0 text-xs underline decoration-ribbon underline-offset-4" onClick={() => goto("boek", i.spreadId)}>Bekijk</button>}
                 </li>
               );
             })}

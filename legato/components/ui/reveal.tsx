@@ -1,15 +1,15 @@
-"use client";
-
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
-import { cn } from "@/lib/utils";
+import type { CSSProperties, ReactNode } from "react";
 
 type Tag = "div" | "li" | "section" | "article" | "header" | "figure";
 
-/** Fades content up once it scrolls into view (the .reveal utility in globals.css). */
+/**
+ * Plain wrapper. Sections used to fade up on scroll; the site no longer does
+ * that, but the component stays so existing imports and markup keep working.
+ * `delay` is accepted and ignored.
+ */
 export function Reveal({
   children,
   className,
-  delay = 0,
   as: Component = "div",
   style,
   id,
@@ -21,33 +21,8 @@ export function Reveal({
   style?: CSSProperties;
   id?: string;
 }) {
-  const ref = useRef<HTMLElement | null>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry?.isIntersecting) {
-          setVisible(true);
-          io.disconnect();
-        }
-      },
-      { rootMargin: "0px 0px -8% 0px" },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
   return (
-    <Component
-      ref={ref as never}
-      id={id}
-      data-visible={visible}
-      style={{ transitionDelay: `${delay}ms`, ...style }}
-      className={cn("reveal", className)}
-    >
+    <Component id={id} style={style} className={className}>
       {children}
     </Component>
   );

@@ -9,11 +9,11 @@ import { formaten, materialen } from "@/data/boek";
 import { cn } from "@/lib/utils";
 
 /**
- * Sections used on more than one page: the numbered steps block in wine, the
+ * Sections used on more than one page: the numbered steps block in cloth, the
  * row of cover materials, the three formats and the accessory cards.
  */
 
-/** Wine block with numbered steps (the "Werkwijze" block of the home page). */
+/** Cloth block with numbered steps (the "Werkwijze" block of the home page). */
 export function StepsBlock({
   eyebrow,
   title,
@@ -31,28 +31,28 @@ export function StepsBlock({
 }) {
   return (
     <section id={id} className="scroll-mt-24 px-3 sm:px-4">
-      <div className="mx-auto max-w-[1600px] rounded-sm bg-wine px-6 py-24 text-wine-foreground sm:px-10 lg:px-14 lg:py-32">
+      <div className="mx-auto max-w-[1600px] rounded-sm bg-cloth px-6 py-24 text-cloth-foreground sm:px-10 lg:px-14 lg:py-32">
         <div className="grid gap-10 lg:grid-cols-12">
           <Reveal className="lg:col-span-6">
-            <p className="eyebrow text-wine-muted">{eyebrow}</p>
+            <p className="eyebrow text-cloth-muted">{eyebrow}</p>
             <h2 className="mt-5 max-w-[17ch] text-balance text-4xl leading-[1.05] sm:text-6xl">{title}</h2>
           </Reveal>
           {text && (
             <Reveal delay={100} className="flex flex-col justify-end lg:col-span-5 lg:col-start-8">
-              <p className="text-lg leading-relaxed text-wine-muted">{text}</p>
+              <p className="text-lg leading-relaxed text-cloth-muted">{text}</p>
             </Reveal>
           )}
         </div>
 
-        <ol className={cn("mt-16 grid gap-px overflow-hidden rounded-sm bg-wine-line sm:grid-cols-2", steps.length === 3 ? "lg:grid-cols-3" : "lg:grid-cols-4")}>
+        <ol className={cn("mt-16 grid gap-px overflow-hidden rounded-sm bg-cloth-line sm:grid-cols-2", steps.length === 3 ? "lg:grid-cols-3" : "lg:grid-cols-4")}>
           {steps.map((s, i) => (
-            <Reveal as="li" key={s.title} delay={i * 80} className="bg-wine p-7 lg:p-8">
+            <Reveal as="li" key={s.title} delay={i * 80} className="bg-cloth p-7 lg:p-8">
               <div className="flex items-center gap-3">
-                <span className="font-display text-5xl italic leading-none text-gold">{i + 1}</span>
-                <span className="h-px flex-1 bg-wine-line" />
+                <span className="font-display text-5xl italic leading-none text-ribbon">{i + 1}</span>
+                <span className="h-px flex-1 bg-cloth-line" />
               </div>
               <h3 className="mt-10 text-[1.75rem] leading-tight">{s.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-wine-muted">{s.text}</p>
+              <p className="mt-3 text-sm leading-relaxed text-cloth-muted">{s.text}</p>
             </Reveal>
           ))}
         </ol>
@@ -98,7 +98,7 @@ export function FormatRow({ className }: { className?: string }) {
           </div>
           <div className="mt-5 flex items-baseline justify-between border-b pb-3">
             <h3 className="text-3xl">{f.name}</h3>
-            <span className="text-[0.6875rem] tabular-nums tracking-[0.2em] text-gold">{String(i + 1).padStart(2, "0")}</span>
+            <span className="text-[0.6875rem] tabular-nums tracking-[0.2em] text-ribbon">{String(i + 1).padStart(2, "0")}</span>
           </div>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{f.text}</p>
         </Reveal>

@@ -7,11 +7,11 @@ import { BRAND } from "@/lib/brand";
 import { footerColumns, primaryCta } from "@/lib/navigation";
 
 function ColTitle({ children }: { children: ReactNode }) {
-  return <p className="mb-5 text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-blush-foreground/60">{children}</p>;
+  return <p className="mb-5 text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-board-foreground/60">{children}</p>;
 }
 
 /**
- * Footer, built like the Zebrano Studio one: inset blush panel with the
+ * Footer, built like the Zebrano Studio one: inset board panel with the
  * closing line, three link columns and contact, the giant wordmark and the
  * legal line. Company details (KvK, address) are not known yet and are
  * deliberately absent.
@@ -19,12 +19,12 @@ function ColTitle({ children }: { children: ReactNode }) {
 export function SiteFooter() {
   return (
     <footer className="px-3 pb-3 sm:px-4 sm:pb-4">
-      <div className="mx-auto max-w-[1600px] overflow-hidden rounded-sm bg-blush px-6 pt-16 text-blush-foreground sm:px-10 lg:px-14 lg:pt-20">
+      <div className="mx-auto max-w-[1600px] overflow-hidden rounded-sm bg-board px-6 pt-16 text-board-foreground sm:px-10 lg:px-14 lg:pt-20">
         <div className="grid gap-14 lg:grid-cols-12">
           <div className="lg:col-span-4">
             <h2 className="max-w-[11ch] text-balance text-4xl leading-[1.05] sm:text-5xl">
               {BRAND.tagline.replace(/\.$/, "")}
-              <span className="text-wine">.</span>
+              <span className="text-cloth">.</span>
             </h2>
             <Link href={primaryCta.href} className={`${button({ size: "md" })} mt-8`}>
               {primaryCta.label} <Arrow />
@@ -59,7 +59,7 @@ export function SiteFooter() {
                     Contactformulier
                   </Link>
                 </p>
-                <p className="text-blush-foreground/60">
+                <p className="text-board-foreground/60">
                   Gedrukt en gebonden in Italië door {BRAND.printer}
                 </p>
               </div>
@@ -67,11 +67,11 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <Link href="/" aria-label={`${BRAND.name}, naar de homepage`} className="mt-16 block border-t border-blush-foreground/15 pt-10 text-background lg:mt-20">
+        <Link href="/" aria-label={`${BRAND.name}, naar de homepage`} className="mt-16 block border-t border-board-foreground/15 pt-10 text-background lg:mt-20">
           <GiantWordmark />
         </Link>
 
-        <div className="mt-10 flex flex-col gap-4 border-t border-blush-foreground/15 py-7 text-[0.8125rem] sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-10 flex flex-col gap-4 border-t border-board-foreground/15 py-7 text-[0.8125rem] sm:flex-row sm:items-center sm:justify-between">
           <ul className="flex gap-6">
             <li>
               <Link href="/privacy" className="link-line">
@@ -89,7 +89,7 @@ export function SiteFooter() {
               </Link>
             </li>
           </ul>
-          <p className="text-blush-foreground/70">
+          <p className="text-board-foreground/70">
             © {new Date().getFullYear()} {BRAND.name} · {BRAND.descriptor}
           </p>
         </div>

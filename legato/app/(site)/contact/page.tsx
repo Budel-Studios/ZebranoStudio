@@ -79,7 +79,7 @@ export default async function ContactPage({
           <div className="mt-12 animate-rise border-t [animation-delay:150ms]">
             <a href={`mailto:${BRAND.email}`} className={row}>
               <span className="flex items-center gap-4">
-                <Mail strokeWidth={1.25} aria-hidden className="size-5 text-gold" />
+                <Mail strokeWidth={1.25} aria-hidden className="size-5 text-ribbon" />
                 <span>
                   <span className="block text-[0.6875rem] uppercase tracking-[0.2em] text-muted-foreground">Mail ons</span>
                   <span className="mt-1 block font-display text-2xl">
@@ -91,7 +91,7 @@ export default async function ContactPage({
             </a>
             <Link href="/studio" className={row}>
               <span className="flex items-center gap-4">
-                <LogIn strokeWidth={1.25} aria-hidden className="size-5 text-gold" />
+                <LogIn strokeWidth={1.25} aria-hidden className="size-5 text-ribbon" />
                 <span>
                   <span className="block text-[0.6875rem] uppercase tracking-[0.2em] text-muted-foreground">Fotograaf met een studio</span>
                   <span className="mt-1 block font-display text-2xl">

@@ -129,11 +129,11 @@ export default function HetBoekPage() {
         <div className="mt-14 grid gap-x-8 gap-y-14 lg:grid-cols-3">
           {opbouw.map((part, i) => (
             <Reveal key={part.name} delay={i * 80}>
-              <MockStage tone={i === 1 ? "blush" : "linen"} className="aspect-[4/3]">
+              <MockStage tone={i === 1 ? "board" : "linen"} className="aspect-[4/3]">
                 <SampleSpread kind={(["titel", "quote", "colofon"] as const)[i]!} className="w-[86%]" />
               </MockStage>
               <div className="mt-6 flex items-baseline gap-4">
-                <span className="text-[0.6875rem] tabular-nums tracking-[0.2em] text-gold">{String(i + 1).padStart(2, "0")}</span>
+                <span className="text-[0.6875rem] tabular-nums tracking-[0.2em] text-ribbon">{String(i + 1).padStart(2, "0")}</span>
                 <h3 className="text-3xl">{part.name}</h3>
               </div>
               <p className="mt-3 text-[0.9375rem] leading-relaxed text-muted-foreground">{part.text}</p>
@@ -153,7 +153,7 @@ export default function HetBoekPage() {
       <section className={cn(container, "pb-24 lg:pb-32")}>
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
           <Reveal className="lg:col-span-6">
-            <MockStage tone="wine" className="aspect-[4/3]">
+            <MockStage tone="cloth" className="aspect-[4/3]">
               <SampleSpread kind="colofon" className="w-[86%]" board="oklch(0.85 0.022 80)" />
             </MockStage>
           </Reveal>

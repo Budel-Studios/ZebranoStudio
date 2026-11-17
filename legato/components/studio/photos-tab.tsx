@@ -74,9 +74,9 @@ export function PhotosTab({ project, update, role }: TabProps) {
       {photographer && (
         <div onDragOver={(e) => { e.preventDefault(); setOver(true); }} onDragLeave={() => setOver(false)}
           onDrop={(e) => { e.preventDefault(); setOver(false); add([...e.dataTransfer.files]); }}
-          className={cn("flex flex-col items-center gap-3 rounded-sm border border-dashed px-6 py-8 text-center transition-colors", over ? "border-primary bg-blush/30" : "bg-card")}>
-          <Upload className="h-6 w-6 text-gold" strokeWidth={1.25} />
-          <p className="text-sm">Sleep foto&apos;s hierheen of <button type="button" className="underline decoration-gold underline-offset-4" onClick={() => input.current?.click()}>kies bestanden</button></p>
+          className={cn("flex flex-col items-center gap-3 rounded-sm border border-dashed px-6 py-8 text-center transition-colors", over ? "border-primary bg-board/30" : "bg-card")}>
+          <Upload className="h-6 w-6 text-ribbon" strokeWidth={1.25} />
+          <p className="text-sm">Sleep foto&apos;s hierheen of <button type="button" className="underline decoration-ribbon underline-offset-4" onClick={() => input.current?.click()}>kies bestanden</button></p>
           <p className="max-w-lg text-xs leading-relaxed text-muted-foreground">JPEG op volle resolutie, zoals je ze uit Lightroom exporteert. De originelen blijven onaangeroerd voor de druk{project.chapters.some((c) => c.id === filter) ? `; nieuwe foto's komen in “${project.chapters.find((c) => c.id === filter)?.title}”` : ""}.</p>
           {busy && <p className="text-xs font-medium" role="status">Importeren: {busy}</p>}
           <input ref={input} type="file" accept="image/*" multiple hidden onChange={(e) => { add([...(e.target.files ?? [])]); e.target.value = ""; }} />

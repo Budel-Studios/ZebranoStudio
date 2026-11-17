@@ -1,29 +1,33 @@
 import { cva, type VariantProps } from "class-variance-authority";
 
 /**
- * Button styles from the Lovable design: tight radius, small caps-free label,
- * five variants (primary wine, outline, light and outline-light for dark
- * sections, text link with the gold underline). Use on <Link>, <a> or
- * <button>: className={button({ variant, size })}.
+ * Buttons: 2px radius, Albert Sans, no icons appended. Variants:
+ * - primary: the ribbon button (saffron, ink text), the one call to action
+ * - cloth: solid cloth blue, for secondary actions on paper
+ * - outline: hairline on paper
+ * - light / outlineLight: on cloth sections (light = ribbon there as well)
+ * - text: a plain underlined link
+ * Use on <Link>, <a> or <button>: className={button({ variant, size })}.
  */
 export const button = cva(
-  "group/btn inline-flex items-center justify-center gap-2.5 whitespace-nowrap rounded-sm text-sm font-medium tracking-[0.01em] transition-colors duration-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-60",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm text-[0.9375rem] font-medium leading-none transition-colors duration-200 disabled:pointer-events-none disabled:opacity-60",
   {
     variants: {
       variant: {
-        primary: "bg-primary text-primary-foreground hover:bg-primary-hover",
-        outline: "[&_svg]:text-gold border border-foreground/25 text-foreground hover:border-foreground",
-        light: "bg-wine-foreground text-wine hover:bg-linen",
-        outlineLight: "border border-wine-foreground/30 text-wine-foreground hover:border-wine-foreground",
-        text: "[&_svg]:text-gold px-0 text-foreground link-line rounded-none",
+        primary: "bg-ribbon text-ink hover:bg-ribbon-hover",
+        cloth: "bg-cloth text-cloth-foreground hover:bg-cloth-deep",
+        outline: "border border-foreground/30 text-foreground hover:border-foreground hover:bg-foreground/[0.04]",
+        light: "bg-ribbon text-ink hover:bg-ribbon-hover",
+        outlineLight: "border border-cloth-foreground/40 text-cloth-foreground hover:border-cloth-foreground hover:bg-cloth-foreground/10",
+        text: "rounded-none text-foreground link-line",
       },
       size: {
-        sm: "h-9 px-4 text-[0.8125rem]",
+        sm: "h-10 px-4 text-sm",
         md: "h-11 px-5",
         lg: "h-12 px-6",
       },
     },
-    compoundVariants: [{ variant: "text", class: "h-auto px-0" }],
+    compoundVariants: [{ variant: "text", class: "h-auto px-0 leading-normal" }],
     defaultVariants: { variant: "primary", size: "md" },
   },
 );

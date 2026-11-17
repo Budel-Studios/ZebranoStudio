@@ -41,7 +41,7 @@ export default function OverPage() {
           </>
         }
         visual={
-          <MockStage tone="wine" className="aspect-[5/4] lg:aspect-[6/5]">
+          <MockStage tone="cloth" className="aspect-[5/4] lg:aspect-[6/5]">
             <SampleSpread kind="quote" className="w-[86%]" board="oklch(0.85 0.022 80)" />
           </MockStage>
         }

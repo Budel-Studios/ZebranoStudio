@@ -112,7 +112,7 @@ function Hero() {
             </div>
             <div className="absolute inset-x-3 bottom-3 flex items-end justify-between gap-4 sm:inset-x-4 sm:bottom-4">
               <Link href="/hoofdstukken" className="group hidden items-center gap-3 rounded-sm bg-background/90 px-4 py-3 text-sm backdrop-blur sm:flex">
-                <span className="size-1.5 rounded-full bg-gold" />
+                <span className="size-1.5 rounded-full bg-ribbon" />
                 Hoofdstuk drie: de ceremonie
                 <Arrow diagonal={false} className="text-muted-foreground" />
               </Link>
@@ -193,7 +193,7 @@ function Chapters() {
             <ol className="mt-4 border-t border-foreground/15">
               {hoofdstukken.map((h, i) => (
                 <li key={h.id} className="flex items-baseline gap-4 border-b border-foreground/15 py-3">
-                  <span className="w-9 text-[0.6875rem] tabular-nums tracking-[0.16em] text-gold">{ROMAN[i]}</span>
+                  <span className="w-9 text-[0.6875rem] tabular-nums tracking-[0.16em] text-ribbon">{ROMAN[i]}</span>
                   <span className="font-display text-[1.75rem] leading-none">{h.name}</span>
                   <span aria-hidden className="mb-1 flex-1 self-end border-b border-dotted border-foreground/30" />
                 </li>
@@ -232,7 +232,7 @@ function Stories() {
     <section className={cn(container, "py-24 lg:py-32")}>
       <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
         <Reveal className="lg:col-span-7">
-          <MockStage tone="blush" className="aspect-[4/3]" caption="Voorbeeld · geloften">
+          <MockStage tone="board" className="aspect-[4/3]" caption="Voorbeeld · geloften">
             <SampleSpread kind="geloften" className="w-[88%]" />
           </MockStage>
         </Reveal>
@@ -293,7 +293,7 @@ function Assistant() {
           <ol className="mt-10 border-t">
             {ASSISTANT_POINTS.map(([t, d], i) => (
               <li key={t} className="flex gap-5 border-b py-5">
-                <span className="w-6 pt-1.5 text-[0.6875rem] tabular-nums tracking-[0.2em] text-gold">{String(i + 1).padStart(2, "0")}</span>
+                <span className="w-6 pt-1.5 text-[0.6875rem] tabular-nums tracking-[0.2em] text-ribbon">{String(i + 1).padStart(2, "0")}</span>
                 <div>
                   <h3 className="text-2xl">{t}</h3>
                   <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{d}</p>

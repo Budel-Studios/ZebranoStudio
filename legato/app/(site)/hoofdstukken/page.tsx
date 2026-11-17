@@ -39,7 +39,7 @@ export default function HoofdstukkenPage() {
           </>
         }
         visual={
-          <MockStage tone="blush" className="aspect-[5/4] lg:aspect-[6/5]" caption="Voorbeeld · tijdlijn">
+          <MockStage tone="board" className="aspect-[5/4] lg:aspect-[6/5]" caption="Voorbeeld · tijdlijn">
             <SampleSpread kind="tijdlijn" className="w-[86%]" />
           </MockStage>
         }
@@ -75,7 +75,7 @@ export default function HoofdstukkenPage() {
           <ol className="mt-14 grid gap-x-10 border-t border-foreground/15 md:grid-cols-2">
             {hoofdstukken.map((h, i) => (
               <Reveal as="li" key={h.id} id={h.id === "geloften" ? undefined : h.id} delay={(i % 2) * 60} className="flex scroll-mt-28 gap-5 border-b border-foreground/15 py-7">
-                <span className="w-10 shrink-0 pt-2 text-[0.6875rem] tabular-nums tracking-[0.16em] text-gold">{ROMAN[i]}</span>
+                <span className="w-10 shrink-0 pt-2 text-[0.6875rem] tabular-nums tracking-[0.16em] text-ribbon">{ROMAN[i]}</span>
                 <div>
                   <h3 className="text-[2rem] leading-none">{h.name}</h3>
                   <p className="mt-3 max-w-md text-[0.9375rem] leading-relaxed text-muted-foreground">{h.text}</p>
@@ -108,12 +108,12 @@ export default function HoofdstukkenPage() {
           {featured.map((v, i) => (
             <div key={v.id} id={v.id} className="grid scroll-mt-28 items-center gap-10 lg:grid-cols-12 lg:gap-16">
               <Reveal className={cn("lg:col-span-7", i % 2 === 1 && "lg:order-2")}>
-                <MockStage tone={(["linen", "blush", "paper"] as const)[i % 3]!} className={cn("aspect-[4/3]", i % 3 === 2 && "border")}>
+                <MockStage tone={(["linen", "board", "paper"] as const)[i % 3]!} className={cn("aspect-[4/3]", i % 3 === 2 && "border")}>
                   <SampleSpread kind={v.spread!} className="w-[86%]" />
                 </MockStage>
               </Reveal>
               <Reveal delay={100} className={cn("lg:col-span-4", i % 2 === 1 ? "lg:order-1 lg:col-start-1" : "lg:col-start-9")}>
-                <p className="text-[0.6875rem] tabular-nums tracking-[0.2em] text-gold">{String(i + 1).padStart(2, "0")}</p>
+                <p className="text-[0.6875rem] tabular-nums tracking-[0.2em] text-ribbon">{String(i + 1).padStart(2, "0")}</p>
                 <h3 className="mt-4 text-4xl sm:text-5xl">{v.name}</h3>
                 <p className="mt-5 text-lg leading-relaxed text-muted-foreground">{v.text}</p>
               </Reveal>
@@ -124,7 +124,7 @@ export default function HoofdstukkenPage() {
         <div className="mt-20 grid border-t sm:grid-cols-3 lg:mt-28">
           {plain.map((v, i) => (
             <Reveal key={v.id} id={v.id} delay={i * 60} className="scroll-mt-28 border-b py-8 sm:border-b-0 sm:border-l sm:px-6 sm:first:border-l-0 sm:first:pl-0">
-              <p className="text-[0.6875rem] tabular-nums tracking-[0.2em] text-gold">{String(featured.length + i + 1).padStart(2, "0")}</p>
+              <p className="text-[0.6875rem] tabular-nums tracking-[0.2em] text-ribbon">{String(featured.length + i + 1).padStart(2, "0")}</p>
               <h3 className="mt-4 text-3xl">{v.name}</h3>
               <p className="mt-3 text-[0.9375rem] leading-relaxed text-muted-foreground">{v.text}</p>
             </Reveal>

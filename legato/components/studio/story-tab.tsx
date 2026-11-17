@@ -162,14 +162,14 @@ function StoryCard({ story, claude, onPatch, onRemove, onAddQuote }: { story: St
         </Field>
         {!isList && (
           <div className="flex flex-wrap items-center gap-2">
-            <span className="flex items-center gap-1.5 text-xs text-muted-foreground"><Sparkles className="h-3.5 w-3.5 text-gold" strokeWidth={1.5} /> Claude</span>
+            <span className="flex items-center gap-1.5 text-xs text-muted-foreground"><Sparkles className="h-3.5 w-3.5 text-ribbon" strokeWidth={1.5} /> Claude</span>
             {AI_TASKS.map((t) => <button key={t.id} type="button" className={btnOutline} disabled={!claude || !story.text.trim() || Boolean(busy)} onClick={() => ask(t.id)}>{busy === t.id ? "Bezig…" : t.label}</button>)}
             {!claude && <span className="text-xs text-muted-foreground">Teksthulp werkt zodra de Claude API-sleutel is ingesteld.</span>}
           </div>
         )}
         {error && <p className="text-sm text-destructive" role="alert">{error}</p>}
         {result && (
-          <div className="space-y-3 rounded-sm border border-gold/40 bg-background p-4">
+          <div className="space-y-3 rounded-sm border border-ribbon/40 bg-background p-4">
             <p className="text-xs text-muted-foreground">{result.note || "Voorstel van Claude. Er verandert niets tot je iets overneemt."}</p>
             {result.options.map((o, i) => (
               <div key={i} className="flex items-start gap-3 border-t pt-3 first:border-t-0 first:pt-0">

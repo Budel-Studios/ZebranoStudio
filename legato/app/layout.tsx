@@ -3,19 +3,20 @@ import localFont from "next/font/local";
 import { BRAND, SITE_URL } from "@/lib/brand";
 import "./globals.css";
 
-const cormorant = localFont({
+// Bodoni Moda with its optical-size axis (6-96) and weight axis (400-900).
+const bodoni = localFont({
   src: [
-    { path: "./fonts/cormorant-garamond-latin-wght-normal.woff2", style: "normal", weight: "300 700" },
-    { path: "./fonts/cormorant-garamond-latin-wght-italic.woff2", style: "italic", weight: "300 700" },
+    { path: "./fonts/bodoni-moda-latin-opsz-normal.woff2", style: "normal", weight: "400 900" },
+    { path: "./fonts/bodoni-moda-latin-opsz-italic.woff2", style: "italic", weight: "400 900" },
   ],
-  variable: "--font-cormorant",
+  variable: "--font-bodoni",
   display: "swap",
 });
 
-const dmSans = localFont({
-  src: "./fonts/dm-sans-latin-wght-normal.woff2",
-  weight: "100 1000",
-  variable: "--font-dmsans",
+const albert = localFont({
+  src: "./fonts/albert-sans-latin-wght-normal.woff2",
+  weight: "100 900",
+  variable: "--font-albert",
   display: "swap",
 });
 
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="nl" className={`${cormorant.variable} ${dmSans.variable}`}>
+    <html lang="nl" className={`${bodoni.variable} ${albert.variable}`}>
       <body className="min-h-dvh">{children}</body>
     </html>
   );

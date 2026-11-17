@@ -247,7 +247,7 @@ function MobileMenu({ onNavigate }: { onNavigate: () => void }) {
                   <li>
                     <Link href={group.cta.href} onClick={onNavigate} className="group mt-2 inline-flex items-center gap-2 py-2 text-base">
                       <span className="link-line">{group.cta.label}</span>
-                      <Arrow className="text-gold" />
+                      <Arrow className="text-ribbon" />
                     </Link>
                   </li>
                 </ul>

@@ -200,7 +200,7 @@ export function BookTab({ project, update, role, studio, claude, goto, focusSpre
         {photographer && (
           <div className="border-t bg-background">
             <div className="flex flex-wrap items-center gap-2 px-3 py-2">
-              <Sparkles className="h-4 w-4 shrink-0 text-gold" strokeWidth={1.5} />
+              <Sparkles className="h-4 w-4 shrink-0 text-ribbon" strokeWidth={1.5} />
               <form className="flex min-w-48 flex-1 gap-2" onSubmit={(e) => { e.preventDefault(); if (claude) askClaude(instruction); }}>
                 <input className={cn(inputCls, "h-9 py-0")} value={instruction} onChange={(e) => setInstruction(e.target.value)} disabled={!claude || busy} placeholder={claude ? "Vraag Claude om deze spread anders te ontwerpen…" : "Claude is niet gekoppeld (ANTHROPIC_API_KEY ontbreekt)"} aria-label="Opdracht voor Claude" />
                 <button type="submit" className={btnPrimary} disabled={!claude || busy}>{busy ? "Bezig…" : "Vraag"}</button>
@@ -260,7 +260,7 @@ export function BookTab({ project, update, role, studio, claude, goto, focusSpre
             <div key={c.id} className={cn("rounded-sm border p-2.5 text-sm", c.resolved && "opacity-50")}>
               <p className="text-[0.6875rem] uppercase tracking-[0.14em] text-muted-foreground">{c.role === "klant" ? "Bruidspaar" : "Fotograaf"} · {new Date(c.at).toLocaleDateString("nl-NL", { day: "numeric", month: "short" })}</p>
               <p className="mt-1 whitespace-pre-line">{c.text}</p>
-              {photographer && <button type="button" className="mt-1.5 text-xs underline decoration-gold underline-offset-4" onClick={() => patchSpread(spread.id, (s) => ({ ...s, comments: s.comments.map((x) => (x.id === c.id ? { ...x, resolved: !x.resolved } : x)) }))}>{c.resolved ? "Heropenen" : "Afgehandeld"}</button>}
+              {photographer && <button type="button" className="mt-1.5 text-xs underline decoration-ribbon underline-offset-4" onClick={() => patchSpread(spread.id, (s) => ({ ...s, comments: s.comments.map((x) => (x.id === c.id ? { ...x, resolved: !x.resolved } : x)) }))}>{c.resolved ? "Heropenen" : "Afgehandeld"}</button>}
             </div>
           ))}
           <textarea className={cn(inputCls, "min-h-16")} value={comment} onChange={(e) => setComment(e.target.value)} placeholder={role === "klant" ? "Wat wil je anders op deze spread?" : "Notitie of antwoord aan het bruidspaar"} />

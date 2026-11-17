@@ -94,7 +94,7 @@ export function Dashboard() {
           ))}
           {projects?.length === 0 && (
             <div className="rounded-sm border border-dashed p-10 text-center sm:col-span-2 lg:col-span-3">
-              <BookOpen className="mx-auto h-8 w-8 text-gold" strokeWidth={1} />
+              <BookOpen className="mx-auto h-8 w-8 text-ribbon" strokeWidth={1} />
               <h2 className="mt-4 text-2xl">Nog geen boeken</h2>
               <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-muted-foreground">Begin een boek voor een bruidspaar, of open het voorbeeldboek om te zien hoe hoofdstukken, verhalen en foto&apos;s samen een ontwerp worden.</p>
             </div>

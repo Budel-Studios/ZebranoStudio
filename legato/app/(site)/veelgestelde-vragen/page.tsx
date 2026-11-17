@@ -37,7 +37,7 @@ export default function FaqPage() {
           {faqGroups.map((group, gi) => (
             <div key={group.title} className="grid gap-8 lg:grid-cols-12">
               <Reveal className="lg:col-span-4">
-                <p className="text-[0.6875rem] tabular-nums tracking-[0.2em] text-gold">{String(gi + 1).padStart(2, "0")}</p>
+                <p className="text-[0.6875rem] tabular-nums tracking-[0.2em] text-ribbon">{String(gi + 1).padStart(2, "0")}</p>
                 <h2 className="mt-4 text-4xl sm:text-5xl">{group.title}</h2>
               </Reveal>
               <Reveal delay={80} className="border-t lg:col-span-8">
@@ -45,7 +45,7 @@ export default function FaqPage() {
                   <details key={item.q} className="group border-b">
                     <summary className="flex cursor-pointer items-center justify-between gap-6 py-5">
                       <h3 className="font-display text-2xl leading-snug sm:text-[1.75rem]">{item.q}</h3>
-                      <Plus strokeWidth={1} aria-hidden className="size-5 shrink-0 text-gold transition-transform duration-500 ease-page group-open:rotate-45" />
+                      <Plus strokeWidth={1} aria-hidden className="size-5 shrink-0 text-ribbon transition-transform duration-500 ease-page group-open:rotate-45" />
                     </summary>
                     <p className="max-w-2xl pb-7 text-lg leading-relaxed text-muted-foreground">{item.a}</p>
                   </details>

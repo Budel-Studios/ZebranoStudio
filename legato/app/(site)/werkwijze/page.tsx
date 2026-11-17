@@ -26,7 +26,7 @@ function Visual({ i }: { i: number }) {
     );
   if (i === 1)
     return (
-      <MockStage tone="blush" className="aspect-[4/3]">
+      <MockStage tone="board" className="aspect-[4/3]">
         <SampleSpread kind="brief" className="w-[84%]" />
       </MockStage>
     );
@@ -66,7 +66,7 @@ export default function WerkwijzePage() {
             <li key={s.title} className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
               <Reveal className={cn("lg:col-span-5", i % 2 === 1 && "lg:order-2 lg:col-start-8")}>
                 <div className="flex items-center gap-4">
-                  <span className="font-display text-7xl italic leading-none text-gold">{i + 1}</span>
+                  <span className="font-display text-7xl italic leading-none text-ribbon">{i + 1}</span>
                   <span className="h-px flex-1 bg-border" />
                 </div>
                 <h2 className="mt-8 text-4xl leading-[1.05] sm:text-5xl">{s.title}</h2>

@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 /**
  * Brand mark: an open book seen from the edge, its two pages tied together by
  * a slur, the arc that means "legato" in music notation (and "bound" in
- * Italian). The slur is the gold accent; it redraws when the logo is hovered
+ * Italian). The slur is the ribbon accent; it redraws when the logo is hovered
  * (group/logo).
  */
 export function BookMark({ className }: { className?: string }) {
@@ -17,7 +17,7 @@ export function BookMark({ className }: { className?: string }) {
       {/* Slur */}
       <path
         d="M9 7.5 C16 0.5 32 0.5 39 7.5"
-        stroke="var(--gold)"
+        stroke="var(--ribbon)"
         strokeWidth="2"
         strokeLinecap="round"
         pathLength={1}
@@ -54,7 +54,7 @@ export function GiantWordmark({ className }: { className?: string }) {
         <BookMark className="h-[0.62em] w-auto" />
         <span className="italic leading-none">
           {BRAND.descriptor}
-          <span className="text-gold">.</span>
+          <span className="text-ribbon">.</span>
         </span>
       </div>
     </div>

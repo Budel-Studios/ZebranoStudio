@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 const PAPER = "oklch(0.978 0.006 85)";
 const INK = "oklch(0.27 0.014 45)";
 const SOFT = "oklch(0.52 0.018 50)";
-const GOLD = "var(--gold)";
+const RIBBON = "var(--ribbon)";
 
 /** Fine paper/fabric grain as an inline SVG (no external request). */
 const GRAIN =
@@ -25,21 +25,21 @@ const GRAIN =
 /* Photo placeholder                                                    */
 /* ------------------------------------------------------------------ */
 
-export type Tone = "blush" | "sand" | "stone" | "dusk" | "wine" | "olive" | "sky" | "night";
+export type Tone = "board" | "sand" | "stone" | "dusk" | "cloth" | "olive" | "sky" | "night";
 
 const TONES: Record<Tone, [string, string]> = {
-  blush: ["oklch(0.89 0.03 45)", "oklch(0.76 0.05 38)"],
+  board: ["oklch(0.89 0.03 45)", "oklch(0.76 0.05 38)"],
   sand: ["oklch(0.91 0.022 82)", "oklch(0.8 0.035 75)"],
   stone: ["oklch(0.84 0.012 70)", "oklch(0.68 0.018 60)"],
   dusk: ["oklch(0.74 0.045 30)", "oklch(0.5 0.06 20)"],
-  wine: ["oklch(0.45 0.08 18)", "oklch(0.27 0.07 18)"],
+  cloth: ["oklch(0.45 0.08 18)", "oklch(0.27 0.07 18)"],
   olive: ["oklch(0.8 0.03 110)", "oklch(0.6 0.04 115)"],
   sky: ["oklch(0.88 0.02 230)", "oklch(0.74 0.035 240)"],
   night: ["oklch(0.4 0.03 280)", "oklch(0.23 0.03 300)"],
 };
 
 /** Soft toned block where a photo will go. */
-export function PhotoBlock({ tone = "blush", className, style }: { tone?: Tone; className?: string; style?: CSSProperties }) {
+export function PhotoBlock({ tone = "board", className, style }: { tone?: Tone; className?: string; style?: CSSProperties }) {
   const [a, b] = TONES[tone];
   return (
     <div
@@ -67,7 +67,7 @@ export function Spread({
   left,
   right,
   label,
-  board = "var(--wine)",
+  board = "var(--cloth)",
   ratio = "10 / 7",
   className,
 }: {
@@ -144,7 +144,7 @@ function Kicker({ children, className }: { children: ReactNode; className?: stri
 }
 
 function Rule({ className }: { className?: string }) {
-  return <span className={cn("block h-px w-[3em]", className)} style={{ background: GOLD }} />;
+  return <span className={cn("block h-px w-[3em]", className)} style={{ background: RIBBON }} />;
 }
 
 /** "Greeked" body text: thin bars instead of words, for running copy. */
@@ -210,7 +210,7 @@ const SAMPLES: Record<SpreadKind, Sample> = {
     label: "Voorbeeldspread: opening van het hoofdstuk De ceremonie",
     left: (
       <Page bleed>
-        <PhotoBlock tone="blush" className="h-full w-full" />
+        <PhotoBlock tone="board" className="h-full w-full" />
       </Page>
     ),
     right: (
@@ -269,7 +269,7 @@ const SAMPLES: Record<SpreadKind, Sample> = {
     right: (
       <Page>
         <div className="my-auto">
-          <p className="font-display text-[5em] leading-[0.5]" style={{ color: GOLD }}>
+          <p className="font-display text-[5em] leading-[0.5]" style={{ color: RIBBON }}>
             “
           </p>
           <p className="font-display text-[2.5em] italic leading-[1.12]">Ze kwam binnen en het werd stil. Zelfs oom Kees.</p>
@@ -359,7 +359,7 @@ const SAMPLES: Record<SpreadKind, Sample> = {
         <ol className="mt-[1.6em] text-[0.86em]">
           {["Openingsdans", "Het nummer van opa", "De polonaise (ja, echt)", "Meezinger één", "Meezinger twee", "Laatste dans"].map((t, i) => (
             <li key={t} className="flex items-baseline gap-[1em] border-b py-[0.72em]" style={{ borderColor: "oklch(0.27 0.014 45 / 0.14)" }}>
-              <span className="w-[1.6em] tabular-nums" style={{ color: GOLD }}>
+              <span className="w-[1.6em] tabular-nums" style={{ color: RIBBON }}>
                 {String(i + 1).padStart(2, "0")}
               </span>
               <span className="font-display text-[1.36em] leading-none">{t}</span>
@@ -387,7 +387,7 @@ const SAMPLES: Record<SpreadKind, Sample> = {
             ["03.10", "Laatste dans"],
           ].map(([t, n]) => (
             <li key={t} className="flex items-baseline gap-[1.2em] border-b py-[0.66em]" style={{ borderColor: "oklch(0.27 0.014 45 / 0.14)" }}>
-              <span className="w-[3.4em] text-[0.74em] tabular-nums tracking-[0.08em]" style={{ color: GOLD }}>
+              <span className="w-[3.4em] text-[0.74em] tabular-nums tracking-[0.08em]" style={{ color: RIBBON }}>
                 {t}
               </span>
               <span className="font-display text-[1.46em] leading-none">{n}</span>
@@ -429,7 +429,7 @@ const SAMPLES: Record<SpreadKind, Sample> = {
     right: (
       <Page>
         <div className="grid min-h-0 flex-1 grid-cols-2 grid-rows-3 gap-[0.9em]">
-          <PhotoBlock tone="blush" className="row-span-2" />
+          <PhotoBlock tone="board" className="row-span-2" />
           <PhotoBlock tone="stone" />
           <PhotoBlock tone="sand" />
           <PhotoBlock tone="dusk" className="col-span-2" />
@@ -502,7 +502,7 @@ const SAMPLES: Record<SpreadKind, Sample> = {
             [176, 30, "Dag 7"],
           ].map(([x, y, t]) => (
             <g key={t}>
-              <circle cx={x} cy={y} r="3.2" fill="var(--gold)" />
+              <circle cx={x} cy={y} r="3.2" fill="var(--ribbon)" />
               <text x={Number(x) + 8} y={Number(y) + 3} fontSize="7.5" fill="oklch(0.27 0.014 45)" style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}>
                 {t}
               </text>
@@ -637,8 +637,8 @@ export function BookCover({
 
 const STAGE = {
   linen: "bg-linen",
-  blush: "bg-blush",
-  wine: "bg-wine",
+  board: "bg-board",
+  cloth: "bg-cloth",
   paper: "bg-card",
 } as const;
 

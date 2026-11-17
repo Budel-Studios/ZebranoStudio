@@ -89,7 +89,7 @@ export function Editor({ id }: { id: string }) {
           <Link href="/studio" className={iconBtn} aria-label="Terug naar projecten"><ArrowLeft className="h-4 w-4" /></Link>
           <div className="min-w-0 flex-1">
             <input value={project.title} onChange={(e) => update((p) => ({ ...p, title: e.target.value }))} aria-label="Titel van het project"
-              className="w-full max-w-md truncate bg-transparent font-display text-xl leading-tight outline-none focus:underline focus:decoration-gold focus:underline-offset-4" />
+              className="w-full max-w-md truncate bg-transparent font-display text-xl leading-tight outline-none focus:underline focus:decoration-ribbon focus:underline-offset-4" />
             <p className="truncate text-[0.6875rem] text-muted-foreground">{studio.name} · {BRAND.name} · {saved ? "opgeslagen" : "opslaan…"}</p>
           </div>
           <Segmented value={role} onChange={setRole} options={[{ value: "fotograaf", label: "Fotograaf" }, { value: "klant", label: "Bruidspaar" }]} className="hidden sm:inline-flex" />
@@ -101,14 +101,14 @@ export function Editor({ id }: { id: string }) {
           {tabs.map((t) => (
             <button key={t.id} type="button" onClick={() => goto(t.id)} aria-current={t.id === active ? "step" : undefined}
               className={cn("flex shrink-0 items-baseline gap-2 border-b-2 px-3 py-2.5 text-sm transition-colors", t.id === active ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>
-              <span className="text-[0.625rem] tracking-[0.18em] text-gold">{t.n}</span>{t.label}
+              <span className="text-[0.625rem] tracking-[0.18em] text-ribbon">{t.n}</span>{t.label}
             </button>
           ))}
         </nav>
       </header>
 
       {role === "klant" && (
-        <p className="flex items-center gap-2 border-b bg-blush/40 px-4 py-2 text-xs">
+        <p className="flex items-center gap-2 border-b bg-board/40 px-4 py-2 text-xs">
           <BookOpen className="h-3.5 w-3.5" strokeWidth={1.5} /> Klantweergave: zo ziet het bruidspaar het boek. Zij voegen verhalen toe, kiezen favorieten, plaatsen opmerkingen en geven akkoord.
         </p>
       )}
